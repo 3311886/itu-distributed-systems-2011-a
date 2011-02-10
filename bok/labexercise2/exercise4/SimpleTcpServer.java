@@ -26,7 +26,7 @@ public class SimpleTcpServer{
 
 } 
 
-//class Connection extends Thread {
+//class Connection extends Runnable {
 class Connection implements Runnable {
 
 	private ObjectOutputStream oos;
