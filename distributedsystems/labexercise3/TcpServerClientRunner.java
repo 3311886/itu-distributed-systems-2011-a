@@ -1,7 +1,7 @@
-package distributedsystems.labexercise2;
+package distributedsystems.labexercise3;
 
-import java.net.*; 
-import java.io.*;
+import java.io.IOException;
+import java.net.InetAddress;
 
 
 public class TcpServerClientRunner implements Runnable {

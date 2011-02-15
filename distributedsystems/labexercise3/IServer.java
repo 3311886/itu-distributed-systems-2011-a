@@ -1,4 +1,4 @@
-package distributedsystems.labexercise2;
+package distributedsystems.labexercise3;
 
 public interface IServer {
 	
