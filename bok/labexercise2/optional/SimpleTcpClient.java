@@ -1,4 +1,4 @@
-package bok.labexercise2.optional_1;
+package bok.labexercise2.optional;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

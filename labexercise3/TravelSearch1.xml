@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TravelSearch xmlns:ts="TravelSearch.xsd">
+	<ts:from>Paris</ts:from>
+	<ts:to>Frankfurt</ts:to>
+	<ts:departuredate>2011-11-03</ts:departuredate>
+	<ts:returndate>2011-15-03</ts:returndate>
+	<ts:maxstops>1</ts:maxstops>
+	</TravelSearch>

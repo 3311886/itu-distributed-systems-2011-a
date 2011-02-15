@@ -1,4 +1,4 @@
-package bok.labexercise2.optional_1;
+package bok.labexercise2.optional;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class SimpleTcpServer{
 	private static ArrayList<Object> list;
+	
 
 	int port;
 	
