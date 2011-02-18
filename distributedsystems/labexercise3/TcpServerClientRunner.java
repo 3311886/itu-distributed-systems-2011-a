@@ -7,6 +7,9 @@ public class TcpServerClientRunner implements Runnable {
 	
 	private static int server_port = 4004;
 	
+	// TODO: if client_port is changed to another port than server_port e.g. 4005 - why ?  
+	private static int client_port = 4004;
+	
 	/**
 	 * @param args
 	 * @throws Exception
@@ -25,7 +28,7 @@ public class TcpServerClientRunner implements Runnable {
 		System.out.println("Client created");
 		
 		// ? stands for a so called wild card...
-		TcpClient client = new TcpClient (server_port, server_address); 		
+		TcpClient client = new TcpClient (client_port, server_address); 		
 
 		String message = "Hello world";
 		
@@ -61,7 +64,7 @@ public class TcpServerClientRunner implements Runnable {
 		// show we can handle multiple connections
 		// create another client 
 		// ? stands for a so called wild card...
-		TcpClient client2 = new TcpClient (server_port, server_address);
+		TcpClient client2 = new TcpClient (client_port, server_address);
 
 		message = "client 2 says: hello world";
 		
