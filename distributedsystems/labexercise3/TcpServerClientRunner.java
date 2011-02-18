@@ -15,7 +15,7 @@ public class TcpServerClientRunner implements Runnable {
 	 * @throws Exception
 	 */
 	public static void main (String args[]) throws Exception{ 
-		Storage s = new Storage();
+
 		System.out.println("Labexercise 1 + 2 (not 2 real machines) + 3 + 4");
 		System.out.println("================================================");
 		System.out.println("Server set up (in a thread)");
