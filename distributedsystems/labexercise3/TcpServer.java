@@ -1,4 +1,4 @@
-package bok.labexercise3;
+package distributedsystems.labexercise3;
 
 
 import java.io.IOException;
