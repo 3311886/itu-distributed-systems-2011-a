@@ -5,7 +5,7 @@ import java.net.InetAddress;
 
 import org.junit.*;  
 
-public class TcpServerCientTest implements Runnable 
+public class TcpServerClientTest implements Runnable 
 {  
 	
 	private static int server_port = 4000;
@@ -21,7 +21,7 @@ public class TcpServerCientTest implements Runnable
 	@Before 
 	public void setupServer() throws Throwable {
 		server_address = InetAddress.getByName("localhost");
-		new Thread(new TcpServerCientTest()).start();
+		new Thread(new TcpServerClientTest()).start();
 	}
 
 	@Override
