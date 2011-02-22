@@ -71,15 +71,8 @@ public class TcpServerClientTest implements Runnable
 	public void testClientQuitServer() throws Throwable { 
 		
 		TcpClient client = new TcpClient (client_port, server_address);
-		client.send("quit", -1);
-		
-		// should not be possibel
-		String message = "Hello world";
-		System.out.println(client.send(message, 1));
-
-//		setupServer();
-		
-//		Assert.assertEquals(client.send(message, 1), message.toUpperCase());
+		Assert.assertNull(client.send("quit", -1));
+		// code after client.send("quit", -1) is not executed so not best practice done here
 
 	}	
 	

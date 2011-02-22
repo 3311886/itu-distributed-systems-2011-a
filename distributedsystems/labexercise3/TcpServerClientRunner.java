@@ -99,15 +99,10 @@ public class TcpServerClientRunner implements Runnable {
 		System.out.println("We request person object (index 0 - name = Andreas) from server .");
 		System.out.println(client2.send(0, 2).toString());
 		
-		// TODO: is this a requirement ?
-//		System.out.println("We request person object p3 from server. ");
-//		System.out.println(client2.send(p3, 4).toString());
 		
 		System.out.println();
-		System.out.println("Help!");
+		System.out.println("Quit is now supported");
 		System.out.println("================================================");
-		System.out.println("We have tried to support some kind of quit server command - but with no luck - any hints are appreciated.");
-		System.out.println("It now works");
 		System.out.println("Client 2 sends quit message to server"); 
 		
 		System.out.println(client2.send("quit", -1));
