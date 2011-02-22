@@ -1,0 +1,72 @@
+package bok.labexercise4;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+
+public class ReplicatedPhonebook implements IPhonebook {
+	private InetSocketAddress isa;
+
+	private Set<Contact> contacts;
+
+	public ReplicatedPhonebook(InetSocketAddress isa) {
+		this.isa = isa;
+		contacts = new HashSet<Contact>();
+	}
+
+	public synchronized AddResult AddContact(Contact contact) throws IOException {
+		
+		if (findByName(contact.Name) != null) { 
+			return AddResult.AlreadyThere;
+		} else {
+			contact.setConnectionPoint(isa);
+			contacts.add(contact);
+			return AddResult.OK;
+		}
+	}
+
+
+	public synchronized UpdateResult Update(String name, String newPhoneNo)
+	throws IOException {
+		Contact c = findByName(name); 
+		if (c != null) {
+			c.PhoneNo = newPhoneNo; 
+			return UpdateResult.OK;
+		} else {
+			return UpdateResult.NotFound;
+		}
+	}
+
+	/***
+	 * 
+	 */
+	public synchronized String Lookup(String name) throws IOException {
+		Contact c = findByName(name);
+		return c!= null ? c.PhoneNo : null;
+	}
+
+
+	/***
+	 * TODO: Strip server ip from address
+	 */
+	public synchronized List<Contact> GetAllContacts() throws IOException {
+		return new ArrayList<Contact>(contacts) ;
+	}
+
+	public synchronized boolean Remove(String name) throws IOException {
+		// TODO Auto-generated method stub
+		Contact c = findByName(name); 
+		return contacts.remove(c);
+	}
+	
+	private synchronized Contact findByName(String name ) {
+		for(Contact c : contacts ) {
+			if (c.Name.equals(name)) return c;
+		}
+		return null;
+	}
+}

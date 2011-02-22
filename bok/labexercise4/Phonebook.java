@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 public class Phonebook implements IPhonebook {
-  private Map<String, String> NameTable;
+	 
+ private Map<String, String> NameTable;
 
   public Phonebook () {
     NameTable = new HashMap<String, String> ();

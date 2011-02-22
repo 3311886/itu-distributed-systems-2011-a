@@ -25,6 +25,7 @@ class MainClass {
 
   public static void main (String [] args) throws NoSuchAlgorithmException,
       IOException {
+	  
     MD5 = MessageDigest.getInstance ("MD5");
     PhonebookServer server = new PhonebookServer ();
     IPhonebook phonebook = new RemotePhonebook (server.LocalEndpoints
