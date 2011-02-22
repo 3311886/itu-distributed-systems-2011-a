@@ -99,8 +99,9 @@ public class TcpServerClientRunner implements Runnable {
 		System.out.println("We request person object (index 0 - name = Andreas) from server .");
 		System.out.println(client2.send(0, 2).toString());
 		
-		System.out.println("We request person object p3 from server. ");
-		System.out.println(client2.send(p3, 4).toString());
+		// TODO: is this a requirement ?
+//		System.out.println("We request person object p3 from server. ");
+//		System.out.println(client2.send(p3, 4).toString());
 		
 		System.out.println();
 		System.out.println("Help!");
