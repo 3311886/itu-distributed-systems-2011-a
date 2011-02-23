@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.net.InetSocketAddress;
 
 /***
- * Maybe remove this class
+ * Maybe remove this class, as it only wraps an inetsocketaddress at the moment 
  * @author Andreas
  *
  */
