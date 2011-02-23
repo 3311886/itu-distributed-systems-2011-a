@@ -10,7 +10,7 @@ public class JoinServerCommand extends ServerCommand {
 	}
 	
 	@Override
-	public Object Execute(ReplicatedPhoneBookServer server) throws IOException{
+	public Object Execute(PhonebookServer server) throws IOException{
 		return server.addConnectionPoint(this);
 	}
 }

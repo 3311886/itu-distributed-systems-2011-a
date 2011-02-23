@@ -29,7 +29,6 @@ public class ReplicatedPhonebook implements IPhonebook {
 		}
 	}
 
-
 	public synchronized UpdateResult Update(String name, String newPhoneNo)
 	throws IOException {
 		Contact c = findByName(name); 
