@@ -1,12 +1,16 @@
 package bok.labexercise4;
 // Simple-minded console-based user interface
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class UserInterface {
   private IPhonebook phonebook;
+  private ServerInterface serverinterface;
 
-  public UserInterface (IPhonebook pb) {
+  public UserInterface (IPhonebook pb, RemotePhonebookServer server) {
     phonebook = pb;
+    serverinterface = new ServerInterface(server);
   }
 
   void Start () {
@@ -26,6 +30,9 @@ public class UserInterface {
         case 'F':
           FindCommand (bisr);
           break;
+        case 'J':
+			serverinterface.JoinCommand (bisr);
+			break;
         case 'L':
           ListCommand ();
           break;
@@ -34,6 +41,9 @@ public class UserInterface {
           break;
         case 'Q':
           return;
+        case 'R':
+			serverinterface.RemoveCommand(bisr);
+			break;
         default:
           System.out.println ("Unknown command: " + command.charAt (0)
               + ", try again");
@@ -51,7 +61,9 @@ public class UserInterface {
     System.out.println ("(A) Add new contact");
     System.out.println ("(D) Delete contact");
     System.out.println ("(F) Find contact");
+    System.out.println ("(J) Add new server");
     System.out.println ("(L) List all contacts");
+    System.out.println ("(R) Remove server");
     System.out.println ("(U) Update contact");
     System.out.println ("(Q) Quit");
   }
@@ -121,5 +133,4 @@ public class UserInterface {
     System.out.print ("Phone no: ");
     return bisr.readLine ();
   }
-
 }

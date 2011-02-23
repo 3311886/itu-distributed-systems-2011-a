@@ -7,11 +7,10 @@ import java.io.IOException;
 public class JoinServerCommand extends ServerCommand {
 	public JoinServerCommand(ConnectionPoint cp1, ConnectionPoint cp2) {
 		super(cp1, cp2);
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
-	public Object Execute(PhonebookServer server) throws IOException{
+	public Object Execute(IPhonebookServer server) throws IOException{
 		return server.addConnectionPoint(this);
 	}
 }

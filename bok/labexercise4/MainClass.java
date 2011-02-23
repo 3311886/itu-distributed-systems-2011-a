@@ -25,12 +25,12 @@ class MainClass {
 
   public static void main (String [] args) throws NoSuchAlgorithmException,
       IOException {
-	  
     MD5 = MessageDigest.getInstance ("MD5");
     PhonebookServer server = new PhonebookServer ();
     IPhonebook phonebook = new RemotePhonebook (server.LocalEndpoints
         .getFirst ());
-    UserInterface ui = new UserInterface (phonebook);
+    RemotePhonebookServer remoteserver = new RemotePhonebookServer(server.getIP());
+    UserInterface ui = new UserInterface (phonebook, remoteserver);
     Thread serverThread = new Thread (server);
     serverThread.start ();
     System.out.println ("I'm listening on");

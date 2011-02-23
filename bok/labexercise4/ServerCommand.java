@@ -21,5 +21,5 @@ public abstract class ServerCommand implements ICommand, Serializable {
 		return this.cp2;
 	}
 	
-	abstract public Object Execute(PhonebookServer server) throws IOException;
+	abstract public Object Execute(IPhonebookServer server) throws IOException;
 }

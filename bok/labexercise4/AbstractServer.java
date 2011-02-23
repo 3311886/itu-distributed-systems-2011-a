@@ -20,7 +20,8 @@ import java.util.concurrent.Executors;
  */
 public abstract class AbstractServer implements Runnable{
 	  private ServerSocket Listener;
-	  private InetSocketAddress localisa;	  
+	  private InetSocketAddress localisa;
+	  private boolean printServerResults = false; 
 
 	  public LinkedList<InetSocketAddress> LocalEndpoints = new LinkedList<InetSocketAddress> ();
 
@@ -99,5 +100,13 @@ public abstract class AbstractServer implements Runnable{
 	  
 	  public InetSocketAddress getIP() {
 		  return this.localisa;
+	  }
+	  
+	  public void printServerResults(boolean flag) {
+		  printServerResults = flag;
+	  }
+	  
+	  public boolean printServerResults() {
+		  return printServerResults;
 	  }
 }

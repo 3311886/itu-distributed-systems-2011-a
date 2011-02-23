@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.util.HashSet;
 import java.util.Set;
 
-public class PhonebookServer extends AbstractServer{
+public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 	private Set<ConnectionPoint> cPoints;
 	private IPhonebook phonebook;
 
@@ -19,6 +19,9 @@ public class PhonebookServer extends AbstractServer{
 		phonebook = new ReplicatedPhonebook();
 	}
 
+	/* (non-Javadoc)
+	 * @see bok.labexercise4.IPhonebookServer#addConnectionPoint(bok.labexercise4.ServerCommand)
+	 */
 	public ServerResult addConnectionPoint(ServerCommand command) { 
 		if (!this.LocalEndpoints.getFirst().equals(command.getTargetServer().getISA())) {
 			return cPoints.add(command.getJoiningServer()) ? ServerResult.Added : ServerResult.AlreadyAdded;
@@ -33,6 +36,9 @@ public class PhonebookServer extends AbstractServer{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see bok.labexercise4.IPhonebookServer#removeConnectionPoints(bok.labexercise4.ServerCommand)
+	 */
 	public ServerResult removeConnectionPoints(ServerCommand command) {
 		if(this.LocalEndpoints.getFirst().equals(command.getTargetServer())) {
 			cPoints.remove(command.getJoiningServer());
@@ -47,11 +53,8 @@ public class PhonebookServer extends AbstractServer{
 			}	
 		} 
 	} 
-	/***
-	 * 
-	 * @param command 
-	 * @return returns a serverresult;
-	 * @throws IOException
+	/* (non-Javadoc)
+	 * @see bok.labexercise4.IPhonebookServer#broadcast(bok.labexercise4.ICommand)
 	 */
 	public ServerResult broadcast(ICommand command) throws IOException 
 	{
@@ -85,6 +88,9 @@ public class PhonebookServer extends AbstractServer{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see bok.labexercise4.IPhonebookServer#getConnectionPoints()
+	 */
 	public Set<ConnectionPoint> getConnectionPoints() {
 		return cPoints;
 	}
@@ -96,29 +102,10 @@ public class PhonebookServer extends AbstractServer{
 		// The command is sent from another server
 		else if (command instanceof Command) ExecuteAndSend((ServerCommand)command);
 		// The command is a reply from another server
-		else if (command instanceof ServerResult) System.out.println(command.toString());
-	}
-	
-	void ExecuteAndSend(UpdateCommand command) throws IOException{
-		Object result = null;
-		if (command.ForwardTo != null) {
-			result = command.Execute (phonebook);
-			if (command.ForwardTo.equals(getIP())) result = broadcast(command);
-		} else {
-			command.ForwardTo = getIP();
-			ExecuteAndSend(command);
-		}	
-
-		Socket client = new Socket ();
-		try {
-			client.connect (command.ReturnTo);
-			OutputStream os = client.getOutputStream ();
-			ObjectOutputStream oos = new ObjectOutputStream (os);
-			oos.writeObject (result);
-		} finally {
-			if (client != null)
-				client.close ();
-		}		
+		else if (command instanceof ServerResult) { 
+			if (printServerResults()) 
+				System.out.println(command.toString());
+		}
 	}
 
 	void ExecuteAndSend(ReplicateCommand command) throws IOException {
