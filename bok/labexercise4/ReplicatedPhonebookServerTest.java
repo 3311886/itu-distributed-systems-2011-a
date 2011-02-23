@@ -17,10 +17,10 @@ public class ReplicatedPhonebookServerTest {
 	static MessageDigest MD5;
 	private PhonebookServer primary;
 	private PhonebookServer secondary;
-	private PhonebookServer tertiary;
+
 	private IPhonebook phonebook1;
 	private IPhonebook phonebook2;
-	private IPhonebook phonebook3;
+
 
 	static Guid GuidFromString (String s) {
 		byte [] bytes = {};
@@ -60,16 +60,7 @@ public class ReplicatedPhonebookServerTest {
 		System.out.println ("Secondary hostname is " + secondaryHostName);
 		System.out.println ("Secondary GUID is " + secondaryGUID);
 		
-		tertiary = new PhonebookServer(); 
-		Thread serverThread3 = new Thread (secondary);
-		serverThread3.start ();
 
-		Guid tertiaryGUID = GuidFromString(tertiary.LocalEndpoints.get(2).toString());
-		String tertiaryHostName = tertiary.LocalEndpoints.get(2).getHostName();
-		
-		System.out.println ("Tertiary hostname is " + tertiaryHostName);
-		System.out.println ("Tertiary GUID is " + tertiaryGUID);
-		phonebook3 =new RemotePhonebook(primary.LocalEndpoints.get(2));
 	}
 
 	@Test
@@ -78,11 +69,10 @@ public class ReplicatedPhonebookServerTest {
 		System.out.println("TestJoinCommand");
 		InetSocketAddress primaryISA = primary.LocalEndpoints.get(1);
 		InetSocketAddress secondaryISA = secondary.LocalEndpoints.get(0);
-		InetSocketAddress tertiaryISA = tertiary.LocalEndpoints.get(2);
 		
 		ConnectionPoint cp1 = new ConnectionPoint(primaryISA);
 		ConnectionPoint cp2 = new ConnectionPoint(secondaryISA);
-		ConnectionPoint cp3 = new ConnectionPoint(tertiaryISA);
+		
 		JoinServerCommand command = new JoinServerCommand(cp2, cp1);
 		
 		ConnectionPoint[] expecteds = new ConnectionPoint[] {};
@@ -103,39 +93,33 @@ public class ReplicatedPhonebookServerTest {
 		}
 		Assert.assertArrayEquals(expecteds, actuals.toArray());
 		
-		command = new JoinServerCommand(cp3, cp1);
-		primary.ExecuteAndSend(command);
 		
-		expecteds = new ConnectionPoint[] {cp2, cp3};
-		actuals = new ArrayList<ConnectionPoint>();		
-		for(ConnectionPoint cp : primary.getConnectionPoints()) {
-			actuals.add(cp);
-		}
+		
 		
 		//Assert.assertArrayEquals(expecteds, actuals.toArray());
 		
 		System.out.print("Testing adding new contact on replicated servers");
 		Assert.assertEquals("OK", phonebook1.AddContact(new Contact("Contact 1", "123345")).toString());
 		Assert.assertEquals("123345", phonebook2.Lookup("Contact 1"));
-		Assert.assertEquals("123345", phonebook3.Lookup("Contact 1"));
+		
 		
 		System.out.print("Testing that the serverip that created the contact is persisted across replication");
 		Assert.assertEquals(primaryISA, phonebook1.GetAllContacts().get(0).getConnectionPoint().getISA()); 
 		Assert.assertEquals(primaryISA, phonebook2.GetAllContacts().get(0).getConnectionPoint().getISA());
-		Assert.assertEquals(primaryISA, phonebook3.GetAllContacts().get(0).getConnectionPoint().getISA());
+		
 		
 		System.out.print("Testing updating contact on replicated servers");
 		phonebook2.Update("Contact 1", "34234");
 		Assert.assertEquals("34234", phonebook1.Lookup("Contact 1"));
-		Assert.assertEquals("34234", phonebook3.Lookup("Contact 1"));
+		
 				
 		primary.removeConnectionPoints(new RemoveServerCommand(cp2,cp1));
-		Assert.assertEquals(1, primary.getConnectionPoints().size());
+		Assert.assertEquals(0, primary.getConnectionPoints().size());
 		
 		System.out.print("Remove contact from a server");
-		phonebook3.Remove("Contact 1");
+		phonebook2.Remove("Contact 1");
 		Assert.assertNull(phonebook1.Lookup("Contact 1"));
-		Assert.assertNull(phonebook3.Lookup("Contact 1"));
+		
 	}
 	
 	@Test
@@ -176,6 +160,6 @@ public class ReplicatedPhonebookServerTest {
 	public void AfterTest() {
 		primary.abort ();
 		secondary.abort();
-		tertiary.abort();
+
 	}
 }

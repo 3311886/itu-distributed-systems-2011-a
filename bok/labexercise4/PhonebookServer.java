@@ -121,7 +121,7 @@ public class PhonebookServer extends AbstractServer{
 		}		
 	}
 
-	void ExecuteAndSend(AddCommand command) throws IOException {
+	void ExecuteAndSend(ReplicateCommand command) throws IOException {
 		Object result = null;
 		if (command.ForwardTo != null) {
 			result = command.Execute (phonebook);

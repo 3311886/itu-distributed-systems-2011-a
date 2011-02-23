@@ -4,7 +4,7 @@ package bok.labexercise4;
 import java.io.IOException;
 import java.io.Serializable;
 
-public class UpdateCommand extends Command implements Serializable {
+public class UpdateCommand extends ReplicateCommand implements Serializable {
   private String Name, NewPhoneNo;
 
   public UpdateCommand (String name, String newPhoneNo) {

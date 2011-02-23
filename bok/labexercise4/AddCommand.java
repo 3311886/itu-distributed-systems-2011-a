@@ -4,7 +4,7 @@ package bok.labexercise4;
 import java.io.IOException;
 import java.io.Serializable;
 
-public class AddCommand extends Command implements Serializable {
+public class AddCommand extends ReplicateCommand implements Serializable {
 	private Contact Contact;
 
 	public AddCommand (Contact contact) {
