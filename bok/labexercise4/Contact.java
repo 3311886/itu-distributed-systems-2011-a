@@ -16,6 +16,9 @@ public class Contact implements Serializable {
   public void setConnectionPoint(InetSocketAddress isa) {
 	  cp = new ConnectionPoint(isa);
   }
+  public ConnectionPoint getConnectionPoint() {
+	  return cp;
+  }
  
   @Override
 public String toString () {

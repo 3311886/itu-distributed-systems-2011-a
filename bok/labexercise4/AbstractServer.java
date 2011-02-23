@@ -14,6 +14,10 @@ import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Abstract Server class that implements runnable 
+ *
+ */
 public abstract class AbstractServer implements Runnable{
 	  private ServerSocket Listener;
 	  private InetSocketAddress localisa;	  

@@ -1,4 +1,5 @@
 package bok.labexercise4;
+// Abstract class for server commands 
 
 import java.io.IOException;
 import java.io.Serializable;

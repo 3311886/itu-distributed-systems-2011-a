@@ -1,4 +1,5 @@
 package bok.labexercise4;
+// Command wrapper class  
 
 import java.io.IOException;
 

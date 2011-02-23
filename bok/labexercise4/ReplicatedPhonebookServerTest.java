@@ -119,6 +119,11 @@ public class ReplicatedPhonebookServerTest {
 		Assert.assertEquals("123345", phonebook2.Lookup("Contact 1"));
 		Assert.assertEquals("123345", phonebook3.Lookup("Contact 1"));
 		
+		System.out.print("Testing that the serverip that created the contact is persisted across replication");
+		Assert.assertEquals(primaryISA, phonebook1.GetAllContacts().get(0).getConnectionPoint().getISA()); 
+		Assert.assertEquals(primaryISA, phonebook2.GetAllContacts().get(0).getConnectionPoint().getISA());
+		Assert.assertEquals(primaryISA, phonebook3.GetAllContacts().get(0).getConnectionPoint().getISA());
+		
 		System.out.print("Testing updating contact on replicated servers");
 		phonebook2.Update("Contact 1", "34234");
 		Assert.assertEquals("34234", phonebook1.Lookup("Contact 1"));
@@ -130,7 +135,7 @@ public class ReplicatedPhonebookServerTest {
 		System.out.print("Remove contact from a server");
 		phonebook3.Remove("Contact 1");
 		Assert.assertNull(phonebook1.Lookup("Contact 1"));
-		Assert.assertNull(phonebook3.Lookup("Contact 1"));		
+		Assert.assertNull(phonebook3.Lookup("Contact 1"));
 	}
 	
 	@Test
@@ -171,5 +176,6 @@ public class ReplicatedPhonebookServerTest {
 	public void AfterTest() {
 		primary.abort ();
 		secondary.abort();
+		tertiary.abort();
 	}
 }

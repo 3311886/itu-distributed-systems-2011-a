@@ -3,6 +3,11 @@ package bok.labexercise4;
 import java.io.Serializable;
 import java.net.InetSocketAddress;
 
+/***
+ * Maybe remove this class
+ * @author Andreas
+ *
+ */
 public class ConnectionPoint implements Serializable{
 		private InetSocketAddress isa;
 		

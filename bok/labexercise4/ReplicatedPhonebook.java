@@ -1,7 +1,6 @@
 package bok.labexercise4;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -9,21 +8,18 @@ import java.util.Set;
 
 
 public class ReplicatedPhonebook implements IPhonebook {
-	private InetSocketAddress isa;
 
 	private Set<Contact> contacts;
 
-	public ReplicatedPhonebook(InetSocketAddress isa) {
-		this.isa = isa;
+	public ReplicatedPhonebook() {
 		contacts = new HashSet<Contact>();
 	}
 
 	public synchronized AddResult AddContact(Contact contact) throws IOException {
 		
-		if (findByName(contact.Name) != null) { 
+		if (findByName(contact.Name) != null) {
 			return AddResult.AlreadyThere;
 		} else {
-			contact.setConnectionPoint(isa);
 			contacts.add(contact);
 			return AddResult.OK;
 		}

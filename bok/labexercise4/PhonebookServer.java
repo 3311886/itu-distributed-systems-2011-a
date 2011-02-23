@@ -16,7 +16,7 @@ public class PhonebookServer extends AbstractServer{
 	public PhonebookServer () throws IOException {
 		super();
 		cPoints = new  HashSet<ConnectionPoint>();
-		phonebook = new ReplicatedPhonebook(getIP());
+		phonebook = new ReplicatedPhonebook();
 	}
 
 	public ServerResult addConnectionPoint(ServerCommand command) { 
