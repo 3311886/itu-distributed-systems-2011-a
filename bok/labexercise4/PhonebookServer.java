@@ -11,11 +11,10 @@ import java.util.Set;
 
 public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 
-	// Set of InetSocketAddresses
+	// Set of InetSocketAddresses - ensures distinct elements 
 	private Set<InetSocketAddress> cPoints;
 	// Storage
 	private IPhonebook phonebook;
-
 
 	public PhonebookServer (int port) throws IOException {
 		// Call superclass constructor

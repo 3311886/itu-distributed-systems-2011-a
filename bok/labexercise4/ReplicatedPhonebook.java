@@ -9,6 +9,7 @@ import java.util.Set;
 
 public class ReplicatedPhonebook implements IPhonebook {
 
+	// Set of contact objects - ensures distinct objects 
 	private Set<Contact> contacts;
 
 	public ReplicatedPhonebook() {
