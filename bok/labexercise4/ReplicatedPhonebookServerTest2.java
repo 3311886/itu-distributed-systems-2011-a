@@ -78,6 +78,7 @@ public class ReplicatedPhonebookServerTest2 {
 	public void AfterTest() {
 		primary.abort ();
 		secondary.abort();
+		tertiary.abort();
 	}
 	
 	@Test
