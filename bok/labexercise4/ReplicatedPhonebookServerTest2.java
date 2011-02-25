@@ -48,7 +48,7 @@ public class ReplicatedPhonebookServerTest2 {
 		
 		System.out.println ("Primary hostname is " + primaryHostName);
 		System.out.println ("Primary server GUID is " + primaryGUID);
-			 
+		
 		secondary = new PhonebookServer(port+1); 
 		Thread serverThread2 = new Thread (secondary);
 		serverThread2.start ();
@@ -113,12 +113,25 @@ public class ReplicatedPhonebookServerTest2 {
 		primary.ExecuteAndSend(new JoinServerCommand(cpTertiary, cpPrimary));
 		
 		Contact c3 =  new Contact("Mette", "45234");
+		
 		phonebook3.AddContact(c3);
 		Assert.assertEquals("45234", phonebook3.Lookup("Mette"));
-		Assert.assertEquals("45234", phonebook1.Lookup("Mette"));
+		Assert.assertEquals("45234", phonebook3.Lookup("Mette"));
 		
 		primary.ExecuteAndSend(new RemoveServerCommand(cpSecondary, cpPrimary));
+		// Handle removeserver  
 		Assert.assertEquals(1,primary.getConnectionPoints().size());
 		
+		Contact c4 = new Contact("Peter", "1234");
+		Contact c5 = new Contact("Karen", "12345");
+		phonebook1.AddContact(c4);
+		
+		primary.ExecuteAndSend(new JoinServerCommand(cpSecondary, cpPrimary));
+		phonebook1.AddContact(c5);
+		System.out.println(phonebook2.Lookup("Peter"));
+		
+		System.out.println("Phonebook 1:" + phonebook1.GetAllContacts());
+		System.out.println("Phonebook 2" + phonebook2.GetAllContacts());
+		System.out.println("Phonebook 3" + phonebook3.GetAllContacts());
 	} 
 }
