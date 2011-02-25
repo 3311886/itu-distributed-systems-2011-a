@@ -59,8 +59,6 @@ public void Synchronize(List<Contact> contacts) {
 	// TODO Auto-generated method stub
 	throw new NotImplementedException();
 }
-  
-  
-  
+
  
 }

@@ -23,12 +23,6 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 		phonebook = new ReplicatedPhonebook();
 	}
 
-	public void ReqestAllContacts(RequestAllContactsCommand command) throws IOException {
-		this.getPhoneBook().Synchronize(command.contacts);
-		SynchronizeCommand scommand = new SynchronizeCommand(command.getJoiningServer(), command.getTargetServer());
-		ExecuteAndSend(scommand);		  
-	}
-
 	public SynchronizeStatus synchronize(SynchronizeCommand command) throws IOException {
 		if (command.status.equals(SynchronizeStatus.Created)) {
 			// Target server creates a syncmessage and sends it to 
@@ -38,27 +32,26 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 			command.cpoints = cpointsToSend;
 			// Add target server
 			command.cpoints.add(command.getTargetServer());
-			System.out.println("points to send from server: " + command.cpoints);
+			command.contacts = this.phonebook.GetAllContacts();
 			command.status = SynchronizeStatus.SendFromTarget;
 			ExecuteAndSend(command);
 		} else if (command.status.equals(SynchronizeStatus.SendFromTarget)){
 			// Joining server receives
-			System.out.println("points to receive: " + command.cpoints);
 			Set<ConnectionPoint> cpointsReceived = command.cpoints;
+			this.phonebook.Synchronize(command.contacts);
 			Set<ConnectionPoint> cpointsToSend = new HashSet<ConnectionPoint>();
 			cpointsToSend.addAll(getConnectionPoints());
 			command.cpoints = cpointsToSend;
-			System.out.println("points to to send from joining: " + command.cpoints);
-			
 			
 			getConnectionPoints().addAll(cpointsReceived);
-			System.out.println("Joining server cpoints: " + getConnectionPoints());
-			
+			command.contacts = this.phonebook.GetAllContacts();
 			command.status = SynchronizeStatus.SendFromJoining;
 			ExecuteAndSend(command);
 
 		} else if (command.status.equals(SynchronizeStatus.SendFromJoining)) {
+			
 			getConnectionPoints().addAll(command.cpoints);
+			this.phonebook.Synchronize(command.contacts);
 			command = null;
 			return SynchronizeStatus.Synchronized;
 		}
@@ -224,8 +217,7 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 			// Send to joining server
 			Socket client = new Socket ();
 			try {
-				System.out.println("Server send:" +  command.cpoints);
-				System.out.println("Joining server:" +  command.getJoiningServer());
+				
 				client.connect (command.getJoiningServer().getISA());
 				OutputStream os = client.getOutputStream ();
 				ObjectOutputStream oos = new ObjectOutputStream (os);				
@@ -237,7 +229,7 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 		}
 		
 		if (command.status.equals(SynchronizeStatus.SendFromTarget) && command.getJoiningServer().getISA().equals(getIP())) { 
-			System.out.println(synchronize(command));
+			command.Execute(this);
 		}
 				
 		if (command.status.equals(SynchronizeStatus.SendFromJoining) && !command.getTargetServer().getISA().equals(getIP())) {
@@ -256,7 +248,7 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 
 		}
 	} 
-
+	
 	public IPhonebook getPhoneBook() {
 		return this.phonebook;
 	}
