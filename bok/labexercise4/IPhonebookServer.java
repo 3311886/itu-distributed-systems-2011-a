@@ -7,6 +7,6 @@ public interface IPhonebookServer {
 
 	public abstract ServerResult addConnectionPoint(ServerCommand command) throws IOException;
 
-	public abstract ServerResult removeConnectionPoints(ServerCommand command);
+	public abstract Object removeConnectionPoints(ServerCommand command);
 
 }

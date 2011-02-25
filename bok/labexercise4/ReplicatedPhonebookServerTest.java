@@ -68,16 +68,14 @@ public class ReplicatedPhonebookServerTest {
 		InetSocketAddress primaryISA = primary.getIP();
 		InetSocketAddress secondaryISA = secondary.getIP();
 		
-		ConnectionPoint cp1 = new ConnectionPoint(primaryISA);
-		ConnectionPoint cp2 = new ConnectionPoint(secondaryISA);
 		
-		JoinServerCommand command = new JoinServerCommand(cp2, cp1);
+		JoinServerCommand command = new JoinServerCommand(secondaryISA, primaryISA);
 		
-		ConnectionPoint[] expecteds = new ConnectionPoint[] {};
+		InetSocketAddress[] expecteds = new InetSocketAddress[] {};
 		
-		ArrayList<ConnectionPoint> actuals = new ArrayList<ConnectionPoint>();		
-		for(ConnectionPoint cp : primary.getConnectionPoints()) {
-			actuals.add(cp);
+		ArrayList<InetSocketAddress> actuals = new ArrayList<InetSocketAddress>();		
+		for(InetSocketAddress isa : primary.getConnectionPoints()) {
+			actuals.add(isa);
 		}
 		Assert.assertArrayEquals(expecteds, actuals.toArray());
 		
@@ -85,10 +83,10 @@ public class ReplicatedPhonebookServerTest {
 		//primaryremote.addConnectionPoint(secondaryISA);
 		primary.ExecuteAndSend(command);
 		
-		expecteds = new ConnectionPoint[] {cp2};
-		actuals = new ArrayList<ConnectionPoint>();		
-		for(ConnectionPoint cp : primary.getConnectionPoints()) {
-			actuals.add(cp);
+		expecteds = new InetSocketAddress[] {secondaryISA};
+		actuals = new ArrayList<InetSocketAddress>();		
+		for(InetSocketAddress isa : primary.getConnectionPoints()) {
+			actuals.add(isa);
 		}
 		Assert.assertArrayEquals(expecteds, actuals.toArray());
 		
@@ -99,14 +97,14 @@ public class ReplicatedPhonebookServerTest {
 		Assert.assertEquals("123345", phonebook2.Lookup("Contact 1"));
 				
 		System.out.print("Testing that the serverip that created the contact is persisted across replication");
-		Assert.assertEquals(primaryISA, phonebook1.GetAllContacts().get(0).getConnectionPoint().getISA()); 
-		Assert.assertEquals(primaryISA, phonebook2.GetAllContacts().get(0).getConnectionPoint().getISA());
+		Assert.assertEquals(primaryISA, phonebook1.GetAllContacts().get(0).getConnectionPoint()); 
+		Assert.assertEquals(primaryISA, phonebook2.GetAllContacts().get(0).getConnectionPoint());
 		
 		System.out.print("Testing updating contact on replicated servers");
 		phonebook2.Update("Contact 1", "34234");
 		Assert.assertEquals("34234", phonebook1.Lookup("Contact 1"));
 				
-		primary.removeConnectionPoints(new RemoveServerCommand(cp2,cp1));
+		primary.removeConnectionPoints(new RemoveServerCommand(secondaryISA,primaryISA));
 		Assert.assertEquals(0, primary.getConnectionPoints().size());
 		
 		System.out.print("Remove contact from a server");

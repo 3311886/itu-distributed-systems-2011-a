@@ -1,5 +1,5 @@
 package bok.labexercise4;
-
+// Abstract superclass for add and update command
 import java.io.IOException;
 import java.net.InetSocketAddress;
 

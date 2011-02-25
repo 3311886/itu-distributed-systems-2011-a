@@ -7,16 +7,16 @@ import java.net.InetSocketAddress;
 public class Contact implements Serializable {
   public String Name;
   public String PhoneNo;
-  private ConnectionPoint cp;
+  private InetSocketAddress cp;
 
   public Contact(String name, String phoneNo) {
     Name = name;
     PhoneNo = phoneNo;
   }
   public void setConnectionPoint(InetSocketAddress isa) {
-	  cp = new ConnectionPoint(isa);
+	  cp = isa;
   }
-  public ConnectionPoint getConnectionPoint() {
+  public InetSocketAddress getConnectionPoint() {
 	  return cp;
   }
  

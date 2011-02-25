@@ -25,14 +25,24 @@ public abstract class AbstractServer implements Runnable{
 
 	public LinkedList<InetSocketAddress> LocalEndpoints = new LinkedList<InetSocketAddress> ();
 
+	/***
+	 * @param port, specific port to start server on
+	 * @throws IOException
+	 */
 	public AbstractServer(int port) throws IOException{
 		initServer(port);
 	}
 
 	public AbstractServer() throws IOException {
+		// 0 creates a server on the first available port 
 		initServer(0);
 	}
 	
+	/***
+	 * Initializes server 
+	 * @param port
+	 * @throws IOException
+	 */
 	private void initServer(int port) throws IOException{
 		Listener = new ServerSocket(port);
 		Listener.setSoTimeout (2000);
@@ -94,6 +104,12 @@ public abstract class AbstractServer implements Runnable{
 
 	abstract void ExecuteAndSend(Object command) throws IOException;
 
+	/**
+	 * Handles incoming requests 
+	 * @param client
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	void HandleConnection (Socket client) throws IOException,
 	ClassNotFoundException {
 		try {
@@ -107,6 +123,10 @@ public abstract class AbstractServer implements Runnable{
 		}
 	}
 
+	/***
+	 * Returns InetSocketAddress for the server
+	 * @return
+	 */
 	public InetSocketAddress getIP() {
 		return this.localisa;
 	}

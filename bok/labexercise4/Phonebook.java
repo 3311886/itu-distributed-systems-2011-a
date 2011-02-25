@@ -1,4 +1,5 @@
 package bok.labexercise4;
+// NB not used in our implementation
 // Phonebook database implementation
 // Made thread-safe by making all methods synchronized
 

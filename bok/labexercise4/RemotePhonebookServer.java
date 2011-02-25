@@ -9,6 +9,12 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/***
+ * An attempt to make a remoteserver interface similar to the userinterface
+ * Not really working   
+ * @author Andreas
+ *
+ */
 public class RemotePhonebookServer {
 
 	private InetSocketAddress Server;
@@ -47,12 +53,9 @@ public class RemotePhonebookServer {
 				client.close ();
 		}	}
 
-	public ServerResult addConnectionPoint(InetSocketAddress server) {
+	public ServerResult addConnectionPoint(InetSocketAddress joiningserver) {
 		// The server that wants to join
-		ConnectionPoint cp1 = new ConnectionPoint(server);
-		// The server to join
-		ConnectionPoint cp2 = new ConnectionPoint(Server);
-		Object result = addConnectionPoint(new JoinServerCommand(cp1, cp2));
+		Object result = addConnectionPoint(new JoinServerCommand(joiningserver, Server));
 		return (ServerResult) result;
 	}
 
@@ -66,12 +69,9 @@ public class RemotePhonebookServer {
 		return (ServerResult) result;
 	}
 
-	public ServerResult removeConnectionPoints(InetSocketAddress server) { 
+	public ServerResult removeConnectionPoints(InetSocketAddress joiningserver) { 
 		// The server that wants to join
-		ConnectionPoint cp1 = new ConnectionPoint(server);
-		// The server to join
-		ConnectionPoint cp2 = new ConnectionPoint(Server);
-		return removeConnectionPoints(new RemoveServerCommand(cp1, cp2));
+		return removeConnectionPoints(new RemoveServerCommand(joiningserver, Server));
 	}
 
 	public ServerResult removeConnectionPoints(ServerCommand command) {

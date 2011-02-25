@@ -1,11 +1,15 @@
 package bok.labexercise4;
 
 /***
- * Enum for indicating result of joining a server
+ * Enum of server responses 
  * 
  * @author Andreas
  *
  */
 public enum ServerResult {	
-	Added, AddedAndBroadCast, Removed,RemovedAndBroadCast, AlreadyAdded, UnknownError 
+	Added, AddedAndBroadCast, Removed,RemovedAndBroadCast, AlreadyAdded, UnknownError, 
+	RemoveServerInitiatedFromServer, RemoveServerInitiatedFromJoiner, 
+	JoiningServerRemoved
+	
+	
 }

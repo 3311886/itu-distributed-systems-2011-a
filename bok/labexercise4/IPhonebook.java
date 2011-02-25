@@ -16,6 +16,7 @@ public interface IPhonebook {
   List<Contact> GetAllContacts () throws IOException;
 
   boolean Remove (String name) throws IOException;
+  
   // Returns true if name was found and
   // removed
   

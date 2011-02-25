@@ -2,6 +2,7 @@ package bok.labexercise4;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.InetSocketAddress;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -20,6 +21,7 @@ public class ReplicatedPhonebookServerTest2 {
 	private IPhonebook phonebook1;
 	private IPhonebook phonebook2;
 	private IPhonebook phonebook3;
+	int port;
 	
 	static Guid GuidFromString (String s) {
 		byte [] bytes = {};
@@ -37,7 +39,8 @@ public class ReplicatedPhonebookServerTest2 {
 	public void BeforeTest() throws NoSuchAlgorithmException, IOException {
 		MD5 = MessageDigest.getInstance ("MD5");
 		
-		int port = 10 + ((int) Math.random() * 10000); 
+		System.out.println("Starting servers...");
+		 port = 10 + ((int) Math.random() * 10000); 
 		primary = new PhonebookServer(port-1); 
 		Thread serverThread = new Thread (primary);
 		serverThread.start ();
@@ -57,7 +60,6 @@ public class ReplicatedPhonebookServerTest2 {
 		String secondaryHostName = secondary.getIP().toString();
 		phonebook2 = new RemotePhonebook(secondary.getIP());
 		
-		
 		System.out.println ("secondary hostname is " + secondaryHostName);
 		System.out.println ("secondary GUID is " + secondaryGUID);
 		
@@ -70,12 +72,13 @@ public class ReplicatedPhonebookServerTest2 {
 		phonebook3 = new RemotePhonebook(tertiary.getIP());
 				
 		System.out.println ("tertiary hostname is " + tertiaryHostName);
-		System.out.println ("tertiary GUID is " + tertiaryGUID); 
-
+		System.out.println ("tertiary GUID is " + tertiaryGUID);
+		
 	}
 	
 	@After 
 	public void AfterTest() {
+		System.out.println("Exiting test...");
 		primary.abort ();
 		secondary.abort();
 		tertiary.abort();
@@ -86,20 +89,22 @@ public class ReplicatedPhonebookServerTest2 {
 	 * Testing add server and remove server
 	 */
 	public void TestJoinRemoveServer() throws IOException, NoSuchAlgorithmException {
+		System.out.println("**********************");
+		System.out.println("Starting test...");
+		InetSocketAddress primaryISA = primary.getIP();
+		InetSocketAddress secondaryISA = secondary.getIP();
+		InetSocketAddress tertiaryISA = tertiary.getIP();
 		
 		RemotePhonebookServer primaryremote = new RemotePhonebookServer(primary.getIP());
-		System.out.println("Test Join Command");
-		
-		ConnectionPoint cpSecondary = new ConnectionPoint(secondary.getIP());
-		ConnectionPoint cpPrimary = new ConnectionPoint(primary.getIP());
-		ConnectionPoint cpTertiary = new ConnectionPoint(tertiary.getIP());
+		System.out.println("Test join command with synchronization of connectionpoints between joiner and joinee");
 		
 		Assert.assertEquals("[]", primary.getConnectionPoints().toString());
-		primary.ExecuteAndSend(new JoinServerCommand(cpSecondary, cpPrimary));
+		primary.ExecuteAndSend(new JoinServerCommand(secondaryISA, primaryISA));
 		
-		Assert.assertEquals("[" +secondary.getIP().toString()  +"]",  primary.getConnectionPoints().toString());
+		Assert.assertEquals("[" + secondary.getIP().toString()  +"]",  primary.getConnectionPoints().toString());
 		Assert.assertEquals("["+ primary.getIP().toString() + "]", secondary.getConnectionPoints().toString());
 		
+		System.out.println("Test Add contact command with synchronization between replicated servers");
 		Contact c =  new Contact("Andreas", "3958475");
 		phonebook2.AddContact(c);
 		
@@ -111,28 +116,45 @@ public class ReplicatedPhonebookServerTest2 {
 		Assert.assertEquals("24334", phonebook1.Lookup("Pelle"));
 		Assert.assertEquals("24334", phonebook2.Lookup("Pelle"));
 		
-		primary.ExecuteAndSend(new JoinServerCommand(cpTertiary, cpPrimary));
+		System.out.println("Test of adding new phonebookserver synchronization of connectionpoints between servers");
+		primary.ExecuteAndSend(new JoinServerCommand(tertiaryISA, primaryISA));
 		
 		Contact c3 =  new Contact("Mette", "45234");
 		
-		phonebook3.AddContact(c3);
-		Assert.assertEquals("45234", phonebook3.Lookup("Mette"));
-		Assert.assertEquals("45234", phonebook3.Lookup("Mette"));
+		System.out.println("Test of adding new contact to last joined server, should be updated to server one and two");
+		phonebook3.AddContact(c3);		
 		
-		primary.ExecuteAndSend(new RemoveServerCommand(cpSecondary, cpPrimary));
-		// Handle removeserver  
-		Assert.assertEquals(1,primary.getConnectionPoints().size());
+		System.out.println("Remove server two");
+		primary.ExecuteAndSend(new RemoveServerCommand(secondaryISA, primaryISA));
 		
 		Contact c4 = new Contact("Peter", "1234");
 		Contact c5 = new Contact("Karen", "12345");
 		phonebook1.AddContact(c4);
 		
-		primary.ExecuteAndSend(new JoinServerCommand(cpSecondary, cpPrimary));
-		phonebook1.AddContact(c5);
-		System.out.println(phonebook2.Lookup("Peter"));
+		Assert.assertEquals("[" + tertiary.getIP().toString()  +"]",  primary.getConnectionPoints().toString());
+		Assert.assertEquals("["+ primary.getIP().toString() + "]", tertiary.getConnectionPoints().toString());
 		
+		Assert.assertEquals(1, primary.getConnectionPoints().size());
+		Assert.assertEquals("45234", phonebook1.Lookup("Mette"));
+		
+		Assert.assertEquals(0,secondary.getConnectionPoints().size());
+		
+		primary.ExecuteAndSend(new JoinServerCommand(secondaryISA, primaryISA));
+		phonebook1.AddContact(c5);
+		Assert.assertEquals("1234", phonebook2.Lookup("Peter"));
+		
+		Assert.assertEquals(UpdateResult.OK, phonebook1.Update("Mette", "123456789"));
+		
+		System.out.println("Point out phonebooks for all three servers");
 		System.out.println("Phonebook 1:" + phonebook1.GetAllContacts());
 		System.out.println("Phonebook 2" + phonebook2.GetAllContacts());
 		System.out.println("Phonebook 3" + phonebook3.GetAllContacts());
+		
+		System.out.println("Point out connectionpoints for all three servers");
+		System.out.println("Server 1: Own ip" + primaryISA+  primary.getConnectionPoints());
+		System.out.println("Server 2: Own ip" + secondaryISA + secondary.getConnectionPoints());
+		System.out.println("Server 3: Own ip" + tertiaryISA + " - "  +  tertiary.getConnectionPoints());
+		
+		
 	} 
 }
