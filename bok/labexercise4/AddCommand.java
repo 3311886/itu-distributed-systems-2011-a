@@ -15,5 +15,4 @@ public class AddCommand extends ReplicateCommand implements Serializable {
 	public Object Execute (IPhonebook phonebook) throws IOException {
 		return phonebook.AddContact(Contact);
 	}
-
 }

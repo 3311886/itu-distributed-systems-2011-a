@@ -6,7 +6,6 @@ import java.net.InetSocketAddress;
 
 public abstract class Command implements Serializable, ICommand  {
   public InetSocketAddress ReturnTo;
-  
  
   abstract public Object Execute (IPhonebook phonebook) throws IOException;
 }

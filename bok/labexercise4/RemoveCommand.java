@@ -7,6 +7,7 @@ public class RemoveCommand extends Command implements Serializable {
   private String Name;
 
   public RemoveCommand (String name) {
+	  
     Name = name;
   }
 

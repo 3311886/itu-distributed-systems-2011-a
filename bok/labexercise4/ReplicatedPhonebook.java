@@ -64,4 +64,18 @@ public class ReplicatedPhonebook implements IPhonebook {
 		}
 		return null;
 	}
+	
+	 public synchronized void Synchronize(List<Contact> list){
+		 
+		  for (Contact c : list ) {
+			  if (findByName(c.Name) == null) {
+				  try {
+					AddContact(c);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			  }
+		  }
+	  }
 }

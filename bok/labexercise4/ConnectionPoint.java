@@ -21,9 +21,7 @@ public class ConnectionPoint implements Serializable{
 	
 		@Override
 		public String toString() {
-			StringBuilder sb = new StringBuilder();
-			String str = String.format("HostName: %s\n", getISA().getHostName());
-			sb.append(str);
-			return sb.toString();
+			
+			return getISA().toString();
 		}
 }

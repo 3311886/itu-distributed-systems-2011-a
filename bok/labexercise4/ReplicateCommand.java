@@ -8,5 +8,4 @@ public abstract class ReplicateCommand extends Command {
 	
 	@Override
 	public abstract Object Execute(IPhonebook phonebook) throws IOException ;
-
 }

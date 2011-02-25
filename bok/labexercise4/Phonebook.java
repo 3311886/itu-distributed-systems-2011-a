@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 public class Phonebook implements IPhonebook {
 	 
  private Map<String, String> NameTable;
@@ -52,4 +54,13 @@ public class Phonebook implements IPhonebook {
   public synchronized boolean Remove (String name) {
     return (NameTable.remove (name) != null);
   }
+
+public void Synchronize(List<Contact> contacts) {
+	// TODO Auto-generated method stub
+	throw new NotImplementedException();
+}
+  
+  
+  
+ 
 }

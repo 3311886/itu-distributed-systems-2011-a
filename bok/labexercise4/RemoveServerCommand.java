@@ -8,7 +8,7 @@ public class RemoveServerCommand extends ServerCommand {
 	}
 
 	@Override
-	public Object Execute(IPhonebookServer server) {
+	public Object Execute(PhonebookServer server) {
 		// TODO Auto-generated method stub
 		return server.removeConnectionPoints(this);
 	}

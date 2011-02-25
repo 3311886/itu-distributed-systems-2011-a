@@ -17,7 +17,7 @@ public class ServerInterface {
 	}
 	
 	void RemoveCommand (BufferedReader bisr) throws IOException {
-		InetSocketAddress isa = GetIP(bisr, "joining");
+		InetSocketAddress isa = GetIP(bisr, "removing");
 		server.removeConnectionPoints(isa);
 	}
 

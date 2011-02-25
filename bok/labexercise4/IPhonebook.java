@@ -18,4 +18,7 @@ public interface IPhonebook {
   boolean Remove (String name) throws IOException;
   // Returns true if name was found and
   // removed
+  
+  void Synchronize(List<Contact> contacts) ;
 }
+

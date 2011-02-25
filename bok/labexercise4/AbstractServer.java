@@ -19,94 +19,103 @@ import java.util.concurrent.Executors;
  *
  */
 public abstract class AbstractServer implements Runnable{
-	  private ServerSocket Listener;
-	  private InetSocketAddress localisa;
-	  private boolean printServerResults = false; 
+	private ServerSocket Listener;
+	private InetSocketAddress localisa;
+	private boolean printServerResults = false; 
 
-	  public LinkedList<InetSocketAddress> LocalEndpoints = new LinkedList<InetSocketAddress> ();
+	public LinkedList<InetSocketAddress> LocalEndpoints = new LinkedList<InetSocketAddress> ();
 
-	  public AbstractServer() throws IOException {
-	    Listener = new ServerSocket (0);
-	    Listener.setSoTimeout (2000);
+	public AbstractServer(int port) throws IOException{
+		initServer(port);
+	}
 
-	    Enumeration ifs = NetworkInterface.getNetworkInterfaces ();
-	    for (; ifs.hasMoreElements ();) {
-	      NetworkInterface nif = (NetworkInterface) ifs.nextElement ();
-	      Enumeration addrs = nif.getInetAddresses ();
-	      for (; addrs.hasMoreElements ();) {
-	        InetAddress ip = (InetAddress) addrs.nextElement ();
-	        String hostname = ip.getCanonicalHostName ();
-	        if (!hostname.equals (ip.getHostAddress ()) )
-	        	
-	          LocalEndpoints.add (new InetSocketAddress (hostname, Listener
-	              .getLocalPort()));
-	      }
-	    }
-	    localisa= LocalEndpoints.getFirst();
-	  }
+	public AbstractServer() throws IOException {
+		initServer(0);
+	}
+	
+	private void initServer(int port) throws IOException{
+		Listener = new ServerSocket(port);
+		Listener.setSoTimeout (2000);
 
-	  boolean abort = false;
+		Enumeration ifs = NetworkInterface.getNetworkInterfaces ();
+		for (; ifs.hasMoreElements ();) {
+			NetworkInterface nif = (NetworkInterface) ifs.nextElement ();
+			Enumeration addrs = nif.getInetAddresses ();
+			for (; addrs.hasMoreElements ();) {
+				InetAddress ip = (InetAddress) addrs.nextElement ();
+				String hostname = ip.getCanonicalHostName ();
+				if (!hostname.equals (ip.getHostAddress ()) )
 
-	  static ExecutorService exeservice = Executors.newCachedThreadPool();
+					LocalEndpoints.add (new InetSocketAddress (hostname, Listener
+							.getLocalPort()));
+			}
+		}
+		// Get the servers own ip  
+		localisa= new InetSocketAddress(InetAddress.getLocalHost(), Listener.getLocalPort());
+	}
 
-	  public void run () {
-	    try {
-	      while (!abort) {
-	        try {
-	          final Socket client = Listener.accept();
-	          exeservice.execute (new Runnable () {
-	            public void run () {
-	              try {
-	                HandleConnection (client);
-	              } catch (Exception e) {
-	                System.err.println (e.getMessage ());
-	                System.exit (-1);
-	              }
-	            }
-	          });
-	        } catch (SocketTimeoutException e) {
-	        }
-	      }
-	    } catch (Exception e) {
-	      System.err.println (e.getMessage ());
-	      System.exit (-1);
-	    } finally {
-	      try {
-	        Listener.close ();
-	      } catch (IOException e) {
-	      }
-	      exeservice.shutdown ();
-	    }
-	  }
+	boolean abort = false;
 
-	  public synchronized void abort () {
-	    abort = true;
-	  }
-	 
-	  abstract void ExecuteAndSend(Object command) throws IOException;
-	    
-	  void HandleConnection (Socket client) throws IOException,
-	      ClassNotFoundException {
-	    try {
-	      InputStream is = client.getInputStream ();
-	      ObjectInputStream ois = new ObjectInputStream (is);
-	      Object command = ois.readObject ();
-	      ExecuteAndSend(command);
-	    } finally {
-	      if (client != null)
-	        client.close ();
-	    }
-	  }
-	  
-	  public InetSocketAddress getIP() {
-		  return this.localisa;
-	  }
-	  
-	  public void printServerResults(boolean flag) {
-		  printServerResults = flag;
-	  }
-	  
-	  public boolean printServerResults() {
-		  return printServerResults;
-	  }
+	static ExecutorService exeservice = Executors.newCachedThreadPool();
+
+	public void run () {
+		try {
+			while (!abort) {
+				try {
+					final Socket client = Listener.accept();
+					exeservice.execute (new Runnable () {
+						public void run () {
+							try {
+								HandleConnection (client);
+							} catch (Exception e) {
+								System.err.println (e.getMessage ());
+								System.exit (-1);
+							}
+						}
+					});
+				} catch (SocketTimeoutException e) {
+				}
+			}
+		} catch (Exception e) {
+			System.err.println (e.getMessage ());
+			System.exit (-1);
+		} finally {
+			try {
+				Listener.close ();
+			} catch (IOException e) {
+			}
+			exeservice.shutdown ();
+		}
+	}
+
+	public synchronized void abort () {
+		abort = true;
+	}
+
+	abstract void ExecuteAndSend(Object command) throws IOException;
+
+	void HandleConnection (Socket client) throws IOException,
+	ClassNotFoundException {
+		try {
+			InputStream is = client.getInputStream ();
+			ObjectInputStream ois = new ObjectInputStream (is);
+			Object command = ois.readObject ();
+			ExecuteAndSend(command);
+		} finally {
+			if (client != null)
+				client.close ();
+		}
+	}
+
+	public InetSocketAddress getIP() {
+		return this.localisa;
+	}
+
+	public void printServerResults(boolean flag) {
+		printServerResults = flag;
+	}
+
+	public boolean printServerResults() {
+		return printServerResults;
+	}
 }
