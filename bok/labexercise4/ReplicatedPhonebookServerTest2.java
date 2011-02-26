@@ -173,5 +173,5 @@ public class ReplicatedPhonebookServerTest2 {
 		System.out.println("Phonebook 1: " + l1);
 		System.out.println("Phonebook 2: " + l2);
 		System.out.println("Phonebook 3: " + l3);
-	} 
+	}
 }
