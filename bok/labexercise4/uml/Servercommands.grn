@@ -1,0 +1,67 @@
+<uml>
+   <greenVersion="30500"/>
+   <type>
+      <name="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{ICommand.java[ICommand"/>
+      <height="-1"/>
+      <width="-1"/>
+      <x="455"/>
+      <y="0"/>
+   </type>
+   <type>
+      <name="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{JoinServerCommand.java[JoinServerCommand"/>
+      <height="-1"/>
+      <width="-1"/>
+      <x="0"/>
+      <y="23"/>
+   </type>
+   <type>
+      <name="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{RemoveServerCommand.java[RemoveServerCommand"/>
+      <height="-1"/>
+      <width="-1"/>
+      <x="669"/>
+      <y="405"/>
+   </type>
+   <type>
+      <name="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{ServerCommand.java[ServerCommand"/>
+      <height="-1"/>
+      <width="-1"/>
+      <x="274"/>
+      <y="270"/>
+   </type>
+   <type>
+      <name="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{SynchronizeCommand.java[SynchronizeCommand"/>
+      <height="-1"/>
+      <width="-1"/>
+      <x="145"/>
+      <y="678"/>
+   </type>
+   <relationship>
+      <class="edu.buffalo.cse.green.relationship.generalization.GeneralizationPart"/>
+      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{RemoveServerCommand.java[RemoveServerCommand"/>
+      <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{ServerCommand.java[ServerCommand"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+   <relationship>
+      <class="edu.buffalo.cse.green.relationship.generalization.GeneralizationPart"/>
+      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{JoinServerCommand.java[JoinServerCommand"/>
+      <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{ServerCommand.java[ServerCommand"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+   <relationship>
+      <class="edu.buffalo.cse.green.relationship.realization.RealizationPart"/>
+      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{ServerCommand.java[ServerCommand"/>
+      <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{ICommand.java[ICommand"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+   <relationship>
+      <class="edu.buffalo.cse.green.relationship.generalization.GeneralizationPart"/>
+      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{SynchronizeCommand.java[SynchronizeCommand"/>
+      <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{ServerCommand.java[ServerCommand"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+</uml>
+
