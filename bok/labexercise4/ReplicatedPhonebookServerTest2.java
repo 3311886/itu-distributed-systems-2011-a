@@ -128,6 +128,10 @@ public class ReplicatedPhonebookServerTest2 {
 
 		System.out.println("Remove server two");
 		primary.ExecuteAndSend(new RemoveServerCommand(secondaryISA, primaryISA));
+		
+		System.out.println("Add contact to server two after leaving primaryServer");
+		Contact c6 = new Contact("Alin", "7234");
+		phonebook2.AddContact(c6);
 
 		Contact c4 = new Contact("Peter", "1234");
 		Contact c5 = new Contact("Karen", "12345");
