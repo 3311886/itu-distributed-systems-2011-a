@@ -278,7 +278,6 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 	 * @throws IOException
 	 */
 	void ExecuteAndSend(SynchronizeCommand command) throws IOException {
-
 		if (command.status.equals(SynchronizeStatus.SendFromTarget) && command.getTargetServer().equals(getIP())) {
 			// Send to joining server
 			Socket client = new Socket ();
