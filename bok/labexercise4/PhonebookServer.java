@@ -68,9 +68,18 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 			// Server receives sync response from joining server 
 			getConnectionPoints().addAll(command.cpoints);
 			this.phonebook.Synchronize(command.contacts);
+			
+			// Broadcast to servers
+			command.status = SynchronizeStatus.BroadCast;
+			broadcast(command);
+			return SynchronizeStatus.Synchronized;
+		} else if (command.status.equals(SynchronizeStatus.BroadCast)) {
+			getConnectionPoints().addAll(command.cpoints);
+			this.phonebook.Synchronize(command.contacts);
 			command = null;
 			return SynchronizeStatus.Synchronized;
 		}
+		
 		return command.status;
 	}
 	/* (non-Javadoc)
