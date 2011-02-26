@@ -21,20 +21,6 @@
       <x="587"/>
       <y="1003"/>
    </type>
-   <relationship>
-      <class="edu.buffalo.cse.green.relationship.realization.RealizationPart"/>
-      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{Phonebook.java[Phonebook"/>
-      <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{IPhonebook.java[IPhonebook"/>
-      <bendpoints>
-      </bendpoints>
-   </relationship>
-   <relationship>
-      <class="edu.buffalo.cse.green.relationship.realization.RealizationPart"/>
-      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{RemotePhonebook.java[RemotePhonebook"/>
-      <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{IPhonebook.java[IPhonebook"/>
-      <bendpoints>
-      </bendpoints>
-   </relationship>
    <type>
       <name="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{AbstractServer.java[AbstractServer"/>
       <height="-1"/>
@@ -56,27 +42,6 @@
       <x="370"/>
       <y="293"/>
    </type>
-   <relationship>
-      <class="edu.buffalo.cse.green.relationship.realization.RealizationPart"/>
-      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{PhonebookServer.java[PhonebookServer"/>
-      <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{IPhonebookServer.java[IPhonebookServer"/>
-      <bendpoints>
-      </bendpoints>
-   </relationship>
-   <relationship>
-      <class="edu.buffalo.cse.green.relationship.composition.CompositionPart"/>
-      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{PhonebookServer.java[PhonebookServer"/>
-      <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{IPhonebook.java[IPhonebook"/>
-      <bendpoints>
-      </bendpoints>
-   </relationship>
-   <relationship>
-      <class="edu.buffalo.cse.green.relationship.generalization.GeneralizationPart"/>
-      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{PhonebookServer.java[PhonebookServer"/>
-      <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{AbstractServer.java[AbstractServer"/>
-      <bendpoints>
-      </bendpoints>
-   </relationship>
    <type>
       <name="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{RemotePhonebookServer.java[RemotePhonebookServer"/>
       <height="-1"/>
@@ -95,6 +60,41 @@
       <class="edu.buffalo.cse.green.relationship.association.AssociationPart"/>
       <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{ServerInterface.java[ServerInterface"/>
       <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{RemotePhonebookServer.java[RemotePhonebookServer"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+   <relationship>
+      <class="edu.buffalo.cse.green.relationship.generalization.GeneralizationPart"/>
+      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{PhonebookServer.java[PhonebookServer"/>
+      <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{AbstractServer.java[AbstractServer"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+   <relationship>
+      <class="edu.buffalo.cse.green.relationship.composition.CompositionPart"/>
+      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{PhonebookServer.java[PhonebookServer"/>
+      <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{IPhonebook.java[IPhonebook"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+   <relationship>
+      <class="edu.buffalo.cse.green.relationship.realization.RealizationPart"/>
+      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{Phonebook.java[Phonebook"/>
+      <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{IPhonebook.java[IPhonebook"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+   <relationship>
+      <class="edu.buffalo.cse.green.relationship.realization.RealizationPart"/>
+      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{RemotePhonebook.java[RemotePhonebook"/>
+      <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{IPhonebook.java[IPhonebook"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+   <relationship>
+      <class="edu.buffalo.cse.green.relationship.realization.RealizationPart"/>
+      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{PhonebookServer.java[PhonebookServer"/>
+      <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{IPhonebookServer.java[IPhonebookServer"/>
       <bendpoints>
       </bendpoints>
    </relationship>
