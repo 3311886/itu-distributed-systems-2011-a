@@ -50,9 +50,9 @@
       <y="442"/>
    </type>
    <relationship>
-      <class="edu.buffalo.cse.green.relationship.realization.RealizationPart"/>
-      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{Command.java[Command"/>
-      <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{ICommand.java[ICommand"/>
+      <class="edu.buffalo.cse.green.relationship.generalization.GeneralizationPart"/>
+      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{GetAllContactsCommand.java[GetAllContactsCommand"/>
+      <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{Command.java[Command"/>
       <bendpoints>
       </bendpoints>
    </relationship>
@@ -65,22 +65,15 @@
    </relationship>
    <relationship>
       <class="edu.buffalo.cse.green.relationship.generalization.GeneralizationPart"/>
-      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{AddCommand.java[AddCommand"/>
-      <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{ReplicateCommand.java[ReplicateCommand"/>
-      <bendpoints>
-      </bendpoints>
-   </relationship>
-   <relationship>
-      <class="edu.buffalo.cse.green.relationship.generalization.GeneralizationPart"/>
-      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{GetAllContactsCommand.java[GetAllContactsCommand"/>
-      <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{Command.java[Command"/>
-      <bendpoints>
-      </bendpoints>
-   </relationship>
-   <relationship>
-      <class="edu.buffalo.cse.green.relationship.generalization.GeneralizationPart"/>
       <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{RemoveCommand.java[RemoveCommand"/>
       <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{Command.java[Command"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+   <relationship>
+      <class="edu.buffalo.cse.green.relationship.realization.RealizationPart"/>
+      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{Command.java[Command"/>
+      <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{ICommand.java[ICommand"/>
       <bendpoints>
       </bendpoints>
    </relationship>
@@ -88,6 +81,55 @@
       <class="edu.buffalo.cse.green.relationship.generalization.GeneralizationPart"/>
       <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{ReplicateCommand.java[ReplicateCommand"/>
       <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{Command.java[Command"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+   <relationship>
+      <class="edu.buffalo.cse.green.relationship.generalization.GeneralizationPart"/>
+      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{AddCommand.java[AddCommand"/>
+      <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{ReplicateCommand.java[ReplicateCommand"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+   <type>
+      <name="=Mobile Distributed Systems/C:\/Program Files\/Java\/jdk1.6.0_24\/jre\/lib\/rt.jar<java.io(Serializable.class[Serializable"/>
+      <height="-1"/>
+      <width="-1"/>
+      <x="0"/>
+      <y="0"/>
+   </type>
+   <relationship>
+      <class="edu.buffalo.cse.green.relationship.realization.RealizationPart"/>
+      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{UpdateCommand.java[UpdateCommand"/>
+      <targetType="=Mobile Distributed Systems/C:\/Program Files\/Java\/jdk1.6.0_24\/jre\/lib\/rt.jar<java.io(Serializable.class[Serializable"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+   <relationship>
+      <class="edu.buffalo.cse.green.relationship.realization.RealizationPart"/>
+      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{RemoveCommand.java[RemoveCommand"/>
+      <targetType="=Mobile Distributed Systems/C:\/Program Files\/Java\/jdk1.6.0_24\/jre\/lib\/rt.jar<java.io(Serializable.class[Serializable"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+   <relationship>
+      <class="edu.buffalo.cse.green.relationship.realization.RealizationPart"/>
+      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{GetAllContactsCommand.java[GetAllContactsCommand"/>
+      <targetType="=Mobile Distributed Systems/C:\/Program Files\/Java\/jdk1.6.0_24\/jre\/lib\/rt.jar<java.io(Serializable.class[Serializable"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+   <relationship>
+      <class="edu.buffalo.cse.green.relationship.realization.RealizationPart"/>
+      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{AddCommand.java[AddCommand"/>
+      <targetType="=Mobile Distributed Systems/C:\/Program Files\/Java\/jdk1.6.0_24\/jre\/lib\/rt.jar<java.io(Serializable.class[Serializable"/>
+      <bendpoints>
+      </bendpoints>
+   </relationship>
+   <relationship>
+      <class="edu.buffalo.cse.green.relationship.realization.RealizationPart"/>
+      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{Command.java[Command"/>
+      <targetType="=Mobile Distributed Systems/C:\/Program Files\/Java\/jdk1.6.0_24\/jre\/lib\/rt.jar<java.io(Serializable.class[Serializable"/>
       <bendpoints>
       </bendpoints>
    </relationship>
