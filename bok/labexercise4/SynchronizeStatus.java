@@ -1,5 +1,5 @@
 package bok.labexercise4;
 
 public enum SynchronizeStatus {
-	Synchronized, SendFromTarget, SendFromJoining, Created  
+	Synchronized, SendFromTarget, SendFromJoining, Created, BroadCast  
 }
