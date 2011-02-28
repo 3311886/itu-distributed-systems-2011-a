@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Set;
 
 /***
  * An attempt to make a remoteserver interface similar to the userinterface
@@ -84,5 +85,11 @@ public class RemotePhonebookServer implements IPhonebookServer {
 			e.printStackTrace();
 		}
 		return (ServerResult) result;
+	}
+
+	public Set<InetSocketAddress> getConnectionPoints(
+			GetConnectionPointsCommand command) {
+		// TODO Auto-generated method stub
+		return null;
 	} 
 }
