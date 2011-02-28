@@ -12,8 +12,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 class RemotePhonebook implements IPhonebook {
 	private InetSocketAddress Server;
 
@@ -85,6 +83,6 @@ class RemotePhonebook implements IPhonebook {
 	}
 
 	public void Synchronize(List<Contact> contacts) {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException("not implemented yet");
 	}
 }

@@ -3,12 +3,10 @@ package bok.labexercise4;
 // Phonebook database implementation
 // Made thread-safe by making all methods synchronized
 
-import java.util.HashMap;
+import java.util.HashMap; 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Phonebook implements IPhonebook {
 	 
@@ -57,8 +55,7 @@ public class Phonebook implements IPhonebook {
   }
 
 public void Synchronize(List<Contact> contacts) {
-	// TODO Auto-generated method stub
-	throw new NotImplementedException();
+	throw new UnsupportedOperationException("not implemented yet"); 
 }
 
  
