@@ -30,7 +30,7 @@ class MainClass {
     IPhonebook phonebook = new RemotePhonebook (server.LocalEndpoints
         .getFirst ());
     RemotePhonebookServer remoteserver = new RemotePhonebookServer(server.getIP());
-    UserInterface ui = new UserInterface (phonebook, remoteserver);
+    UserInterface ui = new UserInterface (phonebook);
     Thread serverThread = new Thread (server);
     serverThread.start ();
     System.out.println ("I'm listening on");

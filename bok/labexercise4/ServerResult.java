@@ -7,7 +7,7 @@ package bok.labexercise4;
  *
  */
 public enum ServerResult {	
-	Added, AddedAndBroadCast, Removed,RemovedAndBroadCast, AlreadyAdded, UnknownError, 
+	Added, BroadCast, Removed,RemovedAndBroadCast, AlreadyAdded, UnknownError, 
 	RemoveServerInitiatedFromServer, RemoveServerInitiatedFromJoiner, 
 	JoiningServerRemoved
 	

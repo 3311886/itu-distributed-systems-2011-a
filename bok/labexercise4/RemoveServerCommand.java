@@ -5,8 +5,7 @@ import java.net.InetSocketAddress;
 
 public class RemoveServerCommand extends ServerCommand {
 	public RemoveServerCommand(InetSocketAddress cp1, InetSocketAddress cp2) {
-		super(cp1, cp2);
-		
+		super(cp1, cp2);		
 	}
 
 	@Override

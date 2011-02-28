@@ -4,8 +4,18 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 
 public abstract class ReplicateCommand extends Command {
-	public InetSocketAddress ForwardTo;
+	
+	private InetSocketAddress Receiver;
 	
 	@Override
 	public abstract Object Execute(IPhonebook phonebook) throws IOException ;
+	
+	public InetSocketAddress getReceiver() {
+		return Receiver;
+	}
+	
+	public void setReceiver(InetSocketAddress value) {
+		Receiver = value;
+	}
+	
 }

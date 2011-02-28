@@ -1,8 +1,8 @@
 package bok.labexercise4;
 // Our implementation of the IPhoneBook
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -45,12 +45,11 @@ public class ReplicatedPhonebook implements IPhonebook {
 		return c!= null ? c.PhoneNo : null;
 	}
 
-
 	/***
 	 * TODO: Strip server ip from address
 	 */
-	public synchronized List<Contact> GetAllContacts() throws IOException {
-		return new ArrayList<Contact>(contacts) ;
+	public synchronized LinkedList<Contact> GetAllContacts() throws IOException {
+		return new LinkedList<Contact>(contacts);
 	}
 
 	public synchronized boolean Remove(String name) throws IOException {

@@ -6,21 +6,31 @@ import java.io.Serializable;
 import java.net.InetSocketAddress;
 
 public abstract class ServerCommand implements ICommand, Serializable {
-	private InetSocketAddress cp1;
-	private InetSocketAddress cp2;
+	private InetSocketAddress Sender;
+	private InetSocketAddress Receiver;
+	private VectorClock vc;
 	
 	public ServerCommand (InetSocketAddress cp1, InetSocketAddress cp2) {
-		this.cp1 = cp1;
-		this.cp2 = cp2;
+		this.Sender = cp1;
+		this.Receiver = cp2;
 	}
 	
-	public InetSocketAddress getJoiningServer() {
-		return this.cp1;
+	public InetSocketAddress getSender() {
+		return this.Sender;
 	}
 	
-	public InetSocketAddress getTargetServer() {
-		return this.cp2;
+	public InetSocketAddress getReceiver() {
+		return this.Receiver;
 	}
+	
+	public void setSender(InetSocketAddress value) {
+		this.Sender = value;
+	}
+	
+	public void setReceiver(InetSocketAddress  value) {
+		this.Receiver = value;
+	}
+	
 	
 	/***
 	 * 

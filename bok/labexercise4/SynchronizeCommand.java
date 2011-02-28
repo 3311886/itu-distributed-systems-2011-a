@@ -12,7 +12,6 @@ public class SynchronizeCommand extends ServerCommand implements Serializable {
 	SynchronizeStatus status;  
 	
 	public SynchronizeCommand(InetSocketAddress cp1, InetSocketAddress cp2) {
-		
 		super(cp1, cp2);
 		status = SynchronizeStatus.Created;
 	}

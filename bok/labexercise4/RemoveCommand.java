@@ -1,7 +1,8 @@
 package bok.labexercise4;
 // Command wrapper class
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Serializable;
 
 public class RemoveCommand extends Command implements Serializable {
   private String Name;

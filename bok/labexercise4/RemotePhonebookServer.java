@@ -27,12 +27,12 @@ public class RemotePhonebookServer {
 		Socket client = new Socket ();
 		try {
 			client.connect (Server);
-			
+
 			OutputStream os = client.getOutputStream ();
-			
+
 			ObjectOutputStream oos = new ObjectOutputStream (os);
 			oos.writeObject(command);
-			
+
 		} finally {
 			if (client != null)
 				client.close ();
@@ -42,7 +42,7 @@ public class RemotePhonebookServer {
 			listener.close ();
 			InputStream is = client.getInputStream ();
 			ObjectInputStream ois = new ObjectInputStream (is);
-			
+
 			return ois.readObject ();
 		} catch (ClassNotFoundException e) {
 			System.err.println (e.getMessage ());
@@ -51,7 +51,9 @@ public class RemotePhonebookServer {
 		} finally {
 			if (client != null)
 				client.close ();
-		}	}
+		}
+		
+	}
 
 	public ServerResult addConnectionPoint(InetSocketAddress joiningserver) {
 		// The server that wants to join
@@ -84,5 +86,5 @@ public class RemotePhonebookServer {
 			e.printStackTrace();
 		}
 		return (ServerResult) result;
-	}
+	} 
 }
