@@ -44,10 +44,13 @@ class MainClass {
 			System.out.println(server.getConnectionPoints().toString());
 		}
 
-		PhonebookServer server2 = new PhonebookServer ();
-		IPhonebook phonebook2 = new RemotePhonebook (server2.getIP());
-		Thread serverThread2 = new Thread(server2);
-		serverThread2.start();
+		/* note: the second phonebookserver is confusing turn off for now - try it out running 
+		multiple phonebookserver from command line. */
+		
+//		PhonebookServer server2 = new PhonebookServer ();
+//		IPhonebook phonebook2 = new RemotePhonebook (server2.getIP());
+//		Thread serverThread2 = new Thread(server2);
+//		serverThread2.start();
 
 		System.out.println ("I'm listening on");
 		for (InetSocketAddress sa : server.LocalEndpoints) {
@@ -56,15 +59,15 @@ class MainClass {
 		System.out.println ("My GUID is "
 				+ GuidFromString (server.getIP().toString()));
 
-		System.out.println ("I'm listening on");
-		for (InetSocketAddress sa : server2.LocalEndpoints) {
-			System.out.println ("  " + sa);
-		}
-		System.out.println ("My GUID is "
-				+ GuidFromString (server2.getIP().toString()));
+//		System.out.println ("I'm listening on");
+//		for (InetSocketAddress sa : server2.LocalEndpoints) {
+//			System.out.println ("  " + sa);
+//		}
+//		System.out.println ("My GUID is "
+//				+ GuidFromString (server2.getIP().toString()));
 		ui.Start ();
 		ui.Start ();
 		server.abort ();
-		server2.abort();
+//		server2.abort();
 	}
 }
