@@ -28,11 +28,13 @@ public class RemotePhonebookServer implements IPhonebookServer {
 		command.setReturnTo((InetSocketAddress) listener.getLocalSocketAddress ());
 		Socket client = new Socket ();
 		try {
+
 			client.connect (Server);
 			OutputStream os = client.getOutputStream ();
 
 			ObjectOutputStream oos = new ObjectOutputStream (os);
 			oos.writeObject(command);
+
 
 		} finally {
 			if (client != null)
@@ -52,18 +54,16 @@ public class RemotePhonebookServer implements IPhonebookServer {
 			if (client != null)
 				client.close ();
 		}
-		
-		
 	}
-	
-/***
- * 
- * @param joiner The joinning server
- * @param joinee The server to join
- * @return
- */
+
+	/***
+	 * 
+	 * @param joiner The joinning server
+	 * @param joinee The server to join
+	 * @return
+	 */
 	public ServerResult addConnectionPoint(InetSocketAddress server, boolean asJoiner) {
-		
+
 		JoinServerCommand command;  
 		if (asJoiner) {
 			command = new JoinServerCommand(Server, server);
@@ -73,7 +73,7 @@ public class RemotePhonebookServer implements IPhonebookServer {
 		Object result = addConnectionPoint(command);
 		return (ServerResult) result;
 	} 
-	
+
 
 	public ServerResult addConnectionPoint(ServerCommand command) {
 		Object result = null;
@@ -109,8 +109,22 @@ public class RemotePhonebookServer implements IPhonebookServer {
 			GetConnectionPointsCommand command) throws IOException {
 		return (Set<InetSocketAddress>) SendAndReceive(command);
 	}
-	
-	public void ConnectToServer(InetSocketAddress isa) {
-		Server = isa;
+
+	public boolean Ping(InetSocketAddress isa) {
+		try {
+			return isa.getAddress().isReachable(5000);
+		} catch (IOException e) {
+			return false;
+		}
+	}
+
+
+	public boolean ConnectToServer(InetSocketAddress isa) throws IOException {
+		if (Ping(isa)) { 
+			Server = isa;
+			return true;
+		} 
+		else 
+			return false;
 	}
 }

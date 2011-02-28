@@ -41,8 +41,6 @@ class MainClass {
 		ArrayList<PhonebookServer> servers  = new ArrayList<PhonebookServer>(); 
 		for (int i = 0; i< serverCount; i++) {
 			PhonebookServer server = new PhonebookServer ();
-			
-
 
 			Thread serverThread = new Thread (server);
 			serverThread.start ();

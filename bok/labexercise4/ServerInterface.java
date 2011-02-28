@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Set;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
+
 public class ServerInterface {
 	private RemotePhonebookServer server;
 
@@ -18,36 +20,65 @@ public class ServerInterface {
 		} else {
 			isa = GetIP(bisr, "joining"); 
 		}
-		System.out.println(server.addConnectionPoint(isa, asJoiner));
+		
+		System.out.println("Pinging: " + isa);
+		if (server.Ping(isa)) {
+			System.out.println(server.addConnectionPoint(isa, asJoiner));
+		} else
+			System.out.println("Could not connect to server");
 	}
-	
+
 	void RemoveCommand (BufferedReader bisr) throws IOException {
 		InetSocketAddress isa = GetIP(bisr, "removing");
 		server.removeConnectionPoint(isa);
 	}
-	
+
 	void GetConnectionPointsCommand () throws IOException {
 		Set<InetSocketAddress> list =  server.getConnectionPoints();
 		System.out.printf("%s\n", "Connected server: ");
 		for (InetSocketAddress isa : list ) {
 			System.out.println(isa);
 		}
-		
 	}
 
 	static InetSocketAddress GetIP (BufferedReader bisr, String args) throws IOException {
 		System.out.printf("Input %s server hostname: ", args);
-		String hostname = bisr.readLine (); 
+
+		String hostname = bisr.readLine ();
+		while(!verifyISA(hostname)) {
+			hostname = bisr.readLine ();
+		}
+
 		System.out.printf("Input %s server port: ", args);
+
 		String portStr = bisr.readLine();
+		while(!verifyPort(portStr)) {
+			portStr = bisr.readLine ();
+		}
+
 		int port = Integer.valueOf(portStr);
 		return new InetSocketAddress(hostname, port);
 	}
-	
+
+	static boolean verifyISA(String input) {
+		String regex = "\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b";
+		RegularExpression r = new RegularExpression(regex);
+		return r.matches(input);
+	}
+
+	static boolean verifyPort(String input) {
+		String regex = "\\d+";
+		RegularExpression r = new RegularExpression(regex);
+		return r.matches(input);
+	}
+
 	void ConnectToServer(BufferedReader bisr) throws IOException {
 		InetSocketAddress isa = GetIP(bisr, "new server");
-		server.ConnectToServer(isa);
 		
-		System.out.println("Now connected to: " + isa);
+		if (server.ConnectToServer(isa)) {
+			System.out.println("Now connected to: " + isa);
+		} else {
+			System.out.println("Could not connect to server: " + isa);
+		}
 	}
 }	
