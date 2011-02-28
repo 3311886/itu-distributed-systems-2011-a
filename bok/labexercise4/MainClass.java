@@ -43,7 +43,7 @@ class MainClass {
      
     server.addConnectionPoint(new JoinServerCommand(joiner, server.getIP()));
     System.out.println(server.getConnectionPoints().toString());
-    } 
+    }
     
     PhonebookServer server2 = new PhonebookServer ();
     IPhonebook phonebook2 = new RemotePhonebook (server2.getIP());
