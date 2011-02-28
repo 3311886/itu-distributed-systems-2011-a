@@ -37,7 +37,7 @@
    </type>
    <relationship>
       <class="edu.buffalo.cse.green.relationship.generalization.GeneralizationPart"/>
-      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{RemoveServerCommand.java[RemoveServerCommand"/>
+      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{SynchronizeCommand.java[SynchronizeCommand"/>
       <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{ServerCommand.java[ServerCommand"/>
       <bendpoints>
       </bendpoints>
@@ -58,7 +58,7 @@
    </relationship>
    <relationship>
       <class="edu.buffalo.cse.green.relationship.generalization.GeneralizationPart"/>
-      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{SynchronizeCommand.java[SynchronizeCommand"/>
+      <sourceType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{RemoveServerCommand.java[RemoveServerCommand"/>
       <targetType="=Mobile Distributed Systems/branches\/andreas<bok.labexercise4{ServerCommand.java[ServerCommand"/>
       <bendpoints>
       </bendpoints>

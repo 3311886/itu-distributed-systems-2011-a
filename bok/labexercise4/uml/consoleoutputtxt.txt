@@ -1,0 +1,59 @@
+Starting servers...
+Primary hostname is Andreas-PC/10.25.253.234:48498
+Primary server GUID is 2E9507C3E2DCF60D
+secondary hostname is Andreas-PC/10.25.253.234:48499
+secondary GUID is BB63721CD72D2F66
+tertiary hostname is Andreas-PC/10.25.253.234:48500
+tertiary GUID is 23A95D908F6B874B
+**********************
+Starting test...
+Test join command with synchronization of connectionpoints between joiner and joinee
+Vectorclock for Andreas-PC/10.25.253.234:48499: (Andreas-PC/10.25.253.234:48498 = 1)
+Test Add contact command with synchronization between replicated servers
+Vectorclock for Andreas-PC/10.25.253.234:48499: (Andreas-PC/10.25.253.234:48498 = 1, Andreas-PC/10.25.253.234:48499 = 1)
+Vectorclock for Andreas-PC/10.25.253.234:48498: (Andreas-PC/10.25.253.234:48498 = 1, Andreas-PC/10.25.253.234:48499 = 2)
+AddedAndBroadCast
+Vectorclock for Andreas-PC/10.25.253.234:48498: (Andreas-PC/10.25.253.234:48498 = 1, Andreas-PC/10.25.253.234:48499 = 3)
+Vectorclock for Andreas-PC/10.25.253.234:48499: (Andreas-PC/10.25.253.234:48498 = 2, Andreas-PC/10.25.253.234:48499 = 3)
+Test of adding new phonebookserver synchronization of connectionpoints between servers
+Test of adding new contact to last joined server, should be updated to server one and two
+Vectorclock for Andreas-PC/10.25.253.234:48500: (Andreas-PC/10.25.253.234:48498 = 4, Andreas-PC/10.25.253.234:48499 = 3)
+Vectorclock for Andreas-PC/10.25.253.234:48499: (Andreas-PC/10.25.253.234:48498 = 3, Andreas-PC/10.25.253.234:48499 = 3)
+AddedAndBroadCast
+Added
+Vectorclock for Andreas-PC/10.25.253.234:48500: (Andreas-PC/10.25.253.234:48498 = 4, Andreas-PC/10.25.253.234:48499 = 3, Andreas-PC/10.25.253.234:48500 = 3)
+Vectorclock for Andreas-PC/10.25.253.234:48499: (Andreas-PC/10.25.253.234:48498 = 4, Andreas-PC/10.25.253.234:48499 = 3, Andreas-PC/10.25.253.234:48500 = 2)
+Vectorclock for Andreas-PC/10.25.253.234:48498: (Andreas-PC/10.25.253.234:48498 = 4, Andreas-PC/10.25.253.234:48499 = 3, Andreas-PC/10.25.253.234:48500 = 3)
+Remove server two
+Vectorclock for Andreas-PC/10.25.253.234:48499: (Andreas-PC/10.25.253.234:48498 = 4, Andreas-PC/10.25.253.234:48499 = 3, Andreas-PC/10.25.253.234:48500 = 4)
+Vectorclock for Andreas-PC/10.25.253.234:48500: (Andreas-PC/10.25.253.234:48498 = 5, Andreas-PC/10.25.253.234:48499 = 3, Andreas-PC/10.25.253.234:48500 = 5)
+Broadcast server remove
+Add contact to server two after leaving primaryServer
+RemoveServerInitiatedFromServer
+Removed
+Vectorclock for Andreas-PC/10.25.253.234:48498: (Andreas-PC/10.25.253.234:48498 = 5, Andreas-PC/10.25.253.234:48499 = 3, Andreas-PC/10.25.253.234:48500 = 5)
+Vectorclock for Andreas-PC/10.25.253.234:48500: (Andreas-PC/10.25.253.234:48498 = 6, Andreas-PC/10.25.253.234:48499 = 3, Andreas-PC/10.25.253.234:48500 = 5)
+Vectorclock for Andreas-PC/10.25.253.234:48500: (Andreas-PC/10.25.253.234:48498 = 7, Andreas-PC/10.25.253.234:48499 = 3, Andreas-PC/10.25.253.234:48500 = 5)
+AddedAndBroadCast
+Vectorclock for Andreas-PC/10.25.253.234:48499: (Andreas-PC/10.25.253.234:48498 = 8, Andreas-PC/10.25.253.234:48499 = 3, Andreas-PC/10.25.253.234:48500 = 5)
+Added
+Vectorclock for Andreas-PC/10.25.253.234:48499: (Andreas-PC/10.25.253.234:48498 = 8, Andreas-PC/10.25.253.234:48499 = 4, Andreas-PC/10.25.253.234:48500 = 5)
+Vectorclock for Andreas-PC/10.25.253.234:48500: (Andreas-PC/10.25.253.234:48498 = 9, Andreas-PC/10.25.253.234:48499 = 3, Andreas-PC/10.25.253.234:48500 = 5)
+Vectorclock for Andreas-PC/10.25.253.234:48500: (Andreas-PC/10.25.253.234:48498 = 9, Andreas-PC/10.25.253.234:48499 = 5, Andreas-PC/10.25.253.234:48500 = 5)
+Vectorclock for Andreas-PC/10.25.253.234:48498: (Andreas-PC/10.25.253.234:48498 = 10, Andreas-PC/10.25.253.234:48499 = 6, Andreas-PC/10.25.253.234:48500 = 5)
+Vectorclock for Andreas-PC/10.25.253.234:48499: (Andreas-PC/10.25.253.234:48498 = 10, Andreas-PC/10.25.253.234:48499 = 6, Andreas-PC/10.25.253.234:48500 = 5)
+Vectorclock for Andreas-PC/10.25.253.234:48499: (Andreas-PC/10.25.253.234:48498 = 12, Andreas-PC/10.25.253.234:48499 = 6, Andreas-PC/10.25.253.234:48500 = 5)
+Vectorclock for Andreas-PC/10.25.253.234:48500: (Andreas-PC/10.25.253.234:48498 = 11, Andreas-PC/10.25.253.234:48499 = 6, Andreas-PC/10.25.253.234:48500 = 5)
+Print out phonebooks for all three servers
+Phonebook 1:[{ Name: Alin; PhoneNo: 7234 }, { Name: Peter; PhoneNo: 1234 }, { Name: Mette; PhoneNo: 123456789 }, { Name: Andreas; PhoneNo: 3958475 }, { Name: Pelle; PhoneNo: 24334 }, { Name: Karen; PhoneNo: 12345 }]
+Phonebook 2[{ Name: Mette; PhoneNo: 123456789 }, { Name: Pelle; PhoneNo: 24334 }, { Name: Alin; PhoneNo: 7234 }, { Name: Andreas; PhoneNo: 3958475 }, { Name: Karen; PhoneNo: 12345 }, { Name: Peter; PhoneNo: 1234 }]
+Phonebook 3[{ Name: Peter; PhoneNo: 1234 }, { Name: Karen; PhoneNo: 12345 }, { Name: Alin; PhoneNo: 7234 }, { Name: Andreas; PhoneNo: 3958475 }, { Name: Mette; PhoneNo: 123456789 }, { Name: Pelle; PhoneNo: 24334 }]
+Print out connectionpoints for all three servers
+Server 1: Own ip:Andreas-PC/10.25.253.234:48498 - [Andreas-PC/10.25.253.234:48500, Andreas-PC/10.25.253.234:48499]
+Server 2: Own ip:Andreas-PC/10.25.253.234:48499 - [Andreas-PC/10.25.253.234:48500, Andreas-PC/10.25.253.234:48498]
+Server 3: Own ip: Andreas-PC/10.25.253.234:48500 - [Andreas-PC/10.25.253.234:48499, Andreas-PC/10.25.253.234:48498]
+Test implementation of Comparable interface in Contact
+Phonebook 1: [{ Name: Alin; PhoneNo: 7234 }, { Name: Andreas; PhoneNo: 3958475 }, { Name: Karen; PhoneNo: 12345 }, { Name: Mette; PhoneNo: 123456789 }, { Name: Pelle; PhoneNo: 24334 }, { Name: Peter; PhoneNo: 1234 }]
+Phonebook 2: [{ Name: Alin; PhoneNo: 7234 }, { Name: Andreas; PhoneNo: 3958475 }, { Name: Karen; PhoneNo: 12345 }, { Name: Mette; PhoneNo: 123456789 }, { Name: Pelle; PhoneNo: 24334 }, { Name: Peter; PhoneNo: 1234 }]
+Phonebook 3: [{ Name: Alin; PhoneNo: 7234 }, { Name: Andreas; PhoneNo: 3958475 }, { Name: Karen; PhoneNo: 12345 }, { Name: Mette; PhoneNo: 123456789 }, { Name: Pelle; PhoneNo: 24334 }, { Name: Peter; PhoneNo: 1234 }]
+Exiting test...

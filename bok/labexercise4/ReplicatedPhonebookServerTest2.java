@@ -109,67 +109,67 @@ public class ReplicatedPhonebookServerTest2 {
 		Assert.assertEquals("[]", primary.getConnectionPoints().toString());
 		primary.ExecuteAndSend(new JoinServerCommand(secondaryISA, primaryISA));
 		
-
-		System.out.println("*********************************************************");
-		System.out.println("\nTest Add contact command with synchronization between replicated servers");
-		Contact c =  new Contact("Andreas", "3958475");
-		phonebook1.AddContact(c);
-
-		
-		Assert.assertEquals("[" + secondary.getIP().toString()  +"]",  primary.getConnectionPoints().toString());
-		Assert.assertEquals("["+ primary.getIP().toString() + "]", secondary.getConnectionPoints().toString());
-		
-		Assert.assertEquals("3958475", phonebook2.Lookup("Andreas"));
-		Assert.assertEquals("3958475", phonebook1.Lookup("Andreas"));
-
-		
-		Contact c2 =  new Contact("Pelle", "24334");
-		phonebook1.AddContact(c2);
-		Assert.assertEquals("24334", phonebook1.Lookup("Pelle"));
-		Assert.assertEquals("24334", phonebook2.Lookup("Pelle"));
-
-		
-		System.out.println("*********************************************************");
-		System.out.println("\nTest of adding new phonebookserver synchronization of connectionpoints between servers");
-		primary.ExecuteAndSend(new JoinServerCommand(tertiaryISA, primaryISA));
-
-		
-
-		
-		System.out.println("*********************************************************");
-		System.out.println("\nTest of adding new contact to last joined server, should be updated to server one and two");
-		Contact c3 =  new Contact("Mette", "45234");
-		phonebook3.AddContact(c3);		
-
-		
-		System.out.println("*********************************************************");
-		System.out.println("\nRemove server two");
-		primary.ExecuteAndSend(new RemoveServerCommand(secondaryISA, primaryISA));
-
-		System.out.println("*********************************************************");
-		System.out.println("\nAdd contact to server two after leaving primaryServer");
-		Contact c6 = new Contact("Alin", "7234");
-		phonebook2.AddContact(c6);
-
-		System.out.println("*********************************************************");
-		System.out.println("\nAdd contact to server one: " + c.toString());
-
-		Contact c4 = new Contact("Peter", "1234");
-		phonebook1.AddContact(c4);
-
-		
-		System.out.println("*********************************************************");
-		System.out.println("Test primary and tertiary server both removed server two");
-		Assert.assertEquals("[" + tertiary.getIP().toString()  +"]",  primary.getConnectionPoints().toString());
-		Assert.assertEquals("["+ primary.getIP().toString() + "]", tertiary.getConnectionPoints().toString());
-
-		
-		System.out.println("*********************************************************");
-		System.out.println("Test Mette is added to Server 1");
-		Assert.assertEquals("45234", phonebook1.Lookup("Mette"));
-
-		System.out.println("Test that all connectionpoints have been removed from server two ");
-		Assert.assertEquals(0,secondary.getConnectionPoints().size());
+//
+//		System.out.println("*********************************************************");
+//		System.out.println("\nTest Add contact command with synchronization between replicated servers");
+//		Contact c =  new Contact("Andreas", "3958475");
+//		phonebook1.AddContact(c);
+//
+//		
+//		Assert.assertEquals("[" + secondary.getIP().toString()  +"]",  primary.getConnectionPoints().toString());
+//		Assert.assertEquals("["+ primary.getIP().toString() + "]", secondary.getConnectionPoints().toString());
+//		
+//		Assert.assertEquals("3958475", phonebook2.Lookup("Andreas"));
+//		Assert.assertEquals("3958475", phonebook1.Lookup("Andreas"));
+//
+//		
+//		Contact c2 =  new Contact("Pelle", "24334");
+//		phonebook1.AddContact(c2);
+//		Assert.assertEquals("24334", phonebook1.Lookup("Pelle"));
+//		Assert.assertEquals("24334", phonebook2.Lookup("Pelle"));
+//
+//		
+//		System.out.println("*********************************************************");
+//		System.out.println("\nTest of adding new phonebookserver synchronization of connectionpoints between servers");
+//		primary.ExecuteAndSend(new JoinServerCommand(tertiaryISA, primaryISA));
+//
+//		
+//
+//		
+//		System.out.println("*********************************************************");
+//		System.out.println("\nTest of adding new contact to last joined server, should be updated to server one and two");
+//		Contact c3 =  new Contact("Mette", "45234");
+//		phonebook3.AddContact(c3);		
+//
+//		
+//		System.out.println("*********************************************************");
+//		System.out.println("\nRemove server two");
+//		primary.ExecuteAndSend(new RemoveServerCommand(secondaryISA, primaryISA));
+//
+//		System.out.println("*********************************************************");
+//		System.out.println("\nAdd contact to server two after leaving primaryServer");
+//		Contact c6 = new Contact("Alin", "7234");
+//		phonebook2.AddContact(c6);
+//
+//		System.out.println("*********************************************************");
+//		System.out.println("\nAdd contact to server one: " + c.toString());
+//
+//		Contact c4 = new Contact("Peter", "1234");
+//		phonebook1.AddContact(c4);
+//
+//		
+//		System.out.println("*********************************************************");
+//		System.out.println("Test primary and tertiary server both removed server two");
+//		Assert.assertEquals("[" + tertiary.getIP().toString()  +"]",  primary.getConnectionPoints().toString());
+//		Assert.assertEquals("["+ primary.getIP().toString() + "]", tertiary.getConnectionPoints().toString());
+//
+//		
+//		System.out.println("*********************************************************");
+//		System.out.println("Test Mette is added to Server 1");
+//		Assert.assertEquals("45234", phonebook1.Lookup("Mette"));
+//
+//		System.out.println("Test that all connectionpoints have been removed from server two ");
+//		Assert.assertEquals(0,secondary.getConnectionPoints().size());
 
 		
 //		System.out.println("*********************************************************");
