@@ -66,7 +66,7 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 			getConnectionPoints().addAll(cpointsReceived);
 			command.contacts = this.phonebook.GetAllContacts();
 			command.status = SynchronizeStatus.SendFromJoining;
-			
+
 			//ExecuteAndSend(command);
 			InetSocketAddress tmp = command.getSender();
 			command.setSender(command.getReceiver());
@@ -97,32 +97,38 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 	 * Adds a connectionpoint to a server
 	 */
 	public ServerResult addConnectionPoint(ServerCommand command) throws IOException {
-		if (!this.getIP().equals(command.getReceiver())) {
-			return cPoints.add(command.getSender())  ? ServerResult.Added : ServerResult.AlreadyAdded;
-		}  else {
-			try {
-				// First broadcast then add
-				ServerResult result =null;
-				if (!cPoints.contains(command.getReceiver())) { 
+		if (this.getIP().equals(command.getSender())) {
+			// Receives from client a command to join another server
+			Send(command, command.getReceiver());
+			// Return to client 
+			return ServerResult.JoiningServer;
+		} else 	
+			if (this.getIP().equals(command.getReceiver())) {
+				try {
+					// First broadcast then add
+					ServerResult result = null;
+					// Broadcast join command
 					result = broadcast(command);
-				
-				
-				//Synchronize from target server to joining server
-				SynchronizeCommand syncCommand =  
-					new SynchronizeCommand(getIP(),  
-							command.getSender());
-				syncCommand.status = SynchronizeStatus.Created;
-				syncCommand.Execute(this);
+					//Synchronize from target server to joining server
+					SynchronizeCommand syncCommand =  
+						new SynchronizeCommand(getIP(),  
+								command.getSender());
+					syncCommand.status = SynchronizeStatus.Created;
+					syncCommand.Execute(this);
+					
+					// Add the joining server to target server
+					cPoints.add(command.getSender());
+
+					return result;
+				} catch (IOException e) {
+					e.printStackTrace();
+					return ServerResult.UnknownError;
+				}		
+			} else {
+				// A broadcast server has received a joincommand 
 				cPoints.add(command.getSender());
-				} 
-				// Add the joining server to target server
-				
-				return result;
-			} catch (IOException e) {
-				e.printStackTrace();
-				return ServerResult.UnknownError;
-			}		
-		}
+				return ServerResult.Added;
+			}
 	}
 
 	/* (non-Javadoc)
@@ -168,14 +174,17 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 	}
 	/***
 	 * Handles execution of commands of type ServerCommand
+	 * RemoveServerCommand, JoinServerCommand
 	 * @param command
 	 * @throws IOException
 	 */
 	void ExecuteAndSend (ServerCommand command) throws IOException {
 		Trace("Executing SERVERCOMMAND");
+		// May broadcast sync messages
 		Object result = command.Execute(this);
-		//
-		Send(result, command.getSender());
+		
+		// Set returnto to null --> No ServerResults are returned to sender
+		Send(result, command.getReturnTo());
 	}
 
 	/* (non-Javadoc)
@@ -229,7 +238,7 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 	 */
 	void ExecuteAndSend(ServerResult result) {
 		Trace("Executing SERVERRESULT: " + result);
-		
+
 		switch (result) {
 		case RemoveServerInitiatedFromServer : 
 			cPoints.removeAll(cPoints);
@@ -237,7 +246,8 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 	}
 
 	/***
-	 * Handles client commands that may be broadcast 
+	 * Handles client commands that may be broadcast
+	 * UpdateCommand, RemoveCommand and AddContact 
 	 * @param command
 	 * @throws IOException
 	 */
@@ -245,26 +255,31 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 		Trace("Executing REPLICATECOMMAND: ");
 		Object result = null;
 		if (command.getReceiver() != null) {
+			// adds contact to phonebook
 			result = command.Execute (phonebook);
-			Send(result, command.getSender());
+			Send(result, command.getReturnTo());
 			if (command.getReceiver().equals(getIP())) 
 			{
+				// Broadcast but clear returnto address
+				command.setReturnTo(null);
 				broadcast(command); 
 			}
 		} else {
 			command.setReceiver(getIP());
+			// Calls the method again
 			ExecuteAndSend(command);
 		}
 	}
 
 	/**
 	 * Default handler for commands sent to the server
+	 * GetAllContactsCommand & Lookup
 	 * @param command
 	 * @throws IOException
 	 */
 	void ExecuteAndSend (Command command) throws IOException {
 		Object result = command.Execute (phonebook);
-		Send(result, command.getSender());
+		Send(result, command.getReturnTo());
 	}
 
 	/***
@@ -274,23 +289,25 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 	 */
 	void ExecuteAndSend(SynchronizeCommand command) throws IOException {
 		Object result = command.Execute(this);
-		Send(result, command.getSender());
+		Send(result, null);
 	} 
 
 	public void Send(Object o, InetSocketAddress receiver) throws IOException {
 		System.out.printf("\nTRACE for %s: \n", getIP()); 
 		System.out.printf("TRACE: Command: %s \n", o.getClass());
 		System.out.printf("TRACE: Sending to: %s \n", receiver);
-		Socket client = new Socket ();
-		try {
-			client.connect (receiver);
-			OutputStream os = client.getOutputStream ();
-			ObjectOutputStream oos = new ObjectOutputStream (os);				
-			oos.writeObject (o);
-		} finally {
-			if (client != null)
-				client.close ();
-		}
+		if (receiver != null) {
+			Socket client = new Socket ();
+			try {
+				client.connect (receiver);
+				OutputStream os = client.getOutputStream ();
+				ObjectOutputStream oos = new ObjectOutputStream (os);				
+				oos.writeObject (o);
+			} finally {
+				if (client != null)
+					client.close ();
+			}
+		} 
 	} 
 
 	/***

@@ -8,7 +8,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 class MainClass {
-
 	static MessageDigest MD5;
 
 	static Guid GuidFromString (String s) {

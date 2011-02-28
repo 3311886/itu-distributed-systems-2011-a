@@ -21,6 +21,8 @@ class RemotePhonebook implements IPhonebook {
 
 	Object SendAndReceive (Command command) throws IOException {
 		ServerSocket listener = new ServerSocket (0);
+		command.setReturnTo((InetSocketAddress) listener.getLocalSocketAddress ());
+		
 		Socket client = new Socket ();
 		try {
 			client.connect (Server);
@@ -50,7 +52,7 @@ class RemotePhonebook implements IPhonebook {
 	public AddResult AddContact (Contact contact) throws IOException {
 		// Set the server
 		contact.setConnectionPoint(Server);
-		Command command = new AddCommand (contact);
+		Command command = new AddCommand(contact);
 		
 		Object result = SendAndReceive (command);
 		return (AddResult) result;

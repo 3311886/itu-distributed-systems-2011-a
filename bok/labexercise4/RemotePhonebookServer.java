@@ -87,9 +87,13 @@ public class RemotePhonebookServer implements IPhonebookServer {
 		return (ServerResult) result;
 	}
 
+	Set<InetSocketAddress> getConnectionPoints() throws IOException {
+		ServerSocket listener = new ServerSocket(0);
+		InetSocketAddress isa =  (InetSocketAddress) listener.getLocalSocketAddress ();
+		return getConnectionPoints(new GetConnectionPointsCommand( isa, Server)); 
+	}
 	public Set<InetSocketAddress> getConnectionPoints(
-			GetConnectionPointsCommand command) {
-		// TODO Auto-generated method stub
-		return null;
+			GetConnectionPointsCommand command) throws IOException {
+		return (Set<InetSocketAddress>) SendAndReceive(command);
 	} 
 }
