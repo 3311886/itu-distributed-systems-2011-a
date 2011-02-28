@@ -18,7 +18,7 @@ public class ServerInterface {
 	
 	void RemoveCommand (BufferedReader bisr) throws IOException {
 		InetSocketAddress isa = GetIP(bisr, "removing");
-		server.removeConnectionPoints(isa);
+		server.removeConnectionPoint(isa);
 	}
 
 	static InetSocketAddress GetIP (BufferedReader bisr, String args) throws IOException {

@@ -6,10 +6,11 @@ import java.io.InputStreamReader;
 
 public class UserInterface {
   private IPhonebook phonebook;
-
-
-  public UserInterface (IPhonebook pb) {
+  private ServerInterface remoteServer;
+  
+  public UserInterface (IPhonebook pb, ServerInterface server) {
     phonebook = pb;
+    remoteServer = server;
   }
 
   void Start () {
@@ -29,13 +30,20 @@ public class UserInterface {
         case 'F':
           FindCommand (bisr);
           break;        
+        case 'J':
+            remoteServer.JoinCommand(bisr);
+            break;        
         case 'L':
           ListCommand ();
           break;
+        case 'R':
+            remoteServer.RemoveCommand(bisr);
+            break;
         case 'U':
           UpdateCommand (bisr);
           break;
         case 'Q':
+            System.exit (-1);
           return;
         default:
           System.out.println ("Unknown command: " + command.charAt (0)
@@ -43,10 +51,8 @@ public class UserInterface {
           break;
         }
       } catch (IOException e) {
-    	  System.err.println ("sfdsdfd");
-    	  e.printStackTrace();
-        //System.err.println (e.getLocalizedMessage ());
-        //System.exit (-1);
+        System.err.println (e.getLocalizedMessage ());
+        System.exit (-1);
       }
     }
   }

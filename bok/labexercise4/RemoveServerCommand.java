@@ -10,6 +10,6 @@ public class RemoveServerCommand extends ServerCommand {
 
 	@Override
 	public Object Execute(PhonebookServer server) {
-		return server.removeConnectionPoints(this);
+		return server.removeConnectionPoint(this);
 	}
 }

@@ -1,8 +1,6 @@
 package bok.labexercise4;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
@@ -15,7 +13,7 @@ import java.net.Socket;
  * @author Andreas
  *
  */
-public class RemotePhonebookServer {
+public class RemotePhonebookServer implements IPhonebookServer {
 
 	private InetSocketAddress Server;
 	public RemotePhonebookServer(InetSocketAddress server) {
@@ -27,7 +25,6 @@ public class RemotePhonebookServer {
 		Socket client = new Socket ();
 		try {
 			client.connect (Server);
-
 			OutputStream os = client.getOutputStream ();
 
 			ObjectOutputStream oos = new ObjectOutputStream (os);
@@ -37,21 +34,22 @@ public class RemotePhonebookServer {
 			if (client != null)
 				client.close ();
 		}
-		client = listener.accept ();
-		try {
-			listener.close ();
-			InputStream is = client.getInputStream ();
-			ObjectInputStream ois = new ObjectInputStream (is);
-
-			return ois.readObject ();
-		} catch (ClassNotFoundException e) {
-			System.err.println (e.getMessage ());
-			System.exit (-1);
-			return null;
-		} finally {
-			if (client != null)
-				client.close ();
-		}
+//		client = listener.accept ();
+//		try {
+//			listener.close ();
+//			InputStream is = client.getInputStream ();
+//			ObjectInputStream ois = new ObjectInputStream (is);
+//
+//			return ois.readObject ();
+//		} catch (ClassNotFoundException e) {
+//			System.err.println (e.getMessage ());
+//			System.exit (-1);
+//			return null;
+//		} finally {
+//			if (client != null)
+//				client.close ();
+//		}
+		return null;
 		
 	}
 
@@ -71,12 +69,12 @@ public class RemotePhonebookServer {
 		return (ServerResult) result;
 	}
 
-	public ServerResult removeConnectionPoints(InetSocketAddress joiningserver) { 
+	public ServerResult removeConnectionPoint(InetSocketAddress joiningserver) { 
 		// The server that wants to join
-		return removeConnectionPoints(new RemoveServerCommand(joiningserver, Server));
+		return removeConnectionPoint(new RemoveServerCommand(joiningserver, Server));
 	}
 
-	public ServerResult removeConnectionPoints(ServerCommand command) {
+	public ServerResult removeConnectionPoint(ServerCommand command) {
 		// TODO Auto-generated method stub
 		Object result = null;
 		try {

@@ -131,7 +131,7 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 	/***
 	 * Removes a connection from a server, must be initiated from the server not the joiner
 	 */
-	public Object removeConnectionPoints(ServerCommand command) {
+	public Object removeConnectionPoint(ServerCommand command) {
 		// The message was sent from server to joiner
 		if(this.getIP().equals(command.getReceiver())) {
 			cPoints.remove(command.getSender());

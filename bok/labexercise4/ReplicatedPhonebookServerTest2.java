@@ -107,8 +107,11 @@ public class ReplicatedPhonebookServerTest2 {
 		System.out.println("\nTest join command with synchronization of connectionpoints between joiner and joinee");
 
 		Assert.assertEquals("[]", primary.getConnectionPoints().toString());
-		primary.ExecuteAndSend(new JoinServerCommand(secondaryISA, primaryISA));
+		//primary.ExecuteAndSend(new JoinServerCommand(secondaryISA, primaryISA));
 		
+		RemotePhonebookServer remotePrimary = new  RemotePhonebookServer(primaryISA);
+		remotePrimary.addConnectionPoint(new JoinServerCommand(secondaryISA, primaryISA));
+		remotePrimary.removeConnectionPoint(new RemoveServerCommand(secondaryISA, primaryISA));		
 //
 //		System.out.println("*********************************************************");
 //		System.out.println("\nTest Add contact command with synchronization between replicated servers");
@@ -197,17 +200,17 @@ public class ReplicatedPhonebookServerTest2 {
 		phonebook1 = new RemotePhonebook(primaryISA);
 		
 		List<Contact> l1 =  phonebook1.GetAllContacts();
-//		List<Contact> l2 = phonebook2.GetAllContacts();
+		List<Contact> l2 = phonebook2.GetAllContacts();
 //		List<Contact> l3 = phonebook3.GetAllContacts();
 //
 		System.out.println("\nPrint out phonebooks for all three servers");
 		System.out.println("Phonebook 1:" + l1);
-//		System.out.println("Phonebook 2" + l2);
+		System.out.println("Phonebook 2" + l2);
 //		System.out.println("Phonebook 3" + l3);
 //
 		System.out.println("\nPrint out connectionpoints for all three servers");
 		System.out.println("Server 1: Own ip:" + primaryISA+ " - " +  primary.getConnectionPoints());
-//		System.out.println("Server 2: Own ip:" + secondaryISA + " - "+ secondary.getConnectionPoints());
+		System.out.println("Server 2: Own ip:" + secondaryISA + " - "+ secondary.getConnectionPoints());
 //		System.out.println("Server 3: Own ip: " + tertiaryISA + " - "  +  tertiary.getConnectionPoints());
 //
 		

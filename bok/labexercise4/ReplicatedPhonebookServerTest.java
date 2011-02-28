@@ -104,7 +104,7 @@ public class ReplicatedPhonebookServerTest {
 		phonebook2.Update("Contact 1", "34234");
 		Assert.assertEquals("34234", phonebook1.Lookup("Contact 1"));
 				
-		primary.removeConnectionPoints(new RemoveServerCommand(secondaryISA,primaryISA));
+		primary.removeConnectionPoint(new RemoveServerCommand(secondaryISA,primaryISA));
 		Assert.assertEquals(0, primary.getConnectionPoints().size());
 		
 		System.out.print("Remove contact from a server");
