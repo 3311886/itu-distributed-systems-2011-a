@@ -102,7 +102,7 @@ public class ReplicatedPhonebookServerTest2 {
 	public void TestJoinRemoveServer() throws IOException, NoSuchAlgorithmException, InterruptedException {
 		System.out.println("*********************************************************");
 		System.out.println("Starting test...");
-				
+			
 		System.out.println("*********************************************************");
 		System.out.println("\nTest join command with synchronization of connectionpoints between joiner and joinee");
 
