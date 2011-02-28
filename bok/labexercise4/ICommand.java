@@ -1,6 +1,10 @@
 package bok.labexercise4;
-// Interface for all commands, maybe let all commands from an abstract class instead...  
+
+import java.net.InetSocketAddress;
+
+
 
 public interface ICommand {
-
+	public InetSocketAddress getSender();
+	public void setSender(InetSocketAddress value);
 }

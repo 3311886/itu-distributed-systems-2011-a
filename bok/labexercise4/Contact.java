@@ -4,7 +4,11 @@ package bok.labexercise4;
 import java.io.Serializable;
 import java.net.InetSocketAddress;
 
-public class Contact extends Person<Contact> implements Serializable {
+public class Contact implements Serializable, Comparable<Contact> {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public String Name;
 	public String PhoneNo;
 	private InetSocketAddress cp;
@@ -27,12 +31,6 @@ public class Contact extends Person<Contact> implements Serializable {
 	}
 
 	public int compareTo(Contact o) {
-		
 		return this.Name.compareTo(o.Name);
 	}
-
-	public int compare(Contact o1, Contact o2) {
-		// TODO Auto-generated method stub
-		return o1.Name.compareTo(o2.Name);
-	}	
 }

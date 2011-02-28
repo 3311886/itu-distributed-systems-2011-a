@@ -5,7 +5,16 @@ import java.io.Serializable;
 import java.net.InetSocketAddress;
 
 public abstract class Command implements Serializable, ICommand  {
-  public InetSocketAddress ReturnTo;
+  private InetSocketAddress Sender;
  
-  abstract public Object Execute (IPhonebook phonebook) throws IOException;
+  abstract public Object Execute(IPhonebook phonebook) throws IOException;
+  
+  public void setSender(InetSocketAddress value) {
+	  this.Sender = value;
+  }
+  
+  public InetSocketAddress getSender() {
+	  return Sender;
+  }
+  
 }

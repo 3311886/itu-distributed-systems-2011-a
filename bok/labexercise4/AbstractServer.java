@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
 public abstract class AbstractServer implements Runnable{
 	private ServerSocket Listener;
 	private InetSocketAddress localisa;
-	private boolean printServerResults = false; 
+	private boolean printServerResults = true; 
 
 	public LinkedList<InetSocketAddress> LocalEndpoints = new LinkedList<InetSocketAddress> ();
 
