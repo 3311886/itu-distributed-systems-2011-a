@@ -21,7 +21,6 @@ class RemotePhonebook implements IPhonebook {
 
 	Object SendAndReceive (Command command) throws IOException {
 		ServerSocket listener = new ServerSocket (0);
-		command.setSender((InetSocketAddress) listener.getLocalSocketAddress ());
 		Socket client = new Socket ();
 		try {
 			client.connect (Server);
