@@ -305,5 +305,10 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 		if (printServerResults()) {
 			System.out.printf("\nTRACE: %s\n", s);
 		}
+	}
+	public Set<InetSocketAddress> getConnectionPoints(
+			GetConnectionPointsCommand command) {
+		// TODO Auto-generated method stub
+		return null;
 	} 
 }

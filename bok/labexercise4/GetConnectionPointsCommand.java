@@ -11,8 +11,6 @@ public class GetConnectionPointsCommand extends ServerCommand {
 
 	@Override
 	public Object Execute(PhonebookServer server) throws IOException {
-		// TODO Auto-generated method stub
 		return server.getConnectionPoints();
 	}
-
 }
