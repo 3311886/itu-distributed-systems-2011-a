@@ -1,11 +1,14 @@
 package bok.labexercise4;
 // Main program entry point
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 class MainClass {
 	static MessageDigest MD5;
@@ -24,47 +27,50 @@ class MainClass {
 
 	public static void main (String [] args) throws NoSuchAlgorithmException,
 	IOException {
+
+		BufferedReader bisr = new BufferedReader (new InputStreamReader (System.in));
+		System.out.println("Input the number of servers you want to start");
+		String input = bisr.readLine();
+		while(input.length() == 0 ) {
+			input = bisr.readLine();
+		}
+		int serverCount = Integer.valueOf(input);
+
 		MD5 = MessageDigest.getInstance ("MD5");
-		PhonebookServer server = new PhonebookServer ();
 
-		IPhonebook phonebook = new RemotePhonebook (server.getIP());
-		RemotePhonebookServer remoteserver = new RemotePhonebookServer(server.getIP());
+		ArrayList<PhonebookServer> servers  = new ArrayList<PhonebookServer>(); 
+		for (int i = 0; i< serverCount; i++) {
+			PhonebookServer server = new PhonebookServer ();
+			
 
-		ServerInterface s = new ServerInterface(remoteserver);
-		UserInterface ui = new UserInterface (phonebook, s);
-		Thread serverThread = new Thread (server);
-		serverThread.start ();
 
-		if(args.length > 0) {
-			String host = args[0];
-			int portnum = Integer.valueOf(args[1]);
-			InetSocketAddress joiner = new InetSocketAddress(host, portnum);
+			Thread serverThread = new Thread (server);
+			serverThread.start ();
 
-			server.addConnectionPoint(new JoinServerCommand(joiner, server.getIP()));
-			System.out.println(server.getConnectionPoints().toString());
+			servers.add(server);
+
+			System.out.println ("I'm listening on");
+			for (InetSocketAddress sa : server.LocalEndpoints) {
+				System.out.println ("  " + sa);
+			}
+			System.out.println ("My GUID is "
+					+ GuidFromString (server.getIP().toString()));
+
 		}
 
-		PhonebookServer server2 = new PhonebookServer ();
-		IPhonebook phonebook2 = new RemotePhonebook (server2.getIP());
-		Thread serverThread2 = new Thread(server2);
-		serverThread2.start();
-
-		System.out.println ("I'm listening on");
-		for (InetSocketAddress sa : server.LocalEndpoints) {
-			System.out.println ("  " + sa);
+		if (servers.size()> 0) {
+			
+			RemotePhonebookServer remoteserver = new RemotePhonebookServer(servers.get(0).getIP());
+			ServerInterface s = new ServerInterface(remoteserver);
+			IPhonebook phonebook = new RemotePhonebook (servers.get(0).getIP());
+			UserInterface ui = new UserInterface (phonebook, s);
+			ui.Start ();
+		}else {
+			System.out.println("Exiting main...missing specification of server count");
 		}
-		System.out.println ("My GUID is "
-				+ GuidFromString (server.getIP().toString()));
 
-		System.out.println ("I'm another server listening on");
-		for (InetSocketAddress sa : server2.LocalEndpoints) {
-			System.out.println ("  " + sa);
+		for (PhonebookServer server : servers ) {
+			server.abort();
 		}
-		System.out.println ("My GUID is "
-				+ GuidFromString (server2.getIP().toString()));
-		ui.Start ();
-		ui.Start ();
-		server.abort ();
-		server2.abort();
 	}
 }
