@@ -3,6 +3,7 @@ package bok.labexercise4;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.Set;
 
 public class ServerInterface {
 	private RemotePhonebookServer server;
@@ -10,10 +11,14 @@ public class ServerInterface {
 	public ServerInterface(RemotePhonebookServer server) {
 		this.server = server;
 	}
-	void JoinCommand (BufferedReader bisr) throws IOException {
-		InetSocketAddress isa = GetIP(bisr, "joining");
-		System.out.println (isa.toString());
-		server.addConnectionPoint(isa);
+	void JoinCommand(BufferedReader bisr, boolean asJoiner) throws IOException {
+		InetSocketAddress isa;
+		if (asJoiner) {
+			isa = GetIP(bisr, "joinee");
+		} else {
+			isa = GetIP(bisr, "joining"); 
+		}
+		System.out.println(server.addConnectionPoint(isa, asJoiner));
 	}
 	
 	void RemoveCommand (BufferedReader bisr) throws IOException {
@@ -21,9 +26,13 @@ public class ServerInterface {
 		server.removeConnectionPoint(isa);
 	}
 	
-	void GetConnectionPointsCommand (BufferedReader bisr) throws IOException {
+	void GetConnectionPointsCommand () throws IOException {
+		Set<InetSocketAddress> list =  server.getConnectionPoints();
+		System.out.printf("%s\n", "Connected server: ");
+		for (InetSocketAddress isa : list ) {
+			System.out.println(isa);
+		}
 		
-		server.getConnectionPoints();
 	}
 
 	static InetSocketAddress GetIP (BufferedReader bisr, String args) throws IOException {
@@ -33,5 +42,12 @@ public class ServerInterface {
 		String portStr = bisr.readLine();
 		int port = Integer.valueOf(portStr);
 		return new InetSocketAddress(hostname, port);
+	}
+	
+	void ConnectToServer(BufferedReader bisr) throws IOException {
+		InetSocketAddress isa = GetIP(bisr, "new server");
+		server.ConnectToServer(isa);
+		
+		System.out.println("Now connected to: " + isa);
 	}
 }	

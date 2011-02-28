@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
 public abstract class AbstractServer implements Runnable{
 	private ServerSocket Listener;
 	private InetSocketAddress localisa;
-	private boolean printServerResults = true; 
+	private boolean printServerResults = false; 
 
 	public LinkedList<InetSocketAddress> LocalEndpoints = new LinkedList<InetSocketAddress> ();
 
@@ -137,5 +137,11 @@ public abstract class AbstractServer implements Runnable{
 
 	public boolean printServerResults() {
 		return printServerResults;
+	}
+	
+	public void Trace(String s) {
+		if (printServerResults()) {
+			System.out.printf("\nTRACE: %s\n", s);
+		}
 	}
 }

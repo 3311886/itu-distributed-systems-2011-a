@@ -1,6 +1,8 @@
 package bok.labexercise4;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
@@ -23,6 +25,7 @@ public class RemotePhonebookServer implements IPhonebookServer {
 
 	Object SendAndReceive (ServerCommand command) throws IOException {
 		ServerSocket listener = new ServerSocket(0);
+		command.setReturnTo((InetSocketAddress) listener.getLocalSocketAddress ());
 		Socket client = new Socket ();
 		try {
 			client.connect (Server);
@@ -35,30 +38,42 @@ public class RemotePhonebookServer implements IPhonebookServer {
 			if (client != null)
 				client.close ();
 		}
-//		client = listener.accept ();
-//		try {
-//			listener.close ();
-//			InputStream is = client.getInputStream ();
-//			ObjectInputStream ois = new ObjectInputStream (is);
-//
-//			return ois.readObject ();
-//		} catch (ClassNotFoundException e) {
-//			System.err.println (e.getMessage ());
-//			System.exit (-1);
-//			return null;
-//		} finally {
-//			if (client != null)
-//				client.close ();
-//		}
-		return null;
+		client = listener.accept ();
+		try {
+			listener.close ();
+			InputStream is = client.getInputStream ();
+			ObjectInputStream ois = new ObjectInputStream (is);
+			return ois.readObject ();
+		} catch (ClassNotFoundException e) {
+			System.err.println (e.getMessage ());
+			System.exit (-1);
+			return null;
+		} finally {
+			if (client != null)
+				client.close ();
+		}
+		
 		
 	}
-
-	public ServerResult addConnectionPoint(InetSocketAddress joiningserver) {
-		// The server that wants to join
-		Object result = addConnectionPoint(new JoinServerCommand(joiningserver, Server));
+	
+/***
+ * 
+ * @param joiner The joinning server
+ * @param joinee The server to join
+ * @return
+ */
+	public ServerResult addConnectionPoint(InetSocketAddress server, boolean asJoiner) {
+		
+		JoinServerCommand command;  
+		if (asJoiner) {
+			command = new JoinServerCommand(Server, server);
+		}else {
+			command = new JoinServerCommand(server, Server);
+		}
+		Object result = addConnectionPoint(command);
 		return (ServerResult) result;
-	}
+	} 
+	
 
 	public ServerResult addConnectionPoint(ServerCommand command) {
 		Object result = null;
@@ -76,24 +91,26 @@ public class RemotePhonebookServer implements IPhonebookServer {
 	}
 
 	public ServerResult removeConnectionPoint(ServerCommand command) {
-		// TODO Auto-generated method stub
 		Object result = null;
 		try {
 			result = SendAndReceive(command);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		return (ServerResult) result;
 	}
 
 	Set<InetSocketAddress> getConnectionPoints() throws IOException {
-		ServerSocket listener = new ServerSocket(0);
-		InetSocketAddress isa =  (InetSocketAddress) listener.getLocalSocketAddress ();
-		return getConnectionPoints(new GetConnectionPointsCommand( isa, Server)); 
+		GetConnectionPointsCommand command = new GetConnectionPointsCommand(null, Server); 
+		return getConnectionPoints(command); 
 	}
 	public Set<InetSocketAddress> getConnectionPoints(
 			GetConnectionPointsCommand command) throws IOException {
 		return (Set<InetSocketAddress>) SendAndReceive(command);
-	} 
+	}
+	
+	public void ConnectToServer(InetSocketAddress isa) {
+		Server = isa;
+	}
 }

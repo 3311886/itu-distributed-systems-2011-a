@@ -99,6 +99,7 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 	public ServerResult addConnectionPoint(ServerCommand command) throws IOException {
 		if (this.getIP().equals(command.getSender())) {
 			// Receives from client a command to join another server
+			command.setReturnTo(null);
 			Send(command, command.getReceiver());
 			// Return to client 
 			return ServerResult.JoiningServer;
@@ -115,10 +116,9 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 								command.getSender());
 					syncCommand.status = SynchronizeStatus.Created;
 					syncCommand.Execute(this);
-					
+
 					// Add the joining server to target server
 					cPoints.add(command.getSender());
-
 					return result;
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -168,7 +168,7 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 	{
 		Set<InetSocketAddress> cpList=	getConnectionPoints();
 		for(InetSocketAddress cp : cpList) {
-			if (command.getSender()!= cp) Send(command, cp);
+			if (command.getSender() != cp) Send(command, cp);
 		}
 		return ServerResult.BroadCast;
 	}
@@ -180,11 +180,13 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 	 */
 	void ExecuteAndSend (ServerCommand command) throws IOException {
 		Trace("Executing SERVERCOMMAND");
+		//Execute sets returnto to null --> No ServerResults are returned to sender
+		 InetSocketAddress returnTo = command.getReturnTo();
+		
 		// May broadcast sync messages
 		Object result = command.Execute(this);
 		
-		// Set returnto to null --> No ServerResults are returned to sender
-		Send(result, command.getReturnTo());
+		Send(result, returnTo);
 	}
 
 	/* (non-Javadoc)
@@ -202,34 +204,43 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 	 * Overridden method from AbstractServer to handle requests 
 	 */
 	void ExecuteAndSend(Object command) throws IOException {
-		StringBuilder tracer = new StringBuilder();
-		tracer.append(String.format("%s: \nCommand: %s\n", getIP(), command.getClass())); 
-		if (command instanceof ReplicateCommand) {
-			tracer.append(String.format("Receiving from: %s \n", ((ReplicateCommand) command).getSender()));
-			Trace(tracer.toString());
-			ExecuteAndSend((ReplicateCommand) command);
-		} else
-			// The command is sent from a client
-			if (command instanceof Command) {
-				tracer.append(String.format("Receiving from: %s \n", ((Command) command).getSender()));
-				Trace(tracer.toString());
-				ExecuteAndSend((Command) command);
+		if (command instanceof ICommand) {
+			ExecuteAndSend((ICommand) command);
+		}
+		else if (command instanceof ServerResult) {
+			// The command is a reply from another server
+			ExecuteAndSend((ServerResult) command);
+		}
+	}
 
-			} else if (command instanceof SynchronizeCommand ) {
-				tracer.append(String.format("Receiving from: %s \n", ((SynchronizeCommand) command).getSender()));
-				Trace(tracer.toString());
-				ExecuteAndSend((SynchronizeCommand) command);
-			}
-		// The command is sent from another server
-			else if (command instanceof ServerCommand) {
-				tracer.append(String.format("Receiving from: %s \n", ((ServerCommand) command).getSender()));
-				Trace(tracer.toString());
-				ExecuteAndSend((ServerCommand)command);
-			}
-		// The command is a reply from another server
-			else if (command instanceof ServerResult) { 
-				ExecuteAndSend((ServerResult) command);
-			}
+	void ExecuteAndSend(ICommand command) throws IOException {
+		// For tracing 
+		StringBuilder tracer = new StringBuilder();
+		String sender = command.getReturnTo() != null ? 
+				command.getReturnTo().toString() : command.getSender().toString(); 
+				tracer.append(String.format("%s: \nCommand: %s\n", getIP(), command.getClass()));
+				if (command instanceof ReplicateCommand) {
+					tracer.append(String.format("Receiving from: %s \n", sender));
+					Trace(tracer.toString());
+					ExecuteAndSend((ReplicateCommand) command);
+				} else
+					// The command is sent from a client
+					if (command instanceof Command) {
+						tracer.append(String.format("Receiving from: %s \n", sender));
+						Trace(tracer.toString());
+						ExecuteAndSend((Command) command);
+
+					} else if (command instanceof SynchronizeCommand ) {
+						tracer.append(String.format("Receiving from: %s \n", sender));
+						Trace(tracer.toString());
+						ExecuteAndSend((SynchronizeCommand) command);
+					}
+				// The command is sent from another server
+					else if (command instanceof ServerCommand) {
+						tracer.append(String.format("Receiving from: %s \n", sender));
+						Trace(tracer.toString());
+						ExecuteAndSend((ServerCommand)command);
+					}
 	}
 
 	/***
@@ -262,7 +273,8 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 			{
 				// Broadcast but clear returnto address
 				command.setReturnTo(null);
-				broadcast(command); 
+				command.setSender(getIP());
+				broadcast(command);
 			}
 		} else {
 			command.setReceiver(getIP());
@@ -293,10 +305,10 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 	} 
 
 	public void Send(Object o, InetSocketAddress receiver) throws IOException {
-		System.out.printf("\nTRACE for %s: \n", getIP()); 
-		System.out.printf("TRACE: Command: %s \n", o.getClass());
-		System.out.printf("TRACE: Sending to: %s \n", receiver);
 		if (receiver != null) {
+			System.out.printf("\nTRACE for %s: \n", getIP()); 
+			System.out.printf("TRACE: Command: %s \n", o.getClass());
+			System.out.printf("TRACE: Sending to: %s \n", receiver);
 			Socket client = new Socket ();
 			try {
 				client.connect (receiver);
@@ -309,7 +321,7 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 			}
 		} 
 	} 
-
+	
 	/***
 	 * Returns the server's phonebook 
 	 * @return
@@ -317,15 +329,9 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 	public IPhonebook getPhoneBook() {
 		return this.phonebook;
 	}
-
-	private void Trace(String s) {
-		if (printServerResults()) {
-			System.out.printf("\nTRACE: %s\n", s);
-		}
-	}
+	
 	public Set<InetSocketAddress> getConnectionPoints(
 			GetConnectionPointsCommand command) {
-		// TODO Auto-generated method stub
-		return null;
+		return cPoints;
 	} 
 }

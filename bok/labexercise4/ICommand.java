@@ -8,4 +8,5 @@ public interface ICommand {
 	public InetSocketAddress getSender();
 	public void setSender(InetSocketAddress value);
 	public void setReturnTo(InetSocketAddress value);
+	public InetSocketAddress getReturnTo();
 }

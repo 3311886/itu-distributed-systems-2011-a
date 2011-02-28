@@ -68,7 +68,6 @@ public class ReplicatedPhonebookServerTest {
 		InetSocketAddress primaryISA = primary.getIP();
 		InetSocketAddress secondaryISA = secondary.getIP();
 		
-		
 		JoinServerCommand command = new JoinServerCommand(secondaryISA, primaryISA);
 		
 		InetSocketAddress[] expecteds = new InetSocketAddress[] {};

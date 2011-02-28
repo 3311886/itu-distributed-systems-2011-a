@@ -52,8 +52,8 @@ class RemotePhonebook implements IPhonebook {
 	public AddResult AddContact (Contact contact) throws IOException {
 		// Set the server
 		contact.setConnectionPoint(Server);
-		Command command = new AddCommand(contact);
-		
+		ReplicateCommand command = new AddCommand(contact);
+		command.setReceiver(Server);
 		Object result = SendAndReceive (command);
 		return (AddResult) result;
 	}
