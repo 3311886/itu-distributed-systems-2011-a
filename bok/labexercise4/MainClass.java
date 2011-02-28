@@ -36,6 +36,15 @@ class MainClass {
     Thread serverThread = new Thread (server);
     serverThread.start ();
     
+    if(args.length > 0) {
+    String host = args[0];
+    int portnum = Integer.valueOf(args[1]);
+    InetSocketAddress joiner = new InetSocketAddress(host, portnum);
+     
+    server.addConnectionPoint(new JoinServerCommand(joiner, server.getIP()));
+    System.out.println(server.getConnectionPoints().toString());
+    } 
+    
     PhonebookServer server2 = new PhonebookServer ();
     IPhonebook phonebook2 = new RemotePhonebook (server2.getIP());
     Thread serverThread2 = new Thread(server2);
