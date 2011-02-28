@@ -24,15 +24,24 @@ public class UserInterface {
         case 'A':
           AddCommand (bisr);
           break;
+        case 'C':
+            remoteServer.ConnectToServer(bisr);
+            break;
         case 'D':
           DeleteCommand (bisr);
           break;
         case 'F':
           FindCommand (bisr);
-          break;        
+          break;
+        case 'G':
+            remoteServer.GetConnectionPointsCommand();
+            break;
         case 'J':
-            remoteServer.JoinCommand(bisr);
-            break;        
+            remoteServer.JoinCommand(bisr, true);
+            break;
+        case 'K':
+            remoteServer.JoinCommand(bisr, false);
+            break;
         case 'L':
           ListCommand ();
           break;
@@ -60,9 +69,12 @@ public class UserInterface {
   static void PrintOptions () {
     System.out.println ();
     System.out.println ("(A) Add new contact");
+    System.out.println ("(C) Connect to new server");
     System.out.println ("(D) Delete contact");
     System.out.println ("(F) Find contact");
-    System.out.println ("(J) Add new server");
+    System.out.println ("(G) Get connected servers");
+    System.out.println ("(J) Join server as joiner");
+    System.out.println ("(K) Join server as joinee");
     System.out.println ("(L) List all contacts");
     System.out.println ("(R) Remove server");
     System.out.println ("(U) Update contact");
