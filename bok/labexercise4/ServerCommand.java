@@ -8,6 +8,7 @@ import java.net.InetSocketAddress;
 public abstract class ServerCommand implements ICommand, Serializable {
 	private InetSocketAddress Sender;
 	private InetSocketAddress Receiver;
+	private InetSocketAddress ReturnTo;
 	private VectorClock vc;
 	
 	public ServerCommand (InetSocketAddress cp1, InetSocketAddress cp2) {
@@ -39,4 +40,12 @@ public abstract class ServerCommand implements ICommand, Serializable {
 	 * @throws IOException
 	 */
 	abstract public Object Execute(PhonebookServer server) throws IOException;
+
+	public void setReturnTo(InetSocketAddress returnTo) {
+		ReturnTo = returnTo;
+	}
+
+	public InetSocketAddress getReturnTo() {
+		return ReturnTo;
+	}
 }

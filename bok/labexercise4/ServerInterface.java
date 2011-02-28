@@ -20,12 +20,18 @@ public class ServerInterface {
 		InetSocketAddress isa = GetIP(bisr, "removing");
 		server.removeConnectionPoint(isa);
 	}
+	
+	void GetConnectionPointsCommand (BufferedReader bisr) throws IOException {
+		
+		server.getConnectionPoints();
+	}
 
 	static InetSocketAddress GetIP (BufferedReader bisr, String args) throws IOException {
 		System.out.printf("Input %s server hostname: ", args);
 		String hostname = bisr.readLine (); 
 		System.out.printf("Input %s server port: ", args);
-		int port = bisr.read();
+		String portStr = bisr.readLine();
+		int port = Integer.valueOf(portStr);
 		return new InetSocketAddress(hostname, port);
 	}
 }	

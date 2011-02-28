@@ -9,6 +9,6 @@ public interface IPhonebookServer {
 
 	public abstract ServerResult addConnectionPoint(ServerCommand command) throws IOException;
 	public abstract Object removeConnectionPoint(ServerCommand command);
-	public abstract Set<InetSocketAddress> getConnectionPoints(GetConnectionPointsCommand command);
+	public abstract Set<InetSocketAddress> getConnectionPoints(GetConnectionPointsCommand command) throws IOException;
 
 }

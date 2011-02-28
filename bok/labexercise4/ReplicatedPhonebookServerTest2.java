@@ -110,8 +110,7 @@ public class ReplicatedPhonebookServerTest2 {
 		//primary.ExecuteAndSend(new JoinServerCommand(secondaryISA, primaryISA));
 		
 		RemotePhonebookServer remotePrimary = new  RemotePhonebookServer(primaryISA);
-		remotePrimary.addConnectionPoint(new JoinServerCommand(secondaryISA, primaryISA));
-		remotePrimary.removeConnectionPoint(new RemoveServerCommand(secondaryISA, primaryISA));		
+		remotePrimary.addConnectionPoint(new JoinServerCommand(secondaryISA, primaryISA));		
 //
 //		System.out.println("*********************************************************");
 //		System.out.println("\nTest Add contact command with synchronization between replicated servers");
