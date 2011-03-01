@@ -4,7 +4,7 @@ package bok.labexercise4;
 import java.io.IOException;
 import java.io.Serializable;
 
-public class RemoveCommand extends Command implements Serializable {
+public class RemoveCommand extends ReplicateCommand implements Serializable {
   private String Name;
 
   public RemoveCommand (String name) {
