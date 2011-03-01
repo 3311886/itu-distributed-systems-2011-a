@@ -181,11 +181,11 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 	void ExecuteAndSend (ServerCommand command) throws IOException {
 		Trace("Executing SERVERCOMMAND");
 		//Execute sets returnto to null --> No ServerResults are returned to sender
-		 InetSocketAddress returnTo = command.getReturnTo();
-		
+		InetSocketAddress returnTo = command.getReturnTo();
+
 		// May broadcast sync messages
 		Object result = command.Execute(this);
-		
+
 		Send(result, returnTo);
 	}
 
@@ -231,7 +231,7 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 
 					} else if (command instanceof SynchronizeCommand ) {
 						Trace(String.format("Receiving from: %s", sender));
-						
+
 						ExecuteAndSend((SynchronizeCommand) command);
 					}
 				// The command is sent from another server
@@ -269,16 +269,19 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 	void ExecuteAndSend(ReplicateCommand command) throws IOException {
 		Trace("Executing REPLICATECOMMAND:");
 		Object result = null;
+
 		if (command.getReceiver() != null) {
 			// adds contact to phonebook
-			result = command.Execute (phonebook);
-			Send(result, command.getReturnTo());
 			if (command.getReceiver().equals(getIP())) 
-			{
+			{ 
+				result = command.Execute (phonebook);
+				Send(result, command.getReturnTo());
 				// Broadcast but clear returnto address
 				command.setReturnTo(null);
 				command.setSender(getIP());
 				broadcast(command);
+			} else {
+				result = command.Execute (phonebook);
 			}
 		} else {
 			command.setReceiver(getIP());
@@ -327,7 +330,7 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 			}
 		} 
 	} 
-	
+
 	/***
 	 * Returns the server's phonebook 
 	 * @return
@@ -335,7 +338,7 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 	public IPhonebook getPhoneBook() {
 		return this.phonebook;
 	}
-	
+
 	public Set<InetSocketAddress> getConnectionPoints(
 			GetConnectionPointsCommand command) {
 		return cPoints;
