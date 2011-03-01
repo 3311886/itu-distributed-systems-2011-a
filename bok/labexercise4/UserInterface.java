@@ -3,6 +3,7 @@ package bok.labexercise4;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 public class UserInterface {
   private IPhonebook phonebook;
@@ -116,11 +117,13 @@ public class UserInterface {
   }
 
   void ListCommand () throws IOException {
-    System.out.println ();
-    for (Contact contact : phonebook.GetAllContacts ()) {
+    
+    List<Contact> contacts = phonebook.GetAllContacts ();
+    System.out.printf("Contacts on the server: %s,\n", contacts.size());
+    for (Contact contact : contacts) {
       System.out.println (contact);
     }
-    System.out.println ();
+    
   }
 
   void UpdateCommand (BufferedReader bisr) throws IOException {
