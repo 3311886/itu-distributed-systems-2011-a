@@ -1,8 +1,10 @@
 package bok.labexercise4;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
@@ -21,10 +23,21 @@ import java.util.concurrent.Executors;
 public abstract class AbstractServer implements Runnable{
 	private ServerSocket Listener;
 	private InetSocketAddress localisa;
-	private boolean printServerResults = false; 
+	private boolean trace = false;
+	private String curDir =  System.getProperty("user.dir");
+	private String logFile =  "log.log";
+	private final boolean writeToLog = true;
+	public static String newline = System.getProperty("line.separator");
+
 
 	public LinkedList<InetSocketAddress> LocalEndpoints = new LinkedList<InetSocketAddress> ();
 
+	public AbstractServer(int port, String dir, String filename, boolean writeToLog, boolean printTrace) {
+		curDir = dir;
+		logFile = filename;
+		trace = printTrace;
+		
+	}
 	/***
 	 * @param port, specific port to start server on
 	 * @throws IOException
@@ -44,6 +57,7 @@ public abstract class AbstractServer implements Runnable{
 	 * @throws IOException
 	 */
 	private void initServer(int port) throws IOException{
+		
 		Listener = new ServerSocket(port);
 		Listener.setSoTimeout (2000);
 
@@ -62,6 +76,7 @@ public abstract class AbstractServer implements Runnable{
 		}
 		// Get the servers own ip  
 		localisa= new InetSocketAddress(InetAddress.getLocalHost(), Listener.getLocalPort());
+		Trace("Server started at: " + getIP());
 	}
 
 	boolean abort = false;
@@ -131,17 +146,26 @@ public abstract class AbstractServer implements Runnable{
 		return this.localisa;
 	}
 
-	public void printServerResults(boolean flag) {
-		printServerResults = flag;
-	}
-
 	public boolean printServerResults() {
-		return printServerResults;
+		return trace;
 	}
 	
-	public void Trace(String s) {
+	public void Trace(String s) throws IOException {
+		
+		String trace = String.format("TRACE: %s\n", s);
 		if (printServerResults()) {
-			System.out.printf("\nTRACE: %s\n", s);
+			System.out.printf(trace);
+		} 
+		if (writeToLog) {
+			WriteLog(trace);
 		}
+	}
+	
+	private void WriteLog(String s) throws IOException {
+		PrintWriter p = new PrintWriter(new FileWriter(curDir + "\\"+ logFile, true));
+		s.replace("\n", "\r\n");
+		p.write(String.format("%s%s", s,newline));
+		p.flush();
+		p.close();
 	}
 }
