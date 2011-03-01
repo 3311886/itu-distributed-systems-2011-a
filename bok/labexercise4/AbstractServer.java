@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
 public abstract class AbstractServer implements Runnable{
 	private ServerSocket Listener;
 	private InetSocketAddress localisa;
-	private boolean trace = false;
+	private boolean trace = true;
 	private String curDir =  System.getProperty("user.dir");
 	private String logFile =  "log.log";
 	private final boolean writeToLog = true;
