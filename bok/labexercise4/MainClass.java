@@ -45,7 +45,6 @@ class MainClass {
 			serverThread.start ();
 
 			servers.add(server);
-
 			String s = i == 0 ? " your server" : " another server"; 
 			System.out.printf("I'm%s listening on\n", s);
 			for (InetSocketAddress sa : server.LocalEndpoints) {
