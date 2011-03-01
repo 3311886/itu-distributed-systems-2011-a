@@ -27,7 +27,6 @@ class MainClass {
 
 	public static void main (String [] args) throws NoSuchAlgorithmException,
 	IOException {
-
 		BufferedReader bisr = new BufferedReader (new InputStreamReader (System.in));
 		System.out.println("Input the number of servers you want to start");
 		String input = bisr.readLine();
