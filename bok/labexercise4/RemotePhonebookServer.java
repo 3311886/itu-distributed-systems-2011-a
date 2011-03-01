@@ -113,11 +113,11 @@ public class RemotePhonebookServer implements IPhonebookServer {
 	public boolean Ping(InetSocketAddress isa) {
 		try {
 			return isa.getAddress().isReachable(5000);
+			
 		} catch (IOException e) {
 			return false;
 		}
 	}
-
 
 	public boolean ConnectToServer(InetSocketAddress isa) throws IOException {
 		if (Ping(isa)) { 

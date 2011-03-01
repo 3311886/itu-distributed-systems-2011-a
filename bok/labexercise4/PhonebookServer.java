@@ -218,26 +218,25 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 		StringBuilder tracer = new StringBuilder();
 		String sender = command.getReturnTo() != null ? 
 				command.getReturnTo().toString() : command.getSender().toString(); 
-				tracer.append(String.format("%s: \nCommand: %s\n", getIP(), command.getClass()));
+				Trace(String.format("%s: ", getIP()));
 				if (command instanceof ReplicateCommand) {
-					tracer.append(String.format("Receiving from: %s \n", sender));
+					Trace(String.format("Receiving from: %s ", sender));
 					Trace(tracer.toString());
 					ExecuteAndSend((ReplicateCommand) command);
 				} else
 					// The command is sent from a client
 					if (command instanceof Command) {
-						tracer.append(String.format("Receiving from: %s \n", sender));
-						Trace(tracer.toString());
+						Trace(String.format("Receiving from: %s", sender));
 						ExecuteAndSend((Command) command);
 
 					} else if (command instanceof SynchronizeCommand ) {
-						tracer.append(String.format("Receiving from: %s \n", sender));
-						Trace(tracer.toString());
+						Trace(String.format("Receiving from: %s", sender));
+						
 						ExecuteAndSend((SynchronizeCommand) command);
 					}
 				// The command is sent from another server
 					else if (command instanceof ServerCommand) {
-						tracer.append(String.format("Receiving from: %s \n", sender));
+						Trace(String.format("Receiving from: %s", sender));
 						Trace(tracer.toString());
 						ExecuteAndSend((ServerCommand)command);
 					}
@@ -248,7 +247,12 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 	 * @param result
 	 */
 	void ExecuteAndSend(ServerResult result) {
-		Trace("Executing SERVERRESULT: " + result);
+		try {
+			Trace("Executing SERVERRESULT: " + result);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		switch (result) {
 		case RemoveServerInitiatedFromServer : 
@@ -263,7 +267,7 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 	 * @throws IOException
 	 */
 	void ExecuteAndSend(ReplicateCommand command) throws IOException {
-		Trace("Executing REPLICATECOMMAND: ");
+		Trace("Executing REPLICATECOMMAND:");
 		Object result = null;
 		if (command.getReceiver() != null) {
 			// adds contact to phonebook
@@ -306,9 +310,11 @@ public class PhonebookServer extends AbstractServer implements IPhonebookServer{
 
 	public void Send(Object o, InetSocketAddress receiver) throws IOException {
 		if (receiver != null) {
-			System.out.printf("\nTRACE for %s: \n", getIP()); 
-			System.out.printf("TRACE: Command: %s \n", o.getClass());
-			System.out.printf("TRACE: Sending to: %s \n", receiver);
+			StringBuilder sb = new StringBuilder();
+			sb.append(String.format("Sending from %s: \n", getIP()));
+			sb.append(String.format("Command: %s \n", o.getClass()));
+			sb.append(String.format("Sending to: %s \n", receiver));
+			Trace(sb.toString());
 			Socket client = new Socket ();
 			try {
 				client.connect (receiver);

@@ -9,7 +9,7 @@ package bok.labexercise4;
 public enum ServerResult {	
 	Added, BroadCast, Removed,RemovedAndBroadCast, AlreadyAdded, UnknownError, 
 	RemoveServerInitiatedFromServer, RemoveServerInitiatedFromJoiner, 
-	JoiningServerRemoved, JoiningServer
+	JoiningServerRemoved, JoiningServer, IsPhoneBookServer
 	
 	
 }

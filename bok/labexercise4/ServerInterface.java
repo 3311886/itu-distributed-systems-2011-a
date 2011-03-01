@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Set;
-
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ServerInterface {
 	private RemotePhonebookServer server;
@@ -46,6 +46,7 @@ public class ServerInterface {
 
 		String hostname = bisr.readLine ();
 		while(!verifyISA(hostname)) {
+			System.out.println("Input is not a valid IP. Please try again");
 			hostname = bisr.readLine ();
 		}
 
@@ -53,6 +54,7 @@ public class ServerInterface {
 
 		String portStr = bisr.readLine();
 		while(!verifyPort(portStr)) {
+			System.out.println("Input is not a valid port number. Please try again");
 			portStr = bisr.readLine ();
 		}
 
@@ -62,14 +64,16 @@ public class ServerInterface {
 
 	static boolean verifyISA(String input) {
 		String regex = "\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b";
-		RegularExpression r = new RegularExpression(regex);
-		return r.matches(input);
+		Pattern pattern = Pattern.compile(regex);
+		Matcher m = pattern.matcher(input) ;
+		return m.matches();
 	}
 
 	static boolean verifyPort(String input) {
 		String regex = "\\d+";
-		RegularExpression r = new RegularExpression(regex);
-		return r.matches(input);
+		Pattern pattern = Pattern.compile(regex);
+		Matcher m = pattern.matcher(input) ;
+		return m.matches();
 	}
 
 	void ConnectToServer(BufferedReader bisr) throws IOException {
