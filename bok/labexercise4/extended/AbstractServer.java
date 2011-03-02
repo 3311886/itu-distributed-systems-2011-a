@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import bok.labexercise4.ServerResult;
 import bok.labexercise4.extended.commands.ICommand;
 
 /**
@@ -37,12 +38,11 @@ public abstract class AbstractServer implements Runnable{
 	private final boolean writeToLog = true;
 	public static String newline = System.getProperty("line.separator");
 	private VectorClock vectorClock;
-	 
+
 	public LinkedList<InetSocketAddress> LocalEndpoints = new LinkedList<InetSocketAddress> ();
 	private Set<InetSocketAddress> cPoints;
 
 	public AbstractServer(int port, String dir, String filename, boolean writeToLog, boolean printTrace) throws IOException {
-		
 		curDir = dir;
 		logFile = filename;
 		trace = printTrace;
@@ -58,7 +58,6 @@ public abstract class AbstractServer implements Runnable{
 		cPoints = new HashSet<InetSocketAddress>();
 		vectorClock = new VectorClock();
 		initServer(port);
-		
 	}
 
 	public AbstractServer() throws IOException {
@@ -67,14 +66,14 @@ public abstract class AbstractServer implements Runnable{
 		vectorClock = new VectorClock();
 		initServer(0);
 	}
-	
+
 	/***
 	 * Initializes server 
 	 * @param port
 	 * @throws IOException
 	 */
 	private void initServer(int port) throws IOException{
-		
+
 		Listener = new ServerSocket(port);
 		Listener.setSoTimeout (2000);
 
@@ -155,26 +154,47 @@ public abstract class AbstractServer implements Runnable{
 		}
 	}
 	
-	public void Send(Object o, InetSocketAddress receiver) throws IOException {
+	public void Send(ICommand<?> command, InetSocketAddress receiver){
+		if (receiver != null) { 
+			getVectorClock().incrementClock(this.getIP().toString());
+			command.setVectorClock(getVectorClock().clone());
+			
+			try {
+				Trace( String.format("IP: %s ", getIP()));
+				Trace(String.format("Sending from %s to %s ", getIP(), receiver));
+				Trace(String.format("Command: %s", command.getClass().getName()));
+				Trace("VectorClock: "+ getVectorClock().toString() + "\n");
+				Send((Object)command, receiver);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+	
+			
+		} 
+
+	}
+
+	public void Send(Object object, InetSocketAddress receiver) throws IOException 
+	{
+		
 		if (receiver != null) {
-			StringBuilder sb = new StringBuilder();
-			sb.append(String.format("Sending from %s: \n", getIP()));
-			sb.append(String.format("Command: %s \n", o.getClass()));
-			sb.append(String.format("Sending to: %s \n", receiver));
-			Trace(sb.toString());
 			Socket client = new Socket ();
 			try {
 				client.connect (receiver);
 				OutputStream os = client.getOutputStream ();
-				ObjectOutputStream oos = new ObjectOutputStream (os);				
-				oos.writeObject (o);
-			} finally {
+				ObjectOutputStream oos = new ObjectOutputStream (os);
+				
+				oos.writeObject (object);
+			} finally 
+			{
 				if (client != null)
 					client.close ();
 			}
 		} 
-	} 
 
+	} 
 
 	/***
 	 * Returns InetSocketAddress for the server
@@ -187,9 +207,8 @@ public abstract class AbstractServer implements Runnable{
 	public boolean printServerResults() {
 		return trace;
 	}
-	
-	public void Trace(String s) throws IOException {
-		
+
+	public void Trace(String s) throws IOException {		
 		String trace = String.format("TRACE: %s\n", s);
 		if (printServerResults()) {
 			System.out.printf(trace);
@@ -198,7 +217,7 @@ public abstract class AbstractServer implements Runnable{
 			WriteLog(trace);
 		}
 	}
-	
+
 	private void WriteLog(String s) throws IOException {
 		PrintWriter p = new PrintWriter(new FileWriter(curDir + "\\"+ logFile, true));
 		s.replace("\n", "\r\n");
@@ -207,27 +226,34 @@ public abstract class AbstractServer implements Runnable{
 		p.close();
 	}
 	abstract public ServerData<IItem<?>> getData();
-	
+
 	/***
 	 * Broadcasts a command to connected servers    
 	 */
 	public Object broadcast(ICommand<?> command) throws IOException  
 	{
-		Set<InetSocketAddress> cpList=	getConnectionPoints();
 		
+		Set<InetSocketAddress> cpList=	getConnectionPoints();
 		for(InetSocketAddress cp : cpList) {
 			
-			if (command.getSender() != cp) Send(command, cp);
+			if (command.getSender() != cp) { 
+				Send(command, cp);
+			}
 		}
-		return null;
+		return ServerResult.BroadCast;
 	}
-	
+
 	public  Set<InetSocketAddress> getConnectionPoints(){
 		return cPoints;
 	}
-	
+
+	public VectorClock getVectorClock() {
+		return vectorClock;
+	}
+	public void setVectorClock(VectorClock vectorClock) {
+		this.vectorClock = vectorClock;
+	}
 	public  void setConnectionPoints(Set<InetSocketAddress> value){
 		this.cPoints = value;
-	}
-	
+	}		
 }
