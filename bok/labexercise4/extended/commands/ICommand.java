@@ -8,13 +8,23 @@ import bok.labexercise4.extended.VectorClock;
 
 
 public interface ICommand<T> {
-	VectorClock getVectorClock();
-	void setVectorClock(VectorClock vc);
+	
 	Object Execute(AbstractServer o) throws IOException;
-	InetSocketAddress getSender();
-	InetSocketAddress getReturnTo();
-	void setReturnTo(InetSocketAddress value);
-		
+	
+	public InetSocketAddress getReceiver() ;
+
+	public void setReceiver(InetSocketAddress receiver) ;
+
+	public InetSocketAddress getReturnTo();
+
+	public void setReturnTo(InetSocketAddress returnTo) ;
+
+	public InetSocketAddress getSender() ;
+	
+	public VectorClock getVectorClock();
+	
+	public void setVectorClock(VectorClock vc) ;
+
 
 
 }

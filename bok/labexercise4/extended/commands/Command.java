@@ -18,6 +18,9 @@ public abstract class Command<T> implements Serializable, ICommand<T>  {
 	public void setSender(InetSocketAddress value) {
 		this.Sender = value;
 	}
+	public Command() {
+		vc = new VectorClock();
+	}
 
 	public InetSocketAddress getReceiver() {
 		return Receiver;

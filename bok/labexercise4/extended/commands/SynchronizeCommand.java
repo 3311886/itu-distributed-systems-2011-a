@@ -8,7 +8,7 @@ import java.util.Set;
 
 import bok.labexercise4.extended.AbstractServer;
 
-public class SynchronizeCommand extends ServerCommand<SynchronizeCommand> {
+public class SynchronizeCommand extends Command<SynchronizeCommand> {
 	/**
 	 * 
 	 */
@@ -16,11 +16,13 @@ public class SynchronizeCommand extends ServerCommand<SynchronizeCommand> {
 	Set<InetSocketAddress> cpoints;
 	List<?> data;
 	bok.labexercise4.extended.commands.SynchronizeStatus status;
-	
+
 	public Object Execute(AbstractServer o) throws IOException {
-		
+		this.setReturnTo(null);
 		Set<InetSocketAddress> cpointsToSend;
 		SynchronizeStatus result = SynchronizeStatus.Default;
+		o.Trace("Sync status:" + this.status);
+		
 		switch (this.status) {
 		case Created:
 			// Target server creates a syncmessage and sends its connectionpoints and contacts to 
@@ -32,12 +34,13 @@ public class SynchronizeCommand extends ServerCommand<SynchronizeCommand> {
 
 			// Add target server
 			this.cpoints.add(this.getSender());
-			this.data = o.getData().GetAll();
+			this.data = o.getData().GetAllTyped();
 			this.status = SynchronizeStatus.SendFromTarget;
 			result = this.status;
 			// ExecuteAndSend(command);
 			o.Send(this, this.getReceiver());
-			break;
+
+			return result;
 		case SendFromTarget:
 			// Joining server receives sync message from server
 			// Returns connectionpoints and contacts 
@@ -48,29 +51,33 @@ public class SynchronizeCommand extends ServerCommand<SynchronizeCommand> {
 			this.cpoints = cpointsToSend;
 
 			o.getConnectionPoints().addAll(cpointsReceived);
-			this.data= o.getData().GetAll();
-			this.status= SynchronizeStatus.SendFromJoining;
-
-			//ExecuteAndSend(command);
-			InetSocketAddress tmp = this.getSender();
-			this.setSender(this.getReceiver());
-			this.setReceiver(tmp);
+			this.data= o.getData().GetAllTyped();
+			this.status = SynchronizeStatus.SendFromJoining;
 			result = this.status;
-			o.Send(this, tmp);
+			// joining is receiver // 
+			this.setReceiver(this.getSender());
+			this.setSender(o.getIP());
+			o.Send(this, this.getReceiver());
 			break;
 		case SendFromJoining:
+			// Sender is joining : This is receiver
+			this.status = SynchronizeStatus.Broadcast;
+			this.setReceiver(this.getSender());
+			this.setSender(o.getIP());
+			o.broadcast(this);
 			// Server receives sync response from joining server
 			o.getConnectionPoints().addAll(this.cpoints);
 			o.getData().Synchronize(this.data);
 			// Broadcast to servers
-			this.status = SynchronizeStatus.BroadCast;
-			o.broadcast(this);
 			result =  SynchronizeStatus.Synchronized;
-		case BroadCast:
+			return result;
+		case Broadcast:
 			o.getConnectionPoints().addAll(this.cpoints);
 			o.getData().Synchronize(this.data);
 			result = SynchronizeStatus.Synchronized;
-		default : 
+			break;
+		default :
+			break;
 		}
 		return result;
 	}

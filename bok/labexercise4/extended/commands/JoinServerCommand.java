@@ -6,7 +6,7 @@ import java.net.InetSocketAddress;
 import bok.labexercise4.ServerResult;
 import bok.labexercise4.extended.AbstractServer;
 
-public class JoinServerCommand extends ServerCommand<JoinServerCommand> {
+public class JoinServerCommand extends Command<JoinServerCommand> {
 	
 	public JoinServerCommand(InetSocketAddress sender, InetSocketAddress receiver) {
 		super.setReceiver(receiver);
@@ -21,23 +21,18 @@ public class JoinServerCommand extends ServerCommand<JoinServerCommand> {
 
 	public Object Execute(AbstractServer o) {
 		Object result = null;
+		this.setReturnTo(null);
 		if (o.getIP().equals(this.getSender())) {
 			// Receives from client a command to join another server
-			this.setReturnTo(null);
-			try {
-				o.Send(this, this.getReceiver());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
+			o.Send(this, this.getReceiver());
 			// Return to client 
 			result =  ServerResult.JoiningServer;
 		} else 	
 			if (o.getIP().equals(this.getReceiver())) {
-				try {
-					
+				try {		
 					// Broadcast join command
-					result = o.broadcast(this);
+					o.broadcast(this);
 					//Synchronize from target server to joining server
 					SynchronizeCommand syncCommand =  
 						new SynchronizeCommand();
@@ -48,7 +43,7 @@ public class JoinServerCommand extends ServerCommand<JoinServerCommand> {
 					syncCommand.Execute(o);
 					// Add the joining server to target server
 					o.getConnectionPoints().add(this.getSender());
-					return result;
+					return ServerResult.BroadCast;
 				} catch (IOException e) {
 					e.printStackTrace();
 					return ServerResult.UnknownError;

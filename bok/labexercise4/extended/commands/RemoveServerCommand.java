@@ -5,7 +5,7 @@ import java.io.IOException;
 import bok.labexercise4.ServerResult;
 import bok.labexercise4.extended.AbstractServer;
 
-public class RemoveServerCommand extends ServerCommand<RemoveServerCommand> {
+public class RemoveServerCommand extends Command<RemoveServerCommand> {
 
 	/**
 	 * 
