@@ -232,13 +232,15 @@ public abstract class AbstractServer implements Runnable{
 	 */
 	public Object broadcast(ICommand<?> command) throws IOException  
 	{
-		
-		Set<InetSocketAddress> cpList=	getConnectionPoints();
+		Trace("CPs: " + getIP() + " : "+ getConnectionPoints());
+		Set<InetSocketAddress> cpList =	getConnectionPoints();
 		for(InetSocketAddress cp : cpList) {
 			
-			if (command.getSender() != cp) { 
+			if (!command.getReceiver().equals(cp) ) {
+				Trace("Broadcast cp: " + cp + " sender: " + command.getReceiver());
+				Trace(""+ command.getReceiver().equals(cp));
 				Send(command, cp);
-			}
+			} 
 		}
 		return ServerResult.BroadCast;
 	}

@@ -6,7 +6,7 @@ import bok.labexercise4.ServerResult;
 import bok.labexercise4.extended.commands.ICommand;
 
 public class BokServer extends AbstractServer {
-	IDataCollection<?> data;
+	ServerData<IItem<?>> data;
 
 	public BokServer() throws IOException {
 		super();
@@ -15,11 +15,14 @@ public class BokServer extends AbstractServer {
 
 	@Override
 	public void ExecuteAndSend(Object command) throws IOException {
-		Trace("R: " + getIP());
+		if (command instanceof ICommand<?>) {
 		ExecuteAndSend((ICommand<?>) command);
+		} else {
+			Trace("ExecuteAndSend" + command.toString());
+		}
 	}
 
-	void ExecuteAndSend(ServerResult result) {
+	public void ExecuteAndSend(ServerResult result) {
 		try {
 			Trace("Executing SERVERRESULT: " + result);
 		} catch (IOException e) {
@@ -32,23 +35,23 @@ public class BokServer extends AbstractServer {
 		}
 	}
 
-
 	public <T> void ExecuteAndSend(ICommand<T> command) throws IOException  {
 		this.setVectorClock(VectorClock.max(getVectorClock(), command.getVectorClock()));
+		Trace(String.format("OnReceiveCommand: %s", command.getClass().getName()));
 		String sender = command.getReturnTo() != null ? 
 				command.getReturnTo().toString() : command.getSender().toString();
-				Trace( String.format("IP: %s ", getIP()));
-				Trace(String.format("Receiving from: %s ", sender));
-				Trace(String.format("Command: %s", command.getClass().getName()));
-				Trace("VectorClock: "+ getVectorClock().toString()+ "\n");
-				
+
 				try {
 					command.Execute(this);
 				} catch (IOException e) {
 				}
 
+				Trace( String.format("IP: %s ", getIP()));
+				Trace(String.format("Receiving from: %s ", sender));
+				Trace(String.format("Command: %s", command.getClass().getName()));
+				Trace("VectorClock: "+ getVectorClock().toString()+ "\n");
+
 				Send(command, command.getReturnTo());
-				//Send(result, returnTo);
 	}
 
 	@SuppressWarnings("unchecked")

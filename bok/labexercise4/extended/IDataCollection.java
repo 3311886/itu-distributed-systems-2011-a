@@ -4,15 +4,16 @@ import java.io.IOException;
 import java.util.List;
 
 public interface IDataCollection<T>{
-	  Object AddItem (T item) throws IOException;
+	  Object AddItem (T item)  throws IOException;
 
-	  boolean Update (Object key, T item) throws IOException;
-	  Object Get(Object key) throws IOException;
+	  boolean Update (T itemOld, T itemNew) throws IOException;
+	  T Get(Object key) throws IOException;
 
 	  // Returns null if name is not in the phone
 	  // book
 
-	  List<T> GetAll() throws IOException;
+	  Object[] GetAll() throws IOException;
+	  List<T> GetAllTyped() throws IOException;
 
 	  boolean Remove (Object key) throws IOException;
 	  
