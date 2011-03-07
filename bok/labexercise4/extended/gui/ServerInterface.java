@@ -29,11 +29,14 @@ public class ServerInterface{
 	private InetSocketAddress Server;
 	public ServerInterface(InetSocketAddress server) {
 		Server = server;
+		System.out.println("ServerInterface ISA:" + Server);
 	}
 
 	Object SendAndReceive (ICommand<?> command) throws IOException {
+		
 		ServerSocket listener = new ServerSocket(0);
 		command.setReturnTo((InetSocketAddress) listener.getLocalSocketAddress ());
+		
 		Socket client = new Socket ();
 		try {
 
@@ -82,6 +85,7 @@ public class ServerInterface{
 	} 
 
 	public ServerResult addConnectionPoint(ICommand<JoinServerCommand> command) {
+		
 		Object result = null;
 		try {
 			result = SendAndReceive(command);
@@ -92,10 +96,14 @@ public class ServerInterface{
 	}
 
 	public ServerResult removeConnectionPoint(InetSocketAddress joiningserver) { 
-		// The server that wants to join
+
+		
+		 // The server associated with the Serverinterface wants to leave    
+		 
+		
 		RemoveServerCommand command = new RemoveServerCommand();
-		command.setSender(joiningserver);
-		command.setReceiver(Server);
+		command.setSender(Server);
+		command.setReceiver(joiningserver);
 		return removeConnectionPoint(command);
 	}
 
@@ -131,7 +139,6 @@ public class ServerInterface{
 	public boolean Ping(InetSocketAddress isa) {
 		try {
 			return isa.getAddress().isReachable(5000);
-			
 		} catch (IOException e) {
 			return false;
 		}

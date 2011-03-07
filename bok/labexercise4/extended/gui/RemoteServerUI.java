@@ -15,37 +15,40 @@ public class RemoteServerUI {
 		this.server = server;
 	}
 	
-	
 	void JoinCommand(BufferedReader bisr, boolean asJoiner) throws IOException {
 		InetSocketAddress isa;
 		if (asJoiner) {
-			isa = GetIP(bisr, "joinee");
+			isa = GetIP(bisr, "joinee server hostname");
 		} else {
-			isa = GetIP(bisr, "joining"); 
+			isa = GetIP(bisr, "joining server hostname"); 
 		}
 		
+		
 		System.out.println("Pinging: " + isa);
+		
+		
 		if (server.Ping(isa)) {
-			System.out.println(server.addConnectionPoint(isa, asJoiner));
+			server.addConnectionPoint(isa, asJoiner);
+			System.out.println("Now joined with server:  " + isa); 
 		} else
 			System.out.println("Could not connect to server");
 	}
 
 	void RemoveCommand (BufferedReader bisr) throws IOException {
-		InetSocketAddress isa = GetIP(bisr, "removing");
+		InetSocketAddress isa = GetIP(bisr, "the hostname of the server you are connected to");
 		server.removeConnectionPoint(isa);
 	}
 
 	void GetConnectionPointsCommand () throws IOException {
 		Set<InetSocketAddress> list =  server.getConnectionPoints();
-		System.out.printf("%s\n", "Connected server: ");
+		System.out.printf("%s\n", "Connected servers: ");
 		for (InetSocketAddress isa : list ) {
 			System.out.println(isa);
 		}
 	}
 
 	static InetSocketAddress GetIP (BufferedReader bisr, String args) throws IOException {
-		System.out.printf("Input %s server hostname: ", args);
+		System.out.printf("Input %s: ", args);
 
 		String hostname = bisr.readLine ();
 		while(!verifyISA(hostname)) {
@@ -80,7 +83,7 @@ public class RemoteServerUI {
 	}
 
 	void ConnectToServer(BufferedReader bisr) throws IOException {
-		InetSocketAddress isa = GetIP(bisr, "new server");
+		InetSocketAddress isa = GetIP(bisr, "hostname of the server you want to connect to");
 		
 		if (server.ConnectToServer(isa)) {
 			System.out.println("Now connected to: " + isa);

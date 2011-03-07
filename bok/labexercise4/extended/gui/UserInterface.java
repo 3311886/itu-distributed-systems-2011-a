@@ -142,8 +142,9 @@ public class UserInterface {
 		IItem<?> c = null;
 		c = ui.Get(key);
 		if (c!=null) {
-		HashMap<String, Object> values = getUpdateInput(bisr, c.getClass());
-		System.out.println(ui.Update(key, values));
+			System.out.println("DataItem found: " + c.toString());
+			HashMap<String, Object> values = getUpdateInput(bisr, c.getClass());
+			System.out.println(ui.Update(key, values));
 		} else {
 			System.out.println("Dataitem not found");
 		}
@@ -159,7 +160,7 @@ public class UserInterface {
 			while(input.length() ==0) {
 				input = bisr.readLine();
 			}
-			
+
 			values.put(f.getName(), input);
 		}
 		return values;

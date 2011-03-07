@@ -32,6 +32,11 @@ public class ClientInterface implements IDataCollection<IItem> {
 	Object SendAndReceive (ICommand command) throws IOException {
 		ServerSocket listener = new ServerSocket (0);
 		command.setReturnTo((InetSocketAddress) listener.getLocalSocketAddress ());
+		/* This will always be a command sent from a client. 
+		 * Other servers receiving this through broadcast will never use sender address 
+		 *  However for logging it might be useful to be able to see from which client the request originates 
+		 */
+		command.setSender(command.getReturnTo());
 		
 		Socket client = new Socket ();
 		try {
