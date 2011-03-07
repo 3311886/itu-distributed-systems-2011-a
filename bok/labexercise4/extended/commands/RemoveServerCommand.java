@@ -12,7 +12,10 @@ public class RemoveServerCommand extends Command<RemoveServerCommand> {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public Object Execute(AbstractServer o) {
+	public Object Execute(AbstractServer o) throws IOException {
+		Object result = ServerResult.Removed; 
+		if (this.getReturnTo() != null) o.Send(result, this.getReturnTo(), false);
+		this.setReturnTo(null);
 		// The message was sent from server to joiner
 		if(o.getIP().equals(this.getReceiver())) {
 			o.getConnectionPoints().remove(this.getSender());
@@ -25,6 +28,7 @@ public class RemoveServerCommand extends Command<RemoveServerCommand> {
 			}
 		} else if (this.getSender().equals(o.getIP())) {
 			o.getConnectionPoints().removeAll(o.getConnectionPoints());
+			o.Send(this, this.getReceiver(), true);
 			return ServerResult.JoiningServerRemoved;
 
 		} else {

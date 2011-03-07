@@ -58,7 +58,7 @@ public class UpdateItemCommand extends Command<UpdateItemCommand> {
 			if (this.getReceiver().equals(server.getIP())) 
 			{ 
 				
-				server.Send(result, this.getReturnTo());
+				server.Send(result, this.getReturnTo(), false);
 				// Broadcast but clear returnto address
 				this.setReturnTo(null);
 				this.setSender(server.getIP());

@@ -24,7 +24,7 @@ public class GetItemCommand extends Command<GetItemCommand> {
 			e.printStackTrace();
 		}
 		
-		server.Send(result, this.getReturnTo());
+		server.Send(result, this.getReturnTo(), false);
 		this.setReturnTo(null);
 		return result;
 	}

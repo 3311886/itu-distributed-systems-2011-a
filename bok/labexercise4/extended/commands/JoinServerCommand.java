@@ -18,19 +18,21 @@ public class JoinServerCommand extends Command<JoinServerCommand> {
 	
 	private static final long serialVersionUID = 1L;
 
-
-	public Object Execute(AbstractServer o) {
+	public Object Execute(AbstractServer o) throws IOException {
 		Object result = null;
+		
+		if (this.getReturnTo() != null) o.Send(result, this.getReturnTo());
 		this.setReturnTo(null);
 		if (o.getIP().equals(this.getSender())) {
 			// Receives from client a command to join another server
-			
-			o.Send(this, this.getReceiver());
-			// Return to client 
 			result =  ServerResult.JoiningServer;
+			// Return to client	
+			o.Send(this, this.getReceiver(), true);
+			
 		} else 	
 			if (o.getIP().equals(this.getReceiver())) {
-				try {		
+				try {
+					
 					// Broadcast join command
 					o.broadcast(this);
 					//Synchronize from target server to joining server
@@ -43,6 +45,7 @@ public class JoinServerCommand extends Command<JoinServerCommand> {
 					syncCommand.Execute(o);
 					// Add the joining server to target server
 					o.getConnectionPoints().add(this.getSender());
+					
 					return ServerResult.BroadCast;
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -53,6 +56,7 @@ public class JoinServerCommand extends Command<JoinServerCommand> {
 				o.getConnectionPoints().add(this.getSender());
 				result =  ServerResult.Added;
 			}
+		
 		return result;
 	}
 }

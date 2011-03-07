@@ -13,6 +13,9 @@ public class GetConnectionPointsCommand extends Command<GetConnectionPointsComma
 
 	public Object Execute(AbstractServer o) throws IOException {
 		// TODO Auto-generated method stub
-		return o.getConnectionPoints();
+		Object result = o.getConnectionPoints();
+		o.Send(result, this.getReturnTo(), false);
+		this.setReturnTo(null);
+		return result;
 	}
 }

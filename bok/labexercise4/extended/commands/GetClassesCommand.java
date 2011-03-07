@@ -11,7 +11,7 @@ public class GetClassesCommand extends Command<GetClassesCommand> {
 
 	public Object Execute(AbstractServer o) throws IOException {
 		
-		o.Send(DataItemFactory.getClasses(), this.getReturnTo());
+		o.Send(DataItemFactory.getClasses(), this.getReturnTo(), false);
 		this.setReturnTo(null);
 		return null;
 		

@@ -24,6 +24,8 @@ public interface ICommand<T> {
 	public VectorClock getVectorClock();
 	
 	public void setVectorClock(VectorClock vc) ;
+	
+	public void setSender(InetSocketAddress sender);
 
 
 

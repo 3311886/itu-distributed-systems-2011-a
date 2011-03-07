@@ -38,7 +38,7 @@ public class SynchronizeCommand extends Command<SynchronizeCommand> {
 			this.status = SynchronizeStatus.SendFromTarget;
 			result = this.status;
 			// ExecuteAndSend(command);
-			o.Send(this, this.getReceiver());
+			o.Send(this, this.getReceiver(), true);
 
 			return result;
 		case SendFromTarget:
@@ -57,7 +57,7 @@ public class SynchronizeCommand extends Command<SynchronizeCommand> {
 			// joining is receiver // 
 			this.setReceiver(this.getSender());
 			this.setSender(o.getIP());
-			o.Send(this, this.getReceiver());
+			o.Send(this, this.getReceiver(), true);
 			break;
 		case SendFromJoining:
 			// Sender is joining : This is receiver
@@ -82,4 +82,4 @@ public class SynchronizeCommand extends Command<SynchronizeCommand> {
 		return result;
 	}
 
-}
+} 

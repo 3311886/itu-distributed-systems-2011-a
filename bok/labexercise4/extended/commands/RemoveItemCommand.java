@@ -29,7 +29,7 @@ public class RemoveItemCommand extends Command<RemoveItemCommand> {
 			if (this.getReceiver().equals(o.getIP())) 
 			{ 
 				
-				o.Send(result, this.getReturnTo());
+				o.Send(result, this.getReturnTo(), false);
 				// Broadcast but clear returnto address
 				this.setReturnTo(null);
 				this.setSender(o.getIP());

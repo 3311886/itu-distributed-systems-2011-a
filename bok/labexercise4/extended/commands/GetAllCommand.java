@@ -20,7 +20,7 @@ public class GetAllCommand extends Command<GetAllCommand> {
 			e.printStackTrace();
 		}
 		
-		o.Send(result, this.getReturnTo());
+		o.Send(result, this.getReturnTo(), false);
 		this.setReturnTo(null);
 		return result;
 	}
