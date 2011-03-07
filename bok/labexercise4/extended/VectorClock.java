@@ -25,12 +25,13 @@ public class VectorClock extends HashMap<String, Integer> implements Serializabl
 	{
 		// If we have it in the vector, increment.
 		if (this.containsKey(pUnit))
-		{
+		{  
 			this.put(pUnit, this.get(pUnit).intValue() + 1);
 		}
 		// Else, store with value 1 (starts at 0, +1).
 		else
 		{
+			
 			this.put(pUnit, 1);
 		}
 	}
