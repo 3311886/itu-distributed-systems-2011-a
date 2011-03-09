@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView 
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent" android:layout_height="fill_parent"
+  android:id="@+id/mainScrollView"
+  >
+  <LinearLayout android:orientation="vertical" 
+  android:layout_height="fill_parent"
+  android:layout_width="fill_parent" android:id="@+id/linearLayout1">
+  <Button android:text="Search again..."  
+	android:onClick="onSearchAgain" android:id="@+id/SearcAgainTop" android:layout_height="wrap_content" android:layout_width="fill_parent">
+	 </Button>
+	<TableLayout  
+	android:layout_height="wrap_content" 
+	android:layout_width="fill_parent" 
+	android:id="@+id/ThumbsTableLayout">
+	</TableLayout>
+	
+	<Button android:text="More photos..."  
+	android:onClick="onLoadMore" android:id="@+id/MoreButton" android:layout_height="wrap_content" android:layout_width="fill_parent">
+	 </Button>
+	 <Button android:text="Search again..."  
+	android:onClick="onSearchAgain" android:id="@+id/SearcAgainBottom" android:layout_height="wrap_content" android:layout_width="fill_parent">
+	 </Button>
+	 <Button android:text="Goto top"  
+	android:onClick="onGotoTop" android:id="@+id/GotoTopButton" android:layout_height="wrap_content" android:layout_width="fill_parent">
+	 </Button>
+	</LinearLayout>
+</ScrollView>
