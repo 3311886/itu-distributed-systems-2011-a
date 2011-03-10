@@ -103,8 +103,6 @@ public class ViewPhotoActivity extends Activity implements View.OnClickListener{
 		parentView.addView(img, bitmap.getWidth(), bitmap.getHeight());
 	
 	}
-
-
 }
 
 

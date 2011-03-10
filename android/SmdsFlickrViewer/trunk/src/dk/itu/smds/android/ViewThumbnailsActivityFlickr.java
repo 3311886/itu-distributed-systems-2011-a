@@ -59,7 +59,16 @@ public class ViewThumbnailsActivityFlickr extends Activity {
 				dismissDialog(DIALOG_INFINITE_PROGRESS);
 			}
 
-			if(photos==null) {return null;}
+			if(photos==null) {
+				
+				/**
+				 * No images returned on first search 
+				 * Hide buttons  
+				 */			 
+				
+				
+				return null;
+			}
 
 			List<PhotoInfo> out = new ArrayList<PhotoInfo>();
 			Bitmap bitmap;
@@ -91,13 +100,12 @@ public class ViewThumbnailsActivityFlickr extends Activity {
 		}
 		@Override
 		protected void onPreExecute() {
-			// while search, show a dialog with infinite progress
-
+			showDialog(DIALOG_INFINITE_PROGRESS);
+			// while search, show a dialog with infinite progress and disable buttons 
+			findViewById( R.id.SearcAgainTop).setEnabled(false);
 			findViewById( R.id.MoreButton).setEnabled(false);
 			findViewById( R.id.SearcAgainBottom).setEnabled(false);
-			findViewById( R.id.SearcAgainTop).setEnabled(false);
-			findViewById( R.id.GotoTopButton).setEnabled(false);
-			showDialog(DIALOG_INFINITE_PROGRESS);
+			findViewById( R.id.GotoTopButton).setEnabled(false);	
 		}
 		@Override
 		protected void onProgressUpdate(PhotoInfo... values) {
@@ -106,14 +114,13 @@ public class ViewThumbnailsActivityFlickr extends Activity {
 		}
 		@Override
 		protected void onPostExecute(List<PhotoInfo> result) {
-			if(result==null) {
+			if(result==null) {				
 				// I guess show some dialog to the user
 				Toast.makeText(ViewThumbnailsActivityFlickr.this, "Sorry, an error occurred!", 10);
-
 			} else {
-
-				findViewById( R.id.MoreButton).setEnabled(true);
+				// Results were found. Show buttons and enable them 			
 				findViewById( R.id.SearcAgainTop).setEnabled(true);
+				findViewById( R.id.MoreButton).setEnabled(true);
 				findViewById( R.id.SearcAgainBottom).setEnabled(true);
 				findViewById( R.id.GotoTopButton).setEnabled(true);
 			}
@@ -146,8 +153,7 @@ public class ViewThumbnailsActivityFlickr extends Activity {
 		// configure the search object
 		SearchParameters searchParameters = new SearchParameters();
 		searchParameters.setText(searchText);
-
-
+		
 
 		// start the SearchAsyncTask
 		new SearchAsyncTask().execute(searchParameters);
@@ -219,23 +225,20 @@ public class ViewThumbnailsActivityFlickr extends Activity {
 
 		// configure the search object
 		SearchParameters searchParameters =  new SearchParameters();
-		searchParameters.setText(searchText);
+		searchParameters.setText(searchText); 
 
+		// Reset page count 
+		page++; 
 		// start the SearchAsyncTask
-		page++;
+		
 		new SearchAsyncTask().execute(searchParameters);
 	}
 
 	public void onSearchAgain(View view) {
+		page = 1;
 		Intent searchActivity = new Intent(this, SearchActivity.class);
 		startActivity(searchActivity);
-
 	}
-	
-	public ScrollView getScrollView() {
-		return (ScrollView) findViewById(R.id.scrollView1);
-	}
-	
 
 	public void onGotoTop(View view) {
 		view.post(new Runnable() {
@@ -247,6 +250,4 @@ public class ViewThumbnailsActivityFlickr extends Activity {
 		}
 		);
 	} 
-
-
 }
