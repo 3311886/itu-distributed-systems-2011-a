@@ -64,4 +64,25 @@ public class SearchActivity extends Activity {
 		// fire the intent
 		startActivity(startThumbnailsActIntent);
 	}
+	
+	public void doStartSearchGoogle( View view ) throws IOException {
+		
+		// get the EditSearch view
+		EditText searchEditText = (EditText)findViewById( R.id.SearchEditText );
+		// get the string inputted by the user
+		String q = searchEditText.getText().toString();
+
+		if(q==null || q.length()==0) {
+			//uops..empty string
+			return;
+
+		}
+		Intent startThumbnailsActIntent = new Intent(this, ViewThumbnailsActivityGoogle.class);
+		
+		// put in the intent the search string too
+		startThumbnailsActIntent.putExtra(EXTRA_SEARCHTEXT, q);
+
+		// fire the intent
+		startActivity(startThumbnailsActIntent);
+	}
 }

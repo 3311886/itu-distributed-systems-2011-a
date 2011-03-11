@@ -13,7 +13,6 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.XML;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -36,9 +35,9 @@ import android.widget.TableRow;
 import android.widget.Toast;
 
 import com.aetrion.flickr.photos.SearchParameters;
-public class ViewThumbnailsActivityYahoo extends Activity {
-	String url = "http://search.yahooapis.com/ImageSearchService/V1/imageSearch";
-	static final String YAHOO_APPID = "I7IbSgfV34HOwxppptxEyePcCgrK9Glsv3wzd_go9dndLI8_6ap4XE69kk3CzxI"; 
+public class ViewThumbnailsActivityGoogle extends Activity {
+	static final String url = "http://ajax.googleapis.com/ajax/services/search/images?v=1.0&imgsz=small&q=";
+	 
 	static final int DIALOG_INFINITE_PROGRESS = 0;
 	static final int RESULTSIZE = 10;
 	static final String EXTRA_PHOTO_PAGE_URI = "page_uri";
@@ -62,7 +61,7 @@ public class ViewThumbnailsActivityYahoo extends Activity {
 			JSONObject json = null;
 			try {
 				
-				String queryurl = url + "?appid=" + YAHOO_APPID + "&query=" + q.getText() + "&results=" + RESULTSIZE +  "&start=" + (page*RESULTSIZE);
+				String queryurl = url + "?q=" + q.getText();
 				//search the photos..this method will take some time
 				InputStream source = retrieveStream(queryurl);  
 				
@@ -75,9 +74,9 @@ public class ViewThumbnailsActivityYahoo extends Activity {
 				}
 				String input = sb.toString();
 				try {
-				json = XML.toJSONObject(input);
-				JSONObject header =  json.getJSONObject("ResultSet");
-				photos = header.getJSONArray("Result");
+				json = new JSONObject(input);
+				JSONObject header =  json.getJSONObject("responseData");
+				photos = header.getJSONArray("results");
 				} catch (JSONException e){
 					Log.e("JSON", Arrays.toString(e.getStackTrace()));
 				}
@@ -101,8 +100,8 @@ public class ViewThumbnailsActivityYahoo extends Activity {
 				try {
 					//get the thumbnail url and download it in a Bitmap object
 					o = photos.getJSONObject(i);
-					JSONObject tb = o.getJSONObject("Thumbnail");
-					String thumbUrl = tb.getString("Url");
+					
+					String thumbUrl = o.getString("tbUrl");
 					URL url = new URL(thumbUrl);
 					HttpURLConnection urlConnection = (HttpURLConnection) url
 					.openConnection();
@@ -116,11 +115,12 @@ public class ViewThumbnailsActivityYahoo extends Activity {
 					//if we got a thumb, create a PhotoInfo object
 					PhotoInfo pi = new PhotoInfo();
 					try {
-						pi.photo = getPhoto(o);
+						Photo p = new Photo();
+						p.Url = o.getString("url");
+						p.ClickUrl = o.getString("originalContextUrl");
+						pi.photo = p;
+						
 					} catch (IllegalArgumentException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (JSONException e) {
@@ -157,7 +157,7 @@ public class ViewThumbnailsActivityYahoo extends Activity {
 		protected void onPostExecute(List<PhotoInfo> result) {
 			if(result==null) {
 				// I guess show some dialog to the user
-				Toast.makeText(ViewThumbnailsActivityYahoo.this, "Sorry, an error occurred!", 10);
+				Toast.makeText(ViewThumbnailsActivityGoogle.this, "Sorry, an error occurred!", 10);
 
 			} else {
 
@@ -241,7 +241,7 @@ public class ViewThumbnailsActivityYahoo extends Activity {
 			public void onClick(View v) {
 				// go to the page
 				//Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse(pi.photo.getUrl()));
-				Intent intent = new Intent(ViewThumbnailsActivityYahoo.this,ViewPhotoActivity.class);
+				Intent intent = new Intent(ViewThumbnailsActivityGoogle.this,ViewPhotoActivity.class);
 				intent.putExtra(EXTRA_PHOTO_URI, pi.photo.Url);
 				intent.putExtra(EXTRA_PHOTO_PAGE_URI, pi.photo.ClickUrl);
 				startActivity(intent);
