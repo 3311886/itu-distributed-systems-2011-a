@@ -21,7 +21,7 @@ public final class R {
         public static final int SearcAgainTop=0x7f050007;
         public static final int SearchEditText=0x7f050000;
         public static final int SearchOkButtonFlickr=0x7f050001;
-        public static final int SearchOkButtonGoogle=0x7f050002;
+        public static final int SearchOkButtonYahoo=0x7f050002;
         public static final int ThumbsTableLayout=0x7f050008;
         public static final int linearLayout1=0x7f050006;
         public static final int mainScrollView=0x7f050005;

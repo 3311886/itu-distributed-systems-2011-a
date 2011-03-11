@@ -12,6 +12,7 @@
         </activity>
 	<activity android:name="ViewPhotoActivity"></activity>
     <activity android:name="ViewThumbnailsActivityFlickr"></activity>
+    <activity android:name="ViewThumbnailsActivityYahoo"></activity>
     
 </application>
     <uses-sdk android:minSdkVersion="7" />

@@ -1,47 +1,50 @@
 package dk.itu.smds.android;
 
-
-
-
 public class Photo {
 	
 	public Photo() {
 	}
 
-	public String unescapedUrl;
+	public String Title;
 	
-	public String getUrl;
+	public String Summary;
 	
-	public String width;
-	
-	
-	public String height;
+	public String Url;
 	
 	
-	public String imageId;
+	public String ClickUrl;
 	
 	
-	public String tbWidth;
+	public String RefererUrl;
 	
 	
-	public String tbHeight;
+	public String FileSize;
 	
 	
-	public String url;
+	public String FileFormat;
 	
 	
-	public String visibleUrl;
+	public String Height;
 	
 	
-	public String title;
+	public String Width;
+
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Photo [Title=").append(Title).append(", Summary=")
+				.append(Summary).append(", Url=").append(Url)
+				.append(", ClickUrl=").append(ClickUrl).append(", RefererUrl=")
+				.append(RefererUrl).append(", FileSize=").append(FileSize)
+				.append(", FileFormat=").append(FileFormat).append(", Height=")
+				.append(Height).append(", Width=").append(Width).append("]");
+		return builder.toString();
+	}
 	
 	
-	public String titleNoFormatting;
 	
 	
-	public String originalContextUrl;
 	
-	
-	public String tbUrl;
 }
 

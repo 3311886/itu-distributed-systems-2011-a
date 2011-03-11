@@ -15,7 +15,6 @@
 	android:layout_width="fill_parent" 
 	android:id="@+id/ThumbsTableLayout">
 	</TableLayout>
-	
 	<Button android:text="More photos..." 
 	android:onClick="onLoadMore" android:id="@+id/MoreButton" android:layout_height="wrap_content" android:layout_width="fill_parent">
 	 </Button>

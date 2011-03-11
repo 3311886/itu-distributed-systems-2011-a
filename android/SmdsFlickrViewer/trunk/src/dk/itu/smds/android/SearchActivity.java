@@ -1,5 +1,7 @@
 package dk.itu.smds.android;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +10,7 @@ import android.view.Window;
 import android.widget.EditText;
 
 public class SearchActivity extends Activity {
-
+	
 	public static final String EXTRA_SEARCHTEXT = "dk.itu.smds.android.SearchActivity.SEARCHTEXT";
 
 	/** Called when the activity is first created. */
@@ -42,8 +44,8 @@ public class SearchActivity extends Activity {
 		startActivity(startThumbnailsActIntent);
 	}
 
-	public void doStartSearchGoogle( View view ) {
-
+	public void doStartSearchYahoo( View view ) throws IOException {
+		
 		// get the EditSearch view
 		EditText searchEditText = (EditText)findViewById( R.id.SearchEditText );
 		// get the string inputted by the user
@@ -54,7 +56,7 @@ public class SearchActivity extends Activity {
 			return;
 
 		}
-		Intent startThumbnailsActIntent = new Intent(this, ViewThumbnailsActivityGoogle.class);
+		Intent startThumbnailsActIntent = new Intent(this, ViewThumbnailsActivityYahoo.class);
 		
 		// put in the intent the search string too
 		startThumbnailsActIntent.putExtra(EXTRA_SEARCHTEXT, q);

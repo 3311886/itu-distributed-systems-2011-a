@@ -1,23 +1,19 @@
 package dk.itu.smds.android;
 
-import java.io.IOException;
+import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.XML;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -33,16 +29,18 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView.ScaleType;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableLayout.LayoutParams;
 import android.widget.TableRow;
 import android.widget.Toast;
 
 import com.aetrion.flickr.photos.SearchParameters;
-
-public class ViewThumbnailsActivityGoogle extends Activity {
-	String url = "http://ajax.googleapis.com/ajax/services/search/images?v=1.0&imgsz=small&q=";
+public class ViewThumbnailsActivityYahoo extends Activity {
+	String url = "http://search.yahooapis.com/ImageSearchService/V1/imageSearch";
+	static final String YAHOO_APPID = "I7IbSgfV34HOwxppptxEyePcCgrK9Glsv3wzd_go9dndLI8_6ap4XE69kk3CzxI"; 
 	static final int DIALOG_INFINITE_PROGRESS = 0;
+	static final int RESULTSIZE = 10;
 	static final String EXTRA_PHOTO_PAGE_URI = "page_uri";
 	static final String EXTRA_PHOTO_URI = "photo_uri";
 	int page = 1;
@@ -53,26 +51,43 @@ public class ViewThumbnailsActivityGoogle extends Activity {
 	}
 
 	class SearchAsyncTask extends AsyncTask<SearchParameters,PhotoInfo,List<PhotoInfo>> {
-		@SuppressWarnings("unchecked")
 		@Override
 		protected List<PhotoInfo> doInBackground(SearchParameters... params) {
 
+			
 			SearchParameters q = params[0];
+			
 
 			JSONArray photos = null;
 			JSONObject json = null;
 			try {
+				
+				String queryurl = url + "?appid=" + YAHOO_APPID + "&query=" + q.getText() + "&results=" + RESULTSIZE +  "&start=" + (page*RESULTSIZE);
 				//search the photos..this method will take some time
-				InputStream source = retrieveStream(url + q);  
-
-				Reader reader = new InputStreamReader(source);
-				json = new JSONObject(reader.toString());			
-				photos = json.getJSONObject("responseData")
-				.getJSONArray("results");
+				InputStream source = retrieveStream(queryurl);  
+				
+				BufferedReader reader = new BufferedReader(new InputStreamReader(source));
+				
+				StringBuilder sb = new StringBuilder();
+				String s = "";
+				while (( s= reader.readLine())!= null) {
+					sb.append(s);
+				}
+				String input = sb.toString();
+				try {
+				json = XML.toJSONObject(input);
+				JSONObject header =  json.getJSONObject("ResultSet");
+				photos = header.getJSONArray("Result");
+				} catch (JSONException e){
+					Log.e("JSON", Arrays.toString(e.getStackTrace()));
+				}
+				
 
 			} catch (Exception e) {
 				Log.e("SearchAsyncTask", "can't search photos", e);
+				e.printStackTrace();
 			} finally {
+				
 				//dismiss the dialog
 				dismissDialog(DIALOG_INFINITE_PROGRESS);
 			}
@@ -86,7 +101,8 @@ public class ViewThumbnailsActivityGoogle extends Activity {
 				try {
 					//get the thumbnail url and download it in a Bitmap object
 					o = photos.getJSONObject(i);
-					String thumbUrl = o.getString("tbUrl");
+					JSONObject tb = o.getJSONObject("Thumbnail");
+					String thumbUrl = tb.getString("Url");
 					URL url = new URL(thumbUrl);
 					HttpURLConnection urlConnection = (HttpURLConnection) url
 					.openConnection();
@@ -125,9 +141,10 @@ public class ViewThumbnailsActivityGoogle extends Activity {
 		protected void onPreExecute() {
 			// while search, show a dialog with infinite progress
 
+			findViewById( R.id.SearcAgainTop).setEnabled(false);
 			findViewById( R.id.MoreButton).setEnabled(false);
 			findViewById( R.id.SearcAgainBottom).setEnabled(false);
-			findViewById( R.id.SearcAgainTop).setEnabled(false);
+			findViewById( R.id.GotoTopButton).setEnabled(false);
 			showDialog(DIALOG_INFINITE_PROGRESS);
 		}
 		@Override
@@ -139,13 +156,14 @@ public class ViewThumbnailsActivityGoogle extends Activity {
 		protected void onPostExecute(List<PhotoInfo> result) {
 			if(result==null) {
 				// I guess show some dialog to the user
-				Toast.makeText(ViewThumbnailsActivityGoogle.this, "Sorry, an error occurred!", 10);
+				Toast.makeText(ViewThumbnailsActivityYahoo.this, "Sorry, an error occurred!", 10);
 
 			} else {
 
-				findViewById( R.id.MoreButton).setEnabled(true);
 				findViewById( R.id.SearcAgainTop).setEnabled(true);
+				findViewById( R.id.MoreButton).setEnabled(true);
 				findViewById( R.id.SearcAgainBottom).setEnabled(true);
+				findViewById( R.id.GotoTopButton).setEnabled(true);
 			}
 		}
 	}
@@ -160,7 +178,6 @@ public class ViewThumbnailsActivityGoogle extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		requestWindowFeature( Window.FEATURE_NO_TITLE );
 
 		setContentView( R.layout.view_thumbs );
@@ -178,7 +195,7 @@ public class ViewThumbnailsActivityGoogle extends Activity {
 		searchParameters.setText(searchText);
 
 		// start the SearchAsyncTask
-		//new SearchAsyncTask().execute(searchParameters);
+		new SearchAsyncTask().execute(searchParameters);
 	}
 
 	private void setupSizes() {
@@ -223,9 +240,9 @@ public class ViewThumbnailsActivityGoogle extends Activity {
 			public void onClick(View v) {
 				// go to the page
 				//Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse(pi.photo.getUrl()));
-				Intent intent = new Intent(ViewThumbnailsActivityGoogle.this,ViewPhotoActivity.class);
-				intent.putExtra(EXTRA_PHOTO_URI, pi.photo.getUrl);
-				intent.putExtra(EXTRA_PHOTO_PAGE_URI, pi.photo.originalContextUrl);
+				Intent intent = new Intent(ViewThumbnailsActivityYahoo.this,ViewPhotoActivity.class);
+				intent.putExtra(EXTRA_PHOTO_URI, pi.photo.Url);
+				intent.putExtra(EXTRA_PHOTO_PAGE_URI, pi.photo.ClickUrl);
 				startActivity(intent);
 			}
 		});
@@ -255,48 +272,48 @@ public class ViewThumbnailsActivityGoogle extends Activity {
 	}
 
 	public void onSearchAgain(View view) {
+		page=1;
 		Intent searchActivity = new Intent(this, SearchActivity.class);
 		startActivity(searchActivity);
 
 	}
 
-	private InputStream retrieveStream(String url) {
+	private InputStream retrieveStream(String queryurl) {
 
-		DefaultHttpClient client = new DefaultHttpClient(); 
-
-		HttpGet getRequest = new HttpGet(url);
-
+		InputStream stream = null;
 		try {
-
-			HttpResponse getResponse = client.execute(getRequest);
-			final int statusCode = getResponse.getStatusLine().getStatusCode();
-
-			if (statusCode != HttpStatus.SC_OK) { 
-				Log.w(getClass().getSimpleName(), "Error " + statusCode + " for URL " + url); 
-				return null;
-			}
-
-			HttpEntity getResponseEntity = getResponse.getEntity();
-			return getResponseEntity.getContent();
-
-		} 
-		catch (IOException e) {
-			getRequest.abort();
-			Log.w(getClass().getSimpleName(), "Error for URL " + url, e);
+		URL url = new URL(queryurl);
+		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+		stream = con.getInputStream();
+		} catch (Exception e){
+			e.printStackTrace();
 		}
-
-		return null;
-
+	return stream;
+	
 	}
 
 	private Photo getPhoto(JSONObject o) throws IllegalArgumentException, IllegalAccessException, JSONException {
 		Field[] fields =  Photo.class.getFields();
 		Photo p = new Photo();
+		 try {
 		for (Field f : fields) {
-			
 			String value = o.getString(f.getName());
 			f.set(p, value);
 		}
+		 } catch (Exception e) {
+			 Log.e("getPhoto", p.toString());
+		 }
 		return p;
+	}
+	
+	public void onGotoTop(View view) {
+		view.post(new Runnable() {
+			public void run() {
+				ScrollView sv =(ScrollView) findViewById(R.id.mainScrollView);				
+				sv.fullScroll(ScrollView.FOCUS_UP);
+				
+			}
+		}
+		);
 	}
 }
