@@ -189,6 +189,8 @@ public class ViewThumbnailsActivityFlickr extends Activity {
 			// reset the currentColumn index
 			currentColumn=0;
 		}
+		
+		
 
 		// create the image button
 		ImageButton img = new ImageButton(this);
@@ -197,6 +199,9 @@ public class ViewThumbnailsActivityFlickr extends Activity {
 		// scale it if needed
 		img.setScaleType(ScaleType.FIT_XY);
 		// set the onClick listener
+		
+		//
+		
 		img.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				// go to the page

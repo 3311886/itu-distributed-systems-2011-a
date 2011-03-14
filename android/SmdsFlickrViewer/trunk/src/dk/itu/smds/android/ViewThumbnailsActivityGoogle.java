@@ -61,7 +61,7 @@ public class ViewThumbnailsActivityGoogle extends Activity {
 			JSONObject json = null;
 			try {
 				
-				String queryurl = url + "?q=" + q.getText();
+				String queryurl = url + q.getText();
 				//search the photos..this method will take some time
 				InputStream source = retrieveStream(queryurl);  
 				

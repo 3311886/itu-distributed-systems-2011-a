@@ -19,5 +19,11 @@
 		android:layout_width="fill_parent" 
 		android:id="@+id/SearchOkButtonYahoo"
 		android:onClick="doStartSearchYahoo" 
-		android:text="Search on Yahoo"></Button>	
+		android:text="Search on Yahoo"></Button>
+		<Button  
+		android:layout_height="wrap_content"  
+		android:layout_width="fill_parent" 
+		android:id="@+id/SearchOkButtonGoogle"
+		android:onClick="doStartSearchGoogle" 
+		android:text="Search on Google"></Button>	
 </LinearLayout>
