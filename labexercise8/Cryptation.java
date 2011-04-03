@@ -93,10 +93,8 @@ public class Cryptation
 		System.out.println("The received encrypted Jeff looks like this: " + object.toString() + "-and I do not get why it does not look the same as the encrypted dog sent from client????");
 		System.out.println("Decrypting...");	
 		byte[] objectForDecryption = (byte[]) object;
-		
 		System.out.println("Decrypted size: " + objectForDecryption.length + "\n\n\n");
 		ByteArrayInputStream bais = new ByteArrayInputStream(objectForDecryption);
-		System.out.println("Daniel håber på det går godt, ellers er han dum: " + bais.toString());
 		CipherInputStream cis = new CipherInputStream(bais, getDecryptionKey());
 		ObjectInputStream ois = new ObjectInputStream(cis);
 		
