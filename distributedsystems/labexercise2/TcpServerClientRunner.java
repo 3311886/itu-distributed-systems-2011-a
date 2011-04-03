@@ -6,7 +6,7 @@ import java.io.*;
 
 public class TcpServerClientRunner implements Runnable {
 	
-	private static int server_port = 7898;
+	private static int server_port = 7899;
 	
 	public static void main (String args[]) throws Exception{
 		
@@ -98,10 +98,10 @@ public class TcpServerClientRunner implements Runnable {
 		System.out.println("We have tried to support some kind of quit server command - but with no luck - any hints are appreciated.");
 		System.out.println("Client 2 sends quit message to server"); 
 		
-		System.out.println(client2.send("quit", 0));
+		System.out.println(client2.send("quit", 1));
 
 		System.out.println("Client 2 sends another message to server (shouldn't be possible):");
-		System.out.println(client2.send("message send after quit message", 0));
+		System.out.println(client2.send("message send after quit message", 1));
 		
 		
 		

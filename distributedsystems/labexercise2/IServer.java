@@ -1,5 +1,6 @@
 package distributedsystems.labexercise2;
 
-public interface IServer {
+public interface IServer 
+{
 	
 }

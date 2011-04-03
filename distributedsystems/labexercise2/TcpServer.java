@@ -62,7 +62,7 @@ public class TcpServer implements IServer {
 				
 				// first object in current stream
 				o = ois.readObject();
-				
+			
 				// quick fix 
 				// TODO: we tried to readObject() depending how many was send 
 				// - lets say send('test', 1) was only send('test') but the fix din't really worked out
@@ -70,7 +70,7 @@ public class TcpServer implements IServer {
 				boolean flag = false;
 				String operator = null;
 				try {
-					// second object in current stream - this part breaks if no second object is send ... hmmm
+					// second object in current stream - this part breaks if no second object is sent ... hmmm
 					operator = ois.readObject().toString();
 					flag = true;
 				} catch (IOException e) {
@@ -81,15 +81,18 @@ public class TcpServer implements IServer {
 				if (!flag) {
 					send(o);
 				} else {
+					
 					send(o, Integer.parseInt(operator));
 				}
 
 
-				if (o.toString().equals("quit")) {
-		//			TODO: stop server
-					// quit server
-					socket.close(); 
-				}				
+				System.out.println("server received:" + o);
+				if (o.toString().equals("quit")) 
+				{
+					
+					System.out.println("T/REÛE&/R/");
+					System.exit(-1);
+				}			
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

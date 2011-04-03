@@ -42,7 +42,7 @@ public void setPhone(String phone) {
 }
 
 public String toString() {
-	return String.format("Name: %s\nAddress: %s\nZip: %d\nPhone: %s", this.name, this.address, this.zip, this.phone); 
+	return String.format("Name: %s\nAddress: %s\nZip: %d\nPhone: %s", this.name, this.address, this.zip, this.phone);
 }
 
 }
