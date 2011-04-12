@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Calling a Web service using Ajax functionality - jquery version</title>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+
+    <script type="text/javascript" language="javascript">
+
+    // for: https://blog.itu.dk/SMDS-F2011/course-plan/lab-exercise-week-10
+
+    // js based on http://openlandscape.wordpress.com/2009/09/25/call-soap-xm-web-services-with-jquery-ajax
+    
+    // various posts on the options error: com.sun.xml.internal.ws.transport.http.server.WS HttpHandler handleExchange WARNING: Cannot handle HTTP method: OPTIONS
+    // - http://stackoverflow.com/questions/5417014/soap-web-service-calls-from-javascript
+    // - http://bugs.jquery.com/attachment/ticket/6029/jquery-disable-firefox3-cross-domain-magic.patch - (though rejected by the jquery people)
+    // - http://stackoverflow.com/questions/1099787/jquery-ajax-post-sending-options-as-request-method-in-firefox
+    //
+    // but is probably more related to the HttpHandler at the webservice, sounds odd if options request are not allowed ?
+    //
+
+    // todo: the soap stuff could probably be handled easier with http://plugins.jquery.com/project/jqSOAPClient the documnettaion/example page is unfortunately 404
+
+
+    var serviceUrl = 'http://localhost:8085/labexercises/hello'; // Preferably write this out from server side
+
+
+    // todo: add support other fields in the html/javascript - address - phone - zip - etc...
+    function call_hello_world(text)
+    {        
+        // var soapMessage =
+        // '<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">' +
+        //                         '<SOAP-ENV:Header/>' +
+        //                         "<SOAP-ENV:Body>" +
+        //                         '<itu:helloOperation xmlns:itu="http://hello.samples.smds2011.itu.dk/">' +
+        //                         "<arg0>" + text + "</arg0>" +
+        //                         "</itu:helloOperation>" +
+        //                         "</SOAP-ENV:Body>" +
+        //                         "</SOAP-ENV:Envelope>";
+        var soapMessage =
+        '<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">' +
+        '<SOAP-ENV:Header/>' +
+        '<SOAP-ENV:Body>' +
+        '<itu:addPerson xmlns:itu="http://hello.samples.smds2011.itu.dk/">' +
+        '<arg0>' +
+        '<person/>' +
+        '<name>' + text + '</name>' +
+        '<address>Address dfsdf 8898</address>' +
+        '<phone>90099909</phone>' +
+        '<zip>79798</zip>' +
+        '</arg0>' +
+        '</itu:addPerson>' +
+        '</SOAP-ENV:Body>' +
+        '</SOAP-ENV:Envelope>';
+
+        $.ajax({
+            url: serviceUrl,
+            type: "POST",
+            dataType: "xml",
+            data: soapMessage,
+            complete: hello_world_state_changed,
+            contentType: "text/xml; charset=\"utf-8\""
+        });
+
+        return false;
+    }
+
+    function hello_world_state_changed(xmlHttpRequest, status) 
+    {
+
+        if (status != "success") {
+            alert("Something is seriously wrong check the log at the webservice probably that nasty 'WARNING: Cannot handle HTTP method: OPTIONS'");            
+        }
+
+        if (xmlHttpRequest.readyState == 4) {
+            if (xmlHttpRequest.status == 200) {
+                var xmlDoc = xmlHttpRequest.responseXML;
+                var text = xmlDoc.getElementsByTagName("return")[0].childNodes[0].nodeValue;
+                $("#textareahelloworld").val(text);
+            }
+            else 
+            {
+                alert('Call to PhoneBookService failed! HTTP Status Code:' + xmlHttpRequest.status);
+                $("#textareahelloworld").val(xmlHttpRequest.responseText);
+            }
+        } 
+
+    }    
+    
+    $(document).ready(function() {
+
+        $('#buttonHelloWorld').click(function() {
+            
+            var text = $("#textyourname").val();
+            call_hello_world(text);
+        });
+
+    });
+    
+
+    </script>
+
+</head>
+<body>
+    
+    <!-- todo: add support alternative option/version when javascript is disabled -->
+    
+    
+    <h1>Add person to phone book service</h1>
+    
+    <form action="" id="myform">
+        <div>
+            <label for="textyourname">Name</label> <input type="text" id="textyourname"  />
+        </div>
+        
+        <div>
+            <label for="youraddress">Address</label> <input type="text" id="youraddress"  />
+        </div>
+        
+        <!-- todo: change into a submit button ? -->
+        <input id="buttonHelloWorld" type="button" value="Call Hello World" />
+        <div>
+            <label for="textareahelloworld">Hello World web method response</label>
+            <textarea id="textareahelloworld" cols="30" rows="5"></textarea>
+        </div>
+    </form>
+    
+</body>
+</html>
