@@ -83,4 +83,14 @@ class RemoteServerInterface implements IDataCollection<IItem> {
 	public void Synchronize(List<?> list) {	
 		throw new UnsupportedOperationException();
 	}
+
+	public boolean Update(IItem itemOld, IItem itemNew) throws IOException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public List<IItem> GetAllTyped() throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	}

@@ -21,12 +21,13 @@ public class SymmetricCryptTest {
 		byte key[] = password.getBytes();
 		CryptHelper.writeFile( CryptHelper.encrypt(key, plaintext), "output.txt");
 		CryptHelper.writeFile(plaintext.getBytes(), "unsecure.txt");
-		
 
 		String decrypted = CryptHelper.decrypt(key, CryptHelper.readFile("output.txt"));
 		// Compare
 		
 		Assert.assertEquals(plaintext, decrypted);
+		
+		Integer i = 5;
 		
 	}
 	

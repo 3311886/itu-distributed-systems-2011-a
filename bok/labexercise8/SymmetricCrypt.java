@@ -25,7 +25,6 @@ public class SymmetricCrypt {
 	 */
 	public SymmetricCrypt(String password) {
 		this.password = password;
-		
 	}
 
 	/***
@@ -66,7 +65,7 @@ public class SymmetricCrypt {
 	 */
 	public byte[] encrypt(Object o) throws Exception {
 		// Create outputstream
-		System.out.print("encrypting...");
+		//System.out.print("encrypting...");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		CipherOutputStream cos = new CipherOutputStream(baos, getEncryptionKey());
 		ObjectOutputStream oos = new ObjectOutputStream(cos);
@@ -75,7 +74,7 @@ public class SymmetricCrypt {
 		oos.writeObject(o);
 		oos.flush();
 		oos.close();
-		System.out.println("Encrypted size: " +  baos.size());
+		//System.out.println("Encrypted size: " +  baos.size());
 		return baos.toByteArray();
 	}
 
@@ -86,7 +85,7 @@ public class SymmetricCrypt {
 	 * @throws Exception
 	 */
 	public Object decrypt(Object o) throws Exception {
-		System.out.println("Decrypting");	
+		//System.out.println("Decrypting");	
 		byte[] b = (byte[]) o;
 		
 		System.out.println("Decrypted size: " + b.length);

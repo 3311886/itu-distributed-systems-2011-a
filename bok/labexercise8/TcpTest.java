@@ -1,7 +1,7 @@
 package bok.labexercise8;
 
 public class TcpTest implements Runnable {
-	public static int port = 1213;
+	public static int port = 1214;
 
 	/**
 	 * @param args

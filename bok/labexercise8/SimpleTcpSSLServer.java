@@ -74,6 +74,7 @@ class Connection implements Runnable {
 			message = o2.toString().toLowerCase();
 		if (i == 1)
 			message = o2.toString().toUpperCase();
+		if (i == 2)
 		try {
 			// Encrypt the message 
 			oos.writeObject(crypt.encrypt(message));

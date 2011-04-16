@@ -9,7 +9,7 @@ import java.net.Socket;
 public class SimpleTcpServer{
 
 	int port; 
-
+	
 	public SimpleTcpServer(int port) throws Exception {
 		this.port = port;
 
